@@ -17,29 +17,33 @@ const char *register_user(const char *username, const char *password) {
     if (!isValidUsername(username)) {
         return "INVALID_USERNAME";
     }
-    
+
+    // Build the path to the user directory
+    char user_dir[256];
+    snprintf(user_dir, sizeof(user_dir), "%s/%s", DATABASE_DIR, username);
+
     // Check if user directory already exists
-    if (access(username, F_OK) != -1) {
+    if (access(user_dir, F_OK) != -1) {
         return "USERNAME_EXISTS";
     }
 
     // Create user directory
-    if (mkdir(username, 0777) == -1) {
+    if (mkdir(user_dir, 0777) == -1) {
         return "DIRECTORY_CREATION_FAILED";
     }
 
     // Create and store password in password file
     char password_path[256];
-    snprintf(password_path, sizeof(password_path), "%s/password", username);
+    snprintf(password_path, sizeof(password_path), "%s/password", user_dir);
     int fd = open(password_path, O_WRONLY | O_CREAT, 0600);
     if (fd == -1) {
-        rmdir(username); // Remove user directory if password file creation failed
+        rmdir(user_dir); // Remove user directory if password file creation failed
         return "PASSWORD_FILE_CREATION_FAILED";
     }
     if (write(fd, password, strlen(password)) == -1) {
         close(fd);
         unlink(password_path); // Remove password file if password write failed
-        rmdir(username); // Remove user directory if password write failed
+        rmdir(user_dir); // Remove user directory if password write failed
         return "PASSWORD_WRITE_FAILED";
     }
     close(fd);
