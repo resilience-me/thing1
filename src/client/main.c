@@ -22,6 +22,8 @@ int main(int argc, char **argv) {
 
     int sock = open_connection(hostname, port);
     SSL *ssl = perform_ssl_handshake(ctx, sock);
+    
+    printf("Connected with %s encryption\n", SSL_get_cipher(ssl));
 
     interact_with_server(ssl);  // Start interacting with the server
 
