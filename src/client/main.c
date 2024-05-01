@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define DEFAULT_PORT 2012
+
 int main(int argc, char **argv) {
     const char *url = (argc == 2) ? argv[1] : "localhost";
     int port = DEFAULT_PORT;
