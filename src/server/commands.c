@@ -1,4 +1,5 @@
 #include "commands.h"
+#include "config.h"
 #include <ctype.h>
 
 // Function to check if a username contains only valid characters
