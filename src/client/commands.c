@@ -12,7 +12,7 @@ void handle_login_and_register(char *loginOrRegister, SSL *ssl) {
     fgets(password, sizeof(password), stdin);
     password[strcspn(password, "\n")] = 0;
 
-    char request[512];
+    char request[1024];
     snprintf(request, sizeof(request), "%s %s %s\n", loginOrRegister, username, password);
     SSL_write(ssl, request, strlen(request));
 
