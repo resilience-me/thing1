@@ -8,6 +8,7 @@
 #include <errno.h>
 #include <string.h>
 
+// Function to create directories if they don't exist
 void create_directories() {
     char *dirs[] = { DATABASE_DIR, DATABASE_DIR "/accounts" };
     for (size_t i = 0; i < sizeof(dirs) / sizeof(dirs[0]); ++i) {
@@ -19,6 +20,13 @@ void create_directories() {
             if (home != NULL) {
                 snprintf(path, sizeof(path), "%s%s", home, dirs[i] + 1);
             }
+        }
+
+        // Check if directory already exists
+        struct stat st;
+        if (stat(path, &st) == 0 && S_ISDIR(st.st_mode)) {
+            // Directory already exists, skip creation
+            continue;
         }
 
         // Create directory
