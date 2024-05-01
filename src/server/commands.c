@@ -34,7 +34,7 @@ const char *register_user(const char *username, const char *password) {
     }
 
     // Create and store password in password file
-    char password_path[256];
+    char password_path[512];
     snprintf(password_path, sizeof(password_path), "%s/password", user_dir);
     int fd = open(password_path, O_WRONLY | O_CREAT, 0600);
     if (fd == -1) {
