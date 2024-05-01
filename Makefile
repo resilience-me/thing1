@@ -1,20 +1,35 @@
-# Makefile for SSL Client
+# General compilation settings
+CC = gcc
+CFLAGS = -Wall -g -Isrc/client
+LDFLAGS = -lssl -lcrypto
 
-CC=gcc
-CFLAGS=-Wall -g
-LDFLAGS=-lssl -lcrypto
-OBJ=main.o network.o commands.o
-EXEC=ssl_client
+# Define paths for the source, object, and binary outputs
+SRC_DIR = src/client
+OBJ_DIR = build/obj/client
+BIN_DIR = build/bin
+EXEC = $(BIN_DIR)/client_app
 
+# Source and object file associations
+SOURCES = $(wildcard $(SRC_DIR)/*.c)
+OBJECTS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SOURCES))
+
+# Default target
 all: $(EXEC)
 
-$(EXEC): $(OBJ)
+# Linking the executable from the object files
+$(EXEC): $(OBJECTS) | $(BIN_DIR)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-%.o: %.c
+# Compiling every C file to object file
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) -c $(CFLAGS) $< -o $@
 
-clean:
-	rm -f $(OBJ) $(EXEC)
+# Ensure the directories exist
+$(OBJ_DIR) $(BIN_DIR):
+	mkdir -p $@
 
-.PHONY: clean
+# Clean up
+clean:
+	rm -rf build/obj build/bin
+
+.PHONY: all clean
