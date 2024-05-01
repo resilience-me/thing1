@@ -11,9 +11,6 @@
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 
-#define CERTIFICATE_FILE "/etc/letsencrypt/live/jipple.net/fullchain.pem"
-#define PRIVATE_KEY_FILE "/etc/letsencrypt/live/jipple.net/privkey.pem"
-
 void initialize_openssl();
 void cleanup_openssl();
 SSL_CTX *create_context();
