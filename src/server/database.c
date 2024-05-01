@@ -9,7 +9,7 @@
 #include <string.h>
 
 // Function to create directories if they don't exist
-void create_directories() {
+void initialize_database_directories() {
     char *dirs[] = { DATABASE_DIR, DATABASE_DIR "/accounts" };
     for (size_t i = 0; i < sizeof(dirs) / sizeof(dirs[0]); ++i) {
         // Expand tilde in path
