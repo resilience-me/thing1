@@ -24,34 +24,30 @@ SERVER_SOURCES = $(wildcard $(SERVER_SRC_DIR)/*.c)
 SERVER_OBJECTS = $(patsubst $(SERVER_SRC_DIR)/%.c,$(SERVER_OBJ_DIR)/%.o,$(SERVER_SOURCES))
 
 # Default target
-all: $(CLIENT_EXEC) $(SERVER_EXEC)
+all: create_dirs $(CLIENT_EXEC) $(SERVER_EXEC)
+
+# Create directories
+create_dirs:
+	mkdir -p $(CLIENT_OBJ_DIR) $(CLIENT_BIN_DIR) $(SERVER_OBJ_DIR) $(SERVER_BIN_DIR)
 
 # Linking the client executable from the object files
-$(CLIENT_EXEC): $(CLIENT_OBJECTS) | $(CLIENT_BIN_DIR)
+$(CLIENT_EXEC): $(CLIENT_OBJECTS)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 # Compiling every C file to object file for client
-$(CLIENT_OBJ_DIR)/%.o: $(CLIENT_SRC_DIR)/%.c | $(CLIENT_OBJ_DIR)
+$(CLIENT_OBJ_DIR)/%.o: $(CLIENT_SRC_DIR)/%.c
 	$(CC) -c $(CFLAGS) $< -o $@
 
 # Linking the server executable from the object files
-$(SERVER_EXEC): $(SERVER_OBJECTS) | $(SERVER_BIN_DIR)
+$(SERVER_EXEC): $(SERVER_OBJECTS)
 	$(CC) -o $@ $^ $(LDFLAGS) -pthread
 
 # Compiling every C file to object file for server
-$(SERVER_OBJ_DIR)/%.o: $(SERVER_SRC_DIR)/%.c | $(SERVER_OBJ_DIR)
+$(SERVER_OBJ_DIR)/%.o: $(SERVER_SRC_DIR)/%.c
 	$(CC) -c $(CFLAGS) $< -o $@
-
-# Ensure the directories exist for client
-$(CLIENT_OBJ_DIR) $(CLIENT_BIN_DIR):
-	mkdir -p $@
-
-# Ensure the directories exist for server
-$(SERVER_OBJ_DIR) $(SERVER_BIN_DIR):
-	mkdir -p $@
 
 # Clean up
 clean:
 	rm -rf build/obj build/bin
 
-.PHONY: all clean
+.PHONY: all clean create_dirs
