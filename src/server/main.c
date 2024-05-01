@@ -1,8 +1,13 @@
 #include "network.h"
 #include "commands.h"
+#include "database.h"
 #include "config.h"
 
 int main(int argc, char **argv) {
+    // Create necessary directories if they do not exist
+    initialize_database_directories();
+    
+    // Initialize OpenSSL and create socket
     int sock;
     SSL_CTX *ctx;
 
@@ -12,6 +17,7 @@ int main(int argc, char **argv) {
 
     sock = create_socket(PORT);
 
+    // Accept incoming connections and handle them
     while (1) {
         struct sockaddr_in addr;
         uint len = sizeof(addr);
