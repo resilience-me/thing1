@@ -7,6 +7,7 @@
 #include <openssl/err.h>
 #include <sys/socket.h>
 #include <netdb.h>
+#include <regex.h>
 
 void init_openssl() {
     SSL_load_error_strings();
