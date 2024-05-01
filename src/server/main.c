@@ -1,7 +1,6 @@
 #include "network.h"
-#include "command_handler.h"
-
-#define PORT 2012
+#include "commands.h"
+#include "config.h"
 
 int main(int argc, char **argv) {
     int sock;
