@@ -28,16 +28,12 @@ void handle_register(SSL *ssl) {
     fgets(username, sizeof(username), stdin);
     username[strcspn(username, "\n")] = 0;
 
-    printf("Enter email: ");
-    fgets(email, sizeof(email), stdin);
-    email[strcspn(email, "\n")] = 0;
-
     printf("Enter password: ");
     fgets(password, sizeof(password), stdin);
     password[strcspn(password, "\n")] = 0;
 
     char request[1024];
-    snprintf(request, sizeof(request), "REGISTER %s %s %s\n", username, email, password);
+    snprintf(request, sizeof(request), "REGISTER %s %s %s\n", username, password);
     SSL_write(ssl, request, strlen(request));
 
     char response[1024];
