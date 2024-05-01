@@ -22,7 +22,7 @@ void *handle_connection(void *arg) {
         printf("Received: %s\n", buffer);
 
         // Parse the received command
-        char *token = strtok(buffer, "\n");
+        char *token = strtok(buffer, " ");
         if (token != NULL) {
             printf("Received token: %s\n", token);
 
