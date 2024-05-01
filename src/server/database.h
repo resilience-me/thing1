@@ -7,6 +7,6 @@
 #include <string.h>
 
 // Function to create directories if they don't exist
-void create_directories();
+void initialize_database_directories();
 
 #endif /* DATABASE_H */
