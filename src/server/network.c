@@ -1,4 +1,5 @@
 #include "network.h"
+#include "config.h"
 
 void initialize_openssl() {
     SSL_load_error_strings();
