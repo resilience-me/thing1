@@ -1,20 +1,23 @@
 #include "commands.h"
 #include <ctype.h>
 
-// Function to check if a character is valid for a directory name
-int is_valid_char(char c) {
-    return isalnum(c) || c == '_'; // Allow alphanumeric characters and underscore
+// Function to check if a username contains only valid characters
+int isValidUsername(const char *username) {
+    for (int i = 0; username[i] != '\0'; ++i) {
+        if (!(isalnum(username[i]) || username[i] == '_')) {
+            return 0; // Invalid username
+        }
+    }
+    return 1; // Valid username
 }
 
 // Function to handle user registration
 const char *register_user(const char *username, const char *password) {
     // Check if username is valid
-    for (int i = 0; username[i] != '\0'; ++i) {
-        if (!is_valid_char(username[i])) {
-            return "INVALID_USERNAME";
-        }
+    if (!isValidUsername(username)) {
+        return "INVALID_USERNAME";
     }
-
+    
     // Check if user directory already exists
     if (access(username, F_OK) != -1) {
         return "USERNAME_EXISTS";
