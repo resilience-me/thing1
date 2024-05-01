@@ -2,6 +2,20 @@
 
 A project to implement Ryan's idea in a true P2P way. The system is similar to email, in that anyone can run a server, and servers can also host multiple accounts if they want to.
 
+### Client and server
+
+The server interacts with other servers. The server can probably rely on UDP, since all requests are small enough to fit in a single datagram, and acknowledgements are intrinsic anyway (during path-finding for example, there is transfers back and forth anyway between root and the node graph, serving to implicitly acknowledge that a transmission went through. ) The server also interacts with the client. The client interacts with users over TCP + asymmetric handshake, as `client server.xyz`. This client can interface a website, via web socket. The port is 2012 by default.
+
+### Encryption
+
+The platform allows anyone to host a server, and a server can have multiple accounts. It uses symmetric encryption between accounts. When accounts set up a trust line, they also generate a symmetric key that is exchanged. Messages (queries, requests) between accounts is thus the account identifier (account name), and the encrypted message. An improvement would be to let accounts set up one-time-pads (so system has perfect secrecy) but for now, symmetric key is good enough. A message authentication code is also used, so the bit sequence of a message does not get damaged during transfer.
+
+### Database
+
+The "database" is simply a directory "accounts", that stores directories for each account (named with account name), and text files with account state. A special default account can be referenced by an empty name (good for single-account servers, as transactions then just become the server identifier part, @server.xyz, without the account identifier. ) It is set up with #define DEFAULT_ACCOUNT "default" (using whatever name you want... )
+
+Accounts on the server are password protected, so any interaction with an account (such as sending a payment request) requires password authentication. The passwords are simply stored in text files in the account folders. Authentication is done via the client and the `LOGIN` command.
+
 ### Routing
 
 The routing is very simple. It is practically “stateless”, no routing tables are stored, all routing is generated for each payment request. The benefit is that paths change constantly in Ripple (as trust lines fill up or credit is cleared), so a “routing table” would not reflect the true state anyway. While “state” in routing may be beneficial (and normally used in internet routing), a “stateless” routing mechanism is simple to build, and a good start. It can be expanded upon later.
@@ -37,19 +51,3 @@ The routing is centered around caches that keep track of paths an account is inv
     } AccountNode;
 
     AccountNode *head = NULL;
-
-### Database
-
-The "database" is simply a directory "accounts", that stores directories for each account (named with account name), and text files with account state. A special default account can be referenced by an empty name (good for single-account servers, as transactions then just become the server identifier part, @server.xyz, without the account identifier. ) It is set up with #define DEFAULT_ACCOUNT "default" (using whatever name you want... )
-
-Accounts on the server are password protected, so any interaction with an account (such as sending a payment request) requires password authentication. The passwords are simply stored in text files in the account folders.
-
-### Encryption
-
-The platform allows anyone to host a server, and a server can have multiple accounts. It uses symmetric encryption between accounts. When accounts set up a trust line, they also generate a symmetric key that is exchanged. Messages (queries, requests) between accounts is thus the account identifier (account name), and the encrypted message. An improvement would be to let accounts set up one-time-pads (so system has perfect secrecy) but for now, symmetric key is good enough. A message authentication code is also used, so the bit sequence of a message does not get damaged during transfer.
-
-### Transport layer
-
-The system can probably rely on UDP, since all requests are small enough to fit in a single datagram, and acknowledgements are intrinsic anyway (during path-finding for example, there is transfers back and forth anyway between root and the node graph, serving to implicitly acknowledge that a transmission went through. )
-
-The server then interfaces a client, that interacts with users over TCP + asymmetric handshake. This client can interface a website, via web socket.
