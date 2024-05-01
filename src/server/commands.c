@@ -1,4 +1,48 @@
 #include "commands.h"
+#include <ctype.h>
+
+// Function to check if a character is valid for a directory name
+int is_valid_char(char c) {
+    return isalnum(c) || c == '_'; // Allow alphanumeric characters and underscore
+}
+
+// Function to handle user registration
+const char *register_user(const char *username, const char *password) {
+    // Check if username is valid
+    for (int i = 0; username[i] != '\0'; ++i) {
+        if (!is_valid_char(username[i])) {
+            return "INVALID_USERNAME";
+        }
+    }
+
+    // Check if user directory already exists
+    if (access(username, F_OK) != -1) {
+        return "USERNAME_EXISTS";
+    }
+
+    // Create user directory
+    if (mkdir(username, 0777) == -1) {
+        return "DIRECTORY_CREATION_FAILED";
+    }
+
+    // Create and store password in password file
+    char password_path[256];
+    snprintf(password_path, sizeof(password_path), "%s/password", username);
+    int fd = open(password_path, O_WRONLY | O_CREAT, 0600);
+    if (fd == -1) {
+        rmdir(username); // Remove user directory if password file creation failed
+        return "PASSWORD_FILE_CREATION_FAILED";
+    }
+    if (write(fd, password, strlen(password)) == -1) {
+        close(fd);
+        unlink(password_path); // Remove password file if password write failed
+        rmdir(username); // Remove user directory if password write failed
+        return "PASSWORD_WRITE_FAILED";
+    }
+    close(fd);
+
+    return "REGISTER_SUCCESS"; // Registration successful
+}
 
 void *handle_connection(void *arg) {
     SSL *ssl = (SSL *)arg;
@@ -29,7 +73,17 @@ void *handle_connection(void *arg) {
             if (strcmp(token, "LOGIN") == 0) {
                 SSL_write(ssl, "LOGIN_SUCCESS", strlen("LOGIN_SUCCESS"));
             } else if (strcmp(token, "REGISTER") == 0) {
-                SSL_write(ssl, "REGISTER_SUCCESS", strlen("REGISTER_SUCCESS"));
+                // Extract username and password from the command
+                char *username = strtok(NULL, " ");
+                char *password = strtok(NULL, " ");
+                
+                if (username == NULL || password == NULL) {
+                    SSL_write(ssl, "INVALID_REGISTER_COMMAND", strlen("INVALID_REGISTER_COMMAND"));
+                    continue;
+                }
+
+                const char *result = register_user(username, password);
+                SSL_write(ssl, result, strlen(result));
             } else {
                 SSL_write(ssl, "INVALID_COMMAND", strlen("INVALID_COMMAND"));
             }
