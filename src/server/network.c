@@ -47,6 +47,13 @@ int create_socket(int port) {
         exit(EXIT_FAILURE);
     }
 
+    // Set SO_REUSEADDR option
+    int optval = 1;
+    if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) < 0) {
+        perror("Unable to set SO_REUSEADDR");
+        exit(EXIT_FAILURE);
+    }
+
     memset(&addr, 0, sizeof(addr));
     addr.sin_family = AF_INET;
     addr.sin_port = htons(port);
@@ -64,3 +71,4 @@ int create_socket(int port) {
 
     return s;
 }
+
