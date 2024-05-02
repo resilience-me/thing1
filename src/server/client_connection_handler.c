@@ -55,6 +55,7 @@ void handle_client_connection(SSL *ssl) {
                 SSL_write(ssl, "AUTH_REQUIRED", strlen("AUTH_REQUIRED"));
             }
         } else {
+            printf(token);
             // Process commands for authenticated users
             if (strcmp(token, "LOGOUT") == 0) {
                 session.authenticated = 0;
