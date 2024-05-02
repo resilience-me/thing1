@@ -43,6 +43,7 @@ int main(int argc, char **argv) {
         printf("Server acknowledgment: %s\n", ack_message);
     } else {
         printf("Failed to receive acknowledgment from server\n");
+        exit(EXIT_FAILURE); // or pthread_exit(NULL);
     }
 
     printf("Connected with %s encryption\n", SSL_get_cipher(ssl));
