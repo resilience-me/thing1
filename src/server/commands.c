@@ -206,7 +206,7 @@ const char *add_connection(Session *session, char *connection_arg) {
     // and 'port' contains the port number (default if not specified)
 
     // Establish a connection to the remote server
-    int remote_socket = establish_connection(server_address);
+    int remote_socket = establish_connection(server_address, port);
 
     // Check if connection was successful
     if (remote_socket < 0) {
