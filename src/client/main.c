@@ -16,6 +16,8 @@ int main(int argc, char **argv) {
     const char *url = (argc == 2) ? argv[1] : "localhost";
     int port = DEFAULT_PORT;
 
+    printf("Initializing OpenSSL...\n");
+
     // Initialize OpenSSL
     init_openssl();
     SSL_CTX *ctx = create_ssl_client_context();
@@ -24,8 +26,10 @@ int main(int argc, char **argv) {
         cleanup_openssl();
         return EXIT_FAILURE;
     }
+    printf("SSL context created successfully\n");
+
     configure_context_client(ctx);
-    
+
     // Parse URL to get hostname and port
     char *hostname = parse_url(url, &port);
     if (!hostname) {
@@ -34,8 +38,10 @@ int main(int argc, char **argv) {
         cleanup_openssl();
         return EXIT_FAILURE;
     }
+    printf("Parsed URL: Hostname - %s, Port - %d\n", hostname, port);
 
     // Open socket connection
+    printf("Creating socket...\n");
     int sock = open_socket_connection(hostname, port);
     if (sock < 0) {
         fprintf(stderr, "Failed to open socket connection\n");
@@ -44,8 +50,10 @@ int main(int argc, char **argv) {
         cleanup_openssl();
         return EXIT_FAILURE;
     }
+    printf("Socket connection established successfully\n");
 
     // Perform SSL handshake
+    printf("Initiating SSL handshake...\n");
     SSL *ssl = ssl_client_handshake(ctx, sock);
     if (!ssl) {
         fprintf(stderr, "SSL handshake failed\n");
@@ -55,8 +63,10 @@ int main(int argc, char **argv) {
         free(hostname);
         return EXIT_FAILURE;
     }
+    printf("SSL handshake completed successfully\n");
 
     // Send the protocol header to the server
+    printf("Sending protocol header to the server...\n");
     struct ProtocolHeader header;
     header.connectionType = CLIENT_CONNECTION;
     if (SSL_write(ssl, &header, sizeof(header)) < 0) {
@@ -64,6 +74,7 @@ int main(int argc, char **argv) {
     }
 
     // Read acknowledgment message from the server
+    printf("Waiting for acknowledgment from the server...\n");
     char ack_message[256]; // Adjust the buffer size as needed
     int bytes = SSL_read(ssl, ack_message, sizeof(ack_message) - 1);
     if (bytes > 0) {
