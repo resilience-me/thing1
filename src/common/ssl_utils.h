@@ -8,7 +8,7 @@ void init_openssl();
 void cleanup_openssl();
 
 // Create SSL context for client or server
-SSL_CTX *create_ssl_context(const SSL_METHOD *(*method_func)());
+SSL_CTX *create_ssl_context(const SSL_METHOD *method);
 
 // Configure SSL context
 void configure_context(SSL_CTX *ctx);
