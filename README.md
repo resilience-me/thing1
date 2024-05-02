@@ -8,7 +8,7 @@ The server interacts with other servers. The server can probably rely on UDP, si
 
 ### Encryption
 
-The platform allows anyone to host a server, and a server can have multiple accounts. It uses symmetric encryption between accounts. When accounts set up a trust line, they also generate a symmetric key that is exchanged. Messages (queries, requests) between accounts is thus the account identifier (account name), and the encrypted message. An improvement would be to let accounts set up one-time-pads (so system has perfect secrecy) but for now, symmetric key is good enough. A message authentication code is also used, so the bit sequence of a message does not get damaged during transfer.
+The platform allows anyone to host a server, and a server can have multiple accounts. Servers interact over asymmetric handshakes. Clients interact with servers over asymmetric handshakes. Message authentication code are also used. In theory Ripple can rely on symmetric encryption only and things like one-time pads, giving the strongest possible encryption, but for practical purposes asymmetric keys are used in this implementation (although adding support for symmetric keys is recommended eventually. )
 
 ### Database
 
