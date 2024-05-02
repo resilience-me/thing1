@@ -176,7 +176,7 @@ void *handle_connection(void *arg) {
             if (strcmp(token, "LOGOUT") == 0) {
                 session.authenticated = 0;
                 SSL_write(ssl, "LOGOUT_SUCCESS", strlen("LOGOUT_SUCCESS"));
-            } else if (strcmp(token, "DELETE") == 0) {
+            } else if (strcmp(token, "DELETE_ACCOUNT") == 0) {
                 const char *delete_result = delete_user(&session);
                 SSL_write(ssl, delete_result, strlen(delete_result));
             } else {
