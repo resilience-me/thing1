@@ -41,9 +41,6 @@ void *handle_connection(void *arg) {
     // Clean up SSL resources
     SSL_free(ssl);
 cleanup:
-    close(thread_args->sock);
-    SSL_CTX_free(thread_args->ctx);
-    free(thread_args);
 
     printf("Thread %lu: Connection handling complete\n", pthread_self());  // Feedback message
     pthread_exit(NULL);
