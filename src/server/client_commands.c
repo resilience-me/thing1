@@ -151,7 +151,7 @@ const char *add_connection(Session *session, char *connection_arg) {
     
     if (server_and_port != NULL) {
         // Find the position of port delimiter ':'
-        char *port_delimiter_pos = strchr(server_and_port, ':');
+        char *port_delimiter_pos = strchr(server_and_port, port_delimiter);
     
         if (port_delimiter_pos != NULL) {
             // Extract the server and port
