@@ -176,8 +176,8 @@ const char *add_connection(Session *session, char *connection_arg) {
     receive_response(remoteSSL, response, sizeof(response));
 
     // Close the SSL connection
-    SSL_shutdown(ssl);
-    SSL_free(ssl);
+    SSL_shutdown(remoteSSL);
+    SSL_free(remoteSSL);
 
     // Check the response and take appropriate action
     if (strcmp(response, "ACCOUNT_EXISTS") == 0) {
