@@ -1,6 +1,7 @@
 #include "server_commands.h"
 #include "server_connection_handler.h"
 #include "database.h" // Assuming you have functions to check account existence in your database module
+#include <string.h>
 
 // Function to send a response to the client
 void send_response(SSL *ssl, const char *response) {
