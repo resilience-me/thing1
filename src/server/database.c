@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <libgen.h>
+#include <errno.h>
 
 // Allocate memory for the global variable
 char datadir[MAX_PATH_LENGTH];
