@@ -32,7 +32,6 @@ void receive_response(SSL *ssl, char *response, size_t max_length) {
 // Function to establish a connection to a remote server
 SSL* establish_connection(const char *server_address, int port) {
     int sockfd;
-    struct sockaddr_in serv_addr;
     SSL_CTX *ctx;
     SSL *ssl;
 
