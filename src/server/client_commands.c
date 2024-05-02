@@ -121,6 +121,11 @@ const char *login_user(const char *username, const char *password) {
     return "LOGIN_SUCCESS";  // User successfully authenticated
 }
 
+
+bool add_account(const char *username) {
+
+}
+
 const char *add_connection(Session *session, char *connection_arg) {
     // Check if the user is authenticated
     if (!session->authenticated) {
@@ -187,8 +192,13 @@ const char *add_connection(Session *session, char *connection_arg) {
 
     // Check the response and take appropriate action
     if (strcmp(response, "ACCOUNT_EXISTS") == 0) {
-        // Account exists, proceed with adding the connection...
-        return "CONNECTION_ADDED";
+        if (add_account(username)) {
+            printf("Account added successfully\n");
+            return "CONNECTION_ADDED";
+        } else {
+            printf("Failed to add account\n");
+            return "ADD_CONNECTION_FAILED";
+        }
     } else {
         // Account does not exist, handle error...
         return "ACCOUNT_NOT_FOUND";
