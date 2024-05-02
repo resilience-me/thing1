@@ -3,6 +3,7 @@
 #include "server_connection_handler.h"
 #include "thread_utils.h"
 #include "ssl_utils.h"
+#include "protocol_defs.h"
 
 #include <stdio.h> // Add other necessary headers as needed
 #include <stdlib.h>
