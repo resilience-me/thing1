@@ -1,4 +1,7 @@
 #include "connection_handler.h"
+#include "client_commands.h"
+#include "server_commands.h"
+
 #include <stdio.h> // Add other necessary headers as needed
 #include <stdlib.h>
 #include <string.h>
