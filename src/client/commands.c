@@ -72,7 +72,7 @@ void handle_delete_account(SSL *ssl) {
 
     const char *delete_cmd = "DELETE_ACCOUNT";
     char cmd[512];
-    snprintf(cmd, sizeof(cmd), "%s%s", delete_cmd, username);
+    snprintf(cmd, sizeof(cmd), "%s %s", delete_cmd, username);
     SSL_write(ssl, cmd, strlen(cmd));
 
     char response[256];
