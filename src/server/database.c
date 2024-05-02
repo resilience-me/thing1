@@ -4,11 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
 
-char datadir[256]; // Global variable to store the data directory path
+// Allocate memory for the global variable
+char datadir[MAX_PATH_LENGTH];
 
 // Function to replace the first occurrence of ~ with the home directory
 void expand_path(const char *path) {
