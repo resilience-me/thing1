@@ -153,6 +153,7 @@ const char *add_connection(Session *session, char *connection_arg) {
     if(server_and_port != NULL) {
         server = strtok(server_and_port, port_delimiter);
     }
+    perror("3");
 
     // If server is NULL or empty, use a local connection
     if (server == NULL || server[0] == '\0') {
@@ -164,24 +165,28 @@ const char *add_connection(Session *session, char *connection_arg) {
             strncpy(port_string, port_str, sizeof(port_string) - 1);
         }
     }
+    perror("4");
 
     // Now 'username' contains the username, 'server_address' contains the server address,
     // and 'port' contains the port number (default if not specified)
 
     // Establish an SSL connection to the remote server
     SSL *remoteSSL = establish_connection(server_address, port_string);
+    perror("5");
 
     // Check if connection was successful
     if (remoteSSL == NULL) {
         return "CONNECTION_FAILED";
     }
+    perror("6");
 
     const char *response = send_account_exists_query(remoteSSL, username);
+    perror("7");
 
     // Close the SSL connection
     SSL_shutdown(remoteSSL);
     SSL_free(remoteSSL);
-    perror("3");
+    perror("8");
 
     // Check the response and take appropriate action
     if (strcmp(response, "ACCOUNT_EXISTS") == 0) {
