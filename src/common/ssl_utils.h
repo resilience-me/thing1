@@ -8,9 +8,9 @@ void init_openssl();
 void cleanup_openssl();
 
 // Create SSL context for server
-SSL_CTX *create_ssl_context();
+SSL_CTX *create_ssl_server_context();
 // Create SSL context for client
-SSL_CTX *create_ssl_context();
+SSL_CTX *create_ssl_client_context();
 
 // Configure SSL context
 void configure_context(SSL_CTX *ctx);
