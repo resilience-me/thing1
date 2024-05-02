@@ -24,8 +24,6 @@ SSL_CTX *create_ssl_context(const SSL_METHOD *method) {
         ERR_print_errors_fp(stderr);
         exit(EXIT_FAILURE);
     }
-
-    SSL_CTX_set_default_verify_paths(ctx);
     return ctx;
 }
 
