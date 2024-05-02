@@ -3,6 +3,15 @@
 #include "config.h"
 #include <ctype.h>
 
+// Constants for connection types
+#define CLIENT_CONNECTION 0x01
+#define SERVER_CONNECTION 0x02
+
+struct ProtocolHeader {
+    uint8_t connectionType; // Identifier field indicating connection type
+    // Other fields...
+};
+
 typedef struct {
     char username[256];   // Username for the session
     int authenticated;    // 0 = Not authenticated, 1 = Authenticated
@@ -214,8 +223,7 @@ const char *add_connection(Session *session, char *connection_arg) {
     return "PLACEHOLDER_RETURN_STRING";
 }
 
-void *handle_connection(void *arg) {
-    SSL *ssl = (SSL *)arg;
+void handle_client_connection(SSL *ssl) {
     Session session = {0};  // Initializes username and authenticated status
     const int read_size = 256;
     char buffer[read_size];
@@ -282,6 +290,23 @@ void *handle_connection(void *arg) {
                 SSL_write(ssl, "INVALID_COMMAND", strlen("INVALID_COMMAND"));  // Could be further elaborated to handle specific commands
             }
         }
+    }
+}
+void handle_server_connection(SSL *ssl) {
+}
+
+void *handle_connection(void *arg) {
+    SSL *ssl = (SSL *)arg;
+    struct ProtocolHeader header;
+    SSL_read(ssl, &header, sizeof(header));
+
+    // Determine connection type based on the identifier
+    if (header.connectionType == CLIENT_CONNECTION) {
+        handle_client_connection(ssl);
+    } else if (header.connectionType == SERVER_CONNECTION) {
+        handle_server_connection(ssl);
+    } else {
+        // Invalid connection type
     }
 
 cleanup:
