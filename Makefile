@@ -24,7 +24,7 @@ CLIENT_SOURCES = $(wildcard $(CLIENT_SRC_DIR)/*.c) $(wildcard $(COMMON_SRC_DIR)/
 CLIENT_OBJECTS = $(patsubst $(CLIENT_SRC_DIR)/%.c,$(CLIENT_OBJ_DIR)/%.o,$(CLIENT_SOURCES))
 
 # Source and object file associations for server
-SERVER_SOURCES = $(wildcard $(SERVER_SRC_DIR)/*.c) $(wildcard $(COMMON_SRC_DIR)/*.c)
+SERVER_SOURCES = $(wildcard $(SERVER_SRC_DIR)/*.c)
 SERVER_OBJECTS = $(patsubst $(SERVER_SRC_DIR)/%.c,$(SERVER_OBJ_DIR)/%.o,$(SERVER_SOURCES))
 
 # Source and object file associations for common
