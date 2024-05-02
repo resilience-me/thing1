@@ -14,19 +14,9 @@
 #include <netinet/in.h>
 
 void *handle_connection(void *arg) {
-    ThreadArgs *thread_args = (ThreadArgs *)arg;
-    SSL *ssl = NULL;
+    SSL *ssl = (SSL *)arg;
 
     printf("Thread %lu: Handling connection...\n", pthread_self());  // Feedback message
-
-    // Perform SSL handshake
-    ssl = ssl_server_handshake(thread_args->ctx, thread_args->sock);
-    if (!ssl) {
-        fprintf(stderr, "Thread %lu: SSL handshake failed\n", pthread_self());  // Error message
-        goto cleanup;
-    }
-
-    printf("Thread %lu: SSL handshake successful\n", pthread_self());  // Feedback message
 
     // Handle client or server connection based on the received protocol header
     struct ProtocolHeader header;
