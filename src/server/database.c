@@ -2,8 +2,9 @@
 #include "config.h"
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
+#include <libgen.h>
 
 // Allocate memory for the global variable
 char datadir[MAX_PATH_LENGTH];
@@ -44,19 +45,26 @@ int make_dir(const char *dir) {
 }
 
 // Function to recursively create directories
-int make_dirs(char *path) {
-    char *subpath = path;
-    char *pos = strchr(subpath, '/');
-    while (pos != NULL) {
-        *pos = '\0';
-        if (make_dir(path) == -1) return -1;
-        *pos = '/';
-        subpath = pos + 1;
-        pos = strchr(subpath, '/');
+int make_dirs(const char *orig_path) {
+    char *path = strdup(orig_path);
+    char *p = path + strlen(path);
+
+    // Move backwards and create each directory
+    while (p > path && *p != '/') p--;  // find the last slash
+    *p = '\0';  // temporarily end string here
+
+    if (p != path && make_dirs(path) != 0) {  // Recur first
+        free(path);
+        return -1;
     }
-    if (*subpath) {
-        if (make_dir(path) == -1) return -1; // Create last segment
+
+    if (mkdir(orig_path, 0700) == -1 && errno != EEXIST) {
+        perror("Failed to create directory");
+        free(path);
+        return -1;
     }
+
+    free(path);
     return 0;
 }
 
