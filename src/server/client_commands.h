@@ -19,4 +19,7 @@ const char *register_user(const char *username, const char *password);
 
 void *handle_connection(void *arg);
 
+// Function to add a connection to the server
+const char *add_connection(Session *session, char *connection_arg);
+
 #endif /* CLIENT_COMMANDS_H */
