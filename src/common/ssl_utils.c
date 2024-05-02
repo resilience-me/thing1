@@ -16,25 +16,35 @@ void cleanup_openssl() {
     EVP_cleanup();
 }
 
-// Create SSL context for both client and server
-SSL_CTX *create_ssl_context(const SSL_METHOD *method) {
-    SSL_CTX *ctx = SSL_CTX_new(method);
+// Create SSL context for server
+SSL_CTX *create_ssl_server_context() {
+    const SSL_METHOD *method;
+    SSL_CTX *ctx;
+
+    method = TLS_server_method();
+    ctx = SSL_CTX_new(method);
+    if (!ctx) {
+        perror("Unable to create SSL context");
+        ERR_print_errors_fp(stderr);
+        exit(EXIT_FAILURE);
+    }
+    SSL_CTX_set_ecdh_auto(ctx, 1);
+
+    return ctx;
+}
+// Create SSL context for client
+SSL_CTX *create_ssl_client_context() {
+    const SSL_METHOD *method;
+    SSL_CTX *ctx;
+
+    method = TLS_client_method();
+    ctx = SSL_CTX_new(method);
     if (!ctx) {
         perror("Unable to create SSL context");
         ERR_print_errors_fp(stderr);
         exit(EXIT_FAILURE);
     }
     return ctx;
-}
-
-
-// Custom callback function for SSL handshake debug information
-void ssl_handshake_info_callback(const SSL *ssl, int where, int ret) {
-    if (where & SSL_CB_HANDSHAKE_START) {
-        fprintf(stderr, "SSL handshake started\n");
-    } else if (where & SSL_CB_HANDSHAKE_DONE) {
-        fprintf(stderr, "SSL handshake completed successfully\n");
-    }
 }
 
 SSL* ssl_server_handshake(SSL_CTX *ctx, int sock) {
