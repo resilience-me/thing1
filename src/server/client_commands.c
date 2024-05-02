@@ -197,7 +197,7 @@ const char *add_connection(Session *session, char *connection_arg) {
         char account_string[256];
         account_string[0] = '\0'; // Ensure account_string starts as an empty string
         
-        if(strlen(username) > 0)) {
+        if(strlen(username) > 0) {
             // Copy username to account_string
             strcpy(account_string, username);
         } else {
