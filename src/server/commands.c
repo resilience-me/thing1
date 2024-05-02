@@ -21,7 +21,7 @@ const char *register_user(const char *username, const char *password) {
 
     // Build the path to the user directory
     char user_dir[256];
-    snprintf(user_dir, sizeof(user_dir), "%s/%s", DATABASE_DIR, username);
+    snprintf(user_dir, sizeof(user_dir), "%s/accounts/%s", DATABASE_DIR, username);
 
     // Check if user directory already exists
     if (access(user_dir, F_OK) != -1) {
