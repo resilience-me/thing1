@@ -2,23 +2,6 @@
 #include "config.h"
 #include "ssl_utils.h"
 
-SSL_CTX *create_context() {
-    const SSL_METHOD *method;
-    SSL_CTX *ctx;
-
-    method = TLS_server_method();
-    ctx = SSL_CTX_new(method);
-    if (!ctx) {
-        perror("Unable to create SSL context");
-        ERR_print_errors_fp(stderr);
-        exit(EXIT_FAILURE);
-    }
-
-    SSL_CTX_set_ecdh_auto(ctx, 1);
-
-    return ctx;
-}
-
 void configure_context(SSL_CTX *ctx) {
     SSL_CTX_use_certificate_file(ctx, CERTIFICATE_FILE, SSL_FILETYPE_PEM);
     SSL_CTX_use_PrivateKey_file(ctx, PRIVATE_KEY_FILE, SSL_FILETYPE_PEM);
