@@ -122,8 +122,15 @@ const char *login_user(const char *username, const char *password) {
 }
 
 
-bool add_account(const char *username) {
+bool add_account(const char *accountString) {
+    // Build the path to the user directory
+    char user_dir[1024];
+    snprintf(user_dir, sizeof(user_dir), "%s/accounts/%s/peers/%s", datadir, session->username, accountString);
 
+    // Check if user directory already exists
+    if (access(user_dir, F_OK) != -1) {
+        return "USERNAME_EXISTS";
+    }
 }
 
 const char *add_connection(Session *session, char *connection_arg) {
