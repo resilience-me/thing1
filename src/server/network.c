@@ -2,7 +2,7 @@
 #include "config.h"
 #include "ssl_utils.h"
 
-void configure_context(SSL_CTX *ctx) {
+void configure_context_server(SSL_CTX *ctx) {
     SSL_CTX_use_certificate_file(ctx, CERTIFICATE_FILE, SSL_FILETYPE_PEM);
     SSL_CTX_use_PrivateKey_file(ctx, PRIVATE_KEY_FILE, SSL_FILETYPE_PEM);
 
