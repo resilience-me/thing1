@@ -3,6 +3,8 @@
 #include "database.h"
 #include "config_server.h"
 
+#include "protocol_defs.h"
+
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
