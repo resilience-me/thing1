@@ -169,7 +169,7 @@ const char *add_connection(Session *session, char *connection_arg) {
 
     // Now 'username' contains the username, 'server_address' contains the server address,
     // and 'port' contains the port number (default if not specified)
-
+fprintf(stderr, "Test: %s:%s\n", server_address, port_string );
     // Establish an SSL connection to the remote server
     SSL *remoteSSL = establish_connection(server_address, port_string);
     perror("5");
