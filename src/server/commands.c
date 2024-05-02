@@ -124,7 +124,38 @@ const char *login_user(const char *username, const char *password) {
     return "LOGIN_SUCCESS";  // User successfully authenticated
 }
 
-#include <string.h>
+// Function to establish a connection to a remote server
+int establish_connection(const char *server_address) {
+    int sockfd;
+    struct sockaddr_in serv_addr;
+
+    // Create socket
+    if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+        perror("Socket creation error");
+        return -1;
+    }
+
+    // Set server address details
+    memset(&serv_addr, '0', sizeof(serv_addr));
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(REMOTE_SERVER_PORT);
+
+    // Convert IPv4 and IPv6 addresses from text to binary form
+    if (inet_pton(AF_INET, server_address, &serv_addr.sin_addr) <= 0) {
+        perror("Invalid address/ Address not supported");
+        close(sockfd);
+        return -1;
+    }
+
+    // Connect to the server
+    if (connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
+        perror("Connection failed");
+        close(sockfd);
+        return -1;
+    }
+
+    return sockfd; // Return the socket file descriptor
+}
 
 const char *add_connection(Session *session, char *connection_arg) {
     // Check if the user is authenticated
@@ -151,11 +182,37 @@ const char *add_connection(Session *session, char *connection_arg) {
         strncpy(server_address, server, sizeof(server_address) - 1);
     }
 
+    // Establish a connection to the remote server
+    int remote_socket = establish_connection(server_address);
+
+    // Check if connection was successful
+    if (remote_socket < 0) {
+        return "CONNECTION_FAILED";
+    }
+
+    // Send command/query to check if the account exists
+    send_query(remote_socket, username);
+
+    // Receive response from the remote server
+    char response[256];
+    receive_response(remote_socket, response);
+
+    // Close the connection
+    close(remote_socket);
+
+    // Check the response and take appropriate action
+    if (strcmp(response, "ACCOUNT_EXISTS") == 0) {
+        // Account exists, proceed with adding the connection...
+        return "CONNECTION_ADDED";
+    } else {
+        // Account does not exist, handle error...
+        return "ACCOUNT_NOT_FOUND";
+    }
+    
     // At this point, 'username' contains the username and 'server_address' contains the server address
     // Now you can proceed to establish the connection with the remote server and send the command
     return "PLACEHOLDER_RETURN_STRING";
 }
-
 
 void *handle_connection(void *arg) {
     SSL *ssl = (SSL *)arg;
