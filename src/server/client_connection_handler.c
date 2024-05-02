@@ -1,3 +1,13 @@
+#include "client_commands.h"
+#include "client_connection_handler.h"
+#include "database.h"
+#include "config.h"
+#include <openssl/ssl.h>
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 void handle_client_connection(SSL *ssl) {
 
     // Send acknowledgment to the client
