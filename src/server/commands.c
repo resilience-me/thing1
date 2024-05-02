@@ -3,6 +3,11 @@
 #include "config.h"
 #include <ctype.h>
 
+typedef struct {
+    char username[256];   // Username for the session
+    int authenticated;    // 0 = Not authenticated, 1 = Authenticated
+} Session;
+
 // Function to check if a username contains only valid characters
 int isValidUsername(const char *username) {
     for (int i = 0; username[i] != '\0'; ++i) {
@@ -98,6 +103,8 @@ const char *login_user(const char *username, const char *password) {
 
 void *handle_connection(void *arg) {
     SSL *ssl = (SSL *)arg;
+    Session session = {0};
+
     const int read_size = 256;
     char buffer[read_size];
     int bytes;
