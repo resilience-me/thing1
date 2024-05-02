@@ -102,9 +102,15 @@ void handle_add_connection(SSL *ssl) {
 
     // Wait for and print the server's response
     char response[256];
-    SSL_read(ssl, response, sizeof(response));
-    printf("Server response: %s\n", response);
+    int bytes_received = SSL_read(ssl, response, sizeof(response) - 1); // Leave space for null terminator
+    if (bytes_received > 0) {
+        response[bytes_received] = '\0'; // Null-terminate the string
+        printf("Server response: %s\n", response);
+    } else {
+        printf("Failed to receive server response.\n");
+    }
 }
+
 
 void interact_with_server(SSL *ssl) {
     char cmd[256];
