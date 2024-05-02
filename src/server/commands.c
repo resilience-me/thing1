@@ -214,8 +214,8 @@ void *handle_connection(void *arg) {
             } else if (strcmp(token, "ADD_CONNECTION") == 0) {
                 char *remote_username = strtok(NULL, " ");
                 if (remote_username) {
-                    // Here, establish connection with the remote server and send ADD_CONNECTION command
-                    const char *add_connection_result = establish_and_send_add_connection(&session, remote_username);
+                    // Establish connection with remote server and send ADD_CONNECTION command
+                    const char *add_connection_result = add_connection(&session, remote_username);
                     SSL_write(ssl, add_connection_result, strlen(add_connection_result));
                 } else {
                     SSL_write(ssl, "INVALID_ADD_CONNECTION_COMMAND", strlen("INVALID_ADD_CONNECTION_COMMAND"));
