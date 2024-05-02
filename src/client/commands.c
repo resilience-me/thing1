@@ -87,9 +87,28 @@ void handle_delete_account(SSL *ssl) {
     }
 }
 
+void handle_add_connection(SSL *ssl) {
+    char username[256];
+    char server_address[256];
+
+    printf("Enter username@server_address: ");
+    fgets(username, sizeof(username), stdin);
+    username[strcspn(username, "\n")] = '\0';
+
+    // Send the ADD_CONNECTION command with the username and server address to the server
+    char command[512];
+    snprintf(command, sizeof(command), "ADD_CONNECTION %s", username);
+    SSL_write(ssl, command, strlen(command));
+
+    // Wait for and print the server's response
+    char response[256];
+    SSL_read(ssl, response, sizeof(response));
+    printf("Server response: %s\n", response);
+}
+
 void interact_with_server(SSL *ssl) {
     char cmd[256];
-    printf("Enter command (LOGIN, REGISTER, LOGOUT, DELETE_ACCOUNT, EXIT): ");
+    printf("Enter command (LOGIN, REGISTER, LOGOUT, DELETE_ACCOUNT, ADD_CONNECTION, EXIT): ");
     while (fgets(cmd, sizeof(cmd), stdin) && strcmp(cmd, "EXIT\n") != 0) {
         cmd[strcspn(cmd, "\n")] = '\0';
         if (strcmp(cmd, "LOGIN") == 0) {
@@ -100,9 +119,11 @@ void interact_with_server(SSL *ssl) {
             handle_logout(ssl);
         } else if (strcmp(cmd, "DELETE_ACCOUNT") == 0) {
             handle_delete_account(ssl);
+        } else if (strcmp(cmd, "ADD_CONNECTION") == 0) {
+            handle_add_connection(ssl);
         } else {
             printf("Unknown command. Please try again.\n");
         }
-        printf("Enter command (LOGIN, REGISTER, LOGOUT, DELETE_ACCOUNT, EXIT): ");
+        printf("Enter command (LOGIN, REGISTER, LOGOUT, DELETE_ACCOUNT, ADD_CONNECTION, EXIT): ");
     }
 }
