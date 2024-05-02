@@ -148,22 +148,26 @@ const char *add_connection(Session *session, char *connection_arg) {
     // Proceed to parse server address and port
     char *server_and_port = strtok(NULL, server_delimiter);
     char *server = NULL;
-    perror("2");
-
-    if(server_and_port != NULL) {
-        server = strtok(server_and_port, port_delimiter);
+    
+    if (server_and_port != NULL) {
+        // Find the position of port delimiter ':'
+        char *port_delimiter_pos = strchr(server_and_port, ':');
+    
+        if (port_delimiter_pos != NULL) {
+            // Extract the server and port
+            *port_delimiter_pos = '\0';  // Replace ':' with '\0' to split the string
+            server = server_and_port;
+            strncpy(port_string, port_delimiter_pos + 1, sizeof(port_string) - 1);  // Copy the port string
+        } else {
+            server = server_and_port;  // If no port delimiter is found, consider the whole string as the server
+        }
     }
-    perror("3");
-
+    
     // If server is NULL or empty, use a local connection
     if (server == NULL || server[0] == '\0') {
         strncpy(server_address, "localhost", sizeof(server_address) - 1);
     } else {
         strncpy(server_address, server, sizeof(server_address) - 1);
-        char *port_str = strtok(NULL, port_delimiter);
-        if (port_str != NULL) {
-            strncpy(port_string, port_str, sizeof(port_string) - 1);
-        }
     }
     perror("4");
 
