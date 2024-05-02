@@ -133,19 +133,15 @@ const char *add_connection(Session *session, char *connection_arg) {
     int port = PORT; // Set port to default value
     
     const char *delimiter = "@:";
-    const char *server_username = strtok(connection_arg, delimiter);
+    username = strtok(connection_arg, delimiter);
 
-    printf("%s", connection_arg);
-    printf("%s", server_username);
-
+    char *at_position = strchr(connection_arg, '@');
+    
     // If the delimiter is not found, the connection is local
-    if (server_username == NULL) {
-        // Treat the entire input as the username
-        strncpy(username, connection_arg, sizeof(username) - 1);
+    if (at_position == NULL) {
         strncpy(server_address, "localhost", sizeof(server_address) - 1);
     } else {
         // Handle remote connection
-        strncpy(username, server_username, sizeof(username) - 1);
         char *server_and_port = strtok(NULL, delimiter);
         if (server_and_port == NULL) {
             return "INVALID_CONNECTION_FORMAT";
