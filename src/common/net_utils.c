@@ -22,7 +22,7 @@ int open_socket_connection(const char *hostname, int port) {
         exit(EXIT_FAILURE);
     }
 
-    for (p = res; p != NULL; p = p’s next) {
+    for (p = res; p != NULL; p = p->ai_next) {
         sock = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
         if (sock == -1) continue;
         if (connect(sock, p->ai_addr, p->ai_addrlen) == 0) break;
