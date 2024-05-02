@@ -126,18 +126,15 @@ const char *add_connection(Session *session, char *connection_arg) {
     if (!session->authenticated) {
         return "AUTHENTICATION_REQUIRED";
     }
-    const char *username_delimiter = "@";
+    const char *server_delimiter = "@";
     const char *port_delimiter = ":";
-    char *at_position = strchr(connection_arg, username_delimiter);
-    if (at_position == NULL) {
-        return "INVALID_CONNECTION_FORMAT";
-    }
+
     // Parse the connection argument
     char username[256];
     char server_address[256];
     int port = PORT; // Set port to default value
     
-    char *server_username = strtok(connection_arg, username_delimiter);
+    char *server_username = strtok(connection_arg, server_delimiter);
 
     if (server_username == NULL || server_username[0] == '\0') {
         // No username specified, set an empty username
@@ -147,7 +144,7 @@ const char *add_connection(Session *session, char *connection_arg) {
     }
 
     // Proceed to parse server address and port
-    char *server_and_port = strtok(NULL, delimiter);
+    char *server_and_port = strtok(NULL, server_delimiter);
     char *server = strtok(server_and_port, port_delimiter);
 
     // If server is NULL or empty, use a local connection
