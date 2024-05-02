@@ -3,6 +3,18 @@
 #include "database.h"
 #include "config.h"
 #include "ssl_utils.h"
+#include "thread_utils.h"
+
+ThreadArgs *create_thread_args(SSL_CTX *ctx, int sock) {
+    ThreadArgs *args = (ThreadArgs *)malloc(sizeof(ThreadArgs));
+    if (args == NULL) {
+        perror("Failed to allocate memory for ThreadArgs");
+        exit(EXIT_FAILURE);
+    }
+    args->ctx = ctx;
+    args->sock = sock;
+    return args;
+}
 
 int main(int argc, char **argv) {
     // Create necessary directories if they do not exist
@@ -21,7 +33,6 @@ int main(int argc, char **argv) {
     while (1) {
         struct sockaddr_in addr;
         uint len = sizeof(addr);
-        SSL *ssl;
         pthread_t tid;
 
         int client = accept(sock, (struct sockaddr*)&addr, &len);
@@ -30,12 +41,8 @@ int main(int argc, char **argv) {
             exit(EXIT_FAILURE);
         }
 
-        ssl = SSL_new(ctx);
-        SSL_set_fd(ssl, client);
-
-        if (pthread_create(&tid, NULL, handle_connection, ssl) != 0) {
+        if (pthread_create(&tid, NULL, handle_connection, create_thread_args(ctx, sock)) != 0) {
             perror("Unable to create thread");
-            SSL_free(ssl);
             close(client);
             continue;
         }
