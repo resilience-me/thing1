@@ -18,20 +18,26 @@ int main(int argc, char **argv) {
     const char *url = (argc == 2) ? argv[1] : "localhost";
     int port = DEFAULT_PORT;
 
+    // Initialize OpenSSL
     init_openssl();
-    SSL_CTX *ctx = create_ssl_context("client");  // Updated to use the refactored function
+    SSL_CTX *ctx = create_ssl_context("client");
     if (!ctx) {
         fprintf(stderr, "SSL context creation failed\n");
-        exit(EXIT_FAILURE);
-    }
-
-    char *hostname = parse_url(url, &port);  // Ensure parse_url is implemented correctly to return the hostname
-    if (!hostname) {
-        fprintf(stderr, "Invalid URL provided\n");
+        cleanup_openssl();
         return EXIT_FAILURE;
     }
 
-    int sock = open_socket_connection(hostname, port);  // Updated to use the refactored function
+    // Parse URL to get hostname and port
+    char *hostname = parse_url(url, &port);
+    if (!hostname) {
+        fprintf(stderr, "Invalid URL provided\n");
+        SSL_CTX_free(ctx);
+        cleanup_openssl();
+        return EXIT_FAILURE;
+    }
+
+    // Open socket connection
+    int sock = open_socket_connection(hostname, port);
     if (sock < 0) {
         fprintf(stderr, "Failed to open socket connection\n");
         free(hostname);
@@ -40,7 +46,8 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
-    SSL *ssl = ssl_handshake(ctx, sock);  // Updated to use the refactored function
+    // Perform SSL handshake
+    SSL *ssl = ssl_handshake(ctx, sock);
     if (!ssl) {
         fprintf(stderr, "SSL handshake failed\n");
         close(sock);
@@ -54,7 +61,7 @@ int main(int argc, char **argv) {
     struct ProtocolHeader header;
     header.connectionType = CLIENT_CONNECTION;
     if (SSL_write(ssl, &header, sizeof(header)) < 0) {
-        fprintf(stderr, "Failed to send protocol header\n");
+        perror("SSL_write failed to send protocol header");
     }
 
     // Read acknowledgment message from the server
@@ -69,9 +76,10 @@ int main(int argc, char **argv) {
 
     printf("Connected with %s encryption\n", SSL_get_cipher(ssl));
 
-    // Assuming this function exists for interaction
+    // Assume this function exists for further interaction
     interact_with_server(ssl);  // Start interacting with the server
 
+    // Clean up resources
     SSL_free(ssl);
     close(sock);
     SSL_CTX_free(ctx);
