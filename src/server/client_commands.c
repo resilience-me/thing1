@@ -122,15 +122,23 @@ const char *login_user(const char *username, const char *password) {
 }
 
 
-bool add_account(const char *accountString) {
+const char *add_account(const char *accountString) {
     // Build the path to the user directory
     char user_dir[1024];
     snprintf(user_dir, sizeof(user_dir), "%s/accounts/%s/peers/%s", datadir, session->username, accountString);
 
     // Check if user directory already exists
     if (access(user_dir, F_OK) != -1) {
-        return "USERNAME_EXISTS";
+        printf("Account already connectedt\n");
+        return "ALREADY_CONNECTED";
     }
+    // Create user directory
+    if (mkdir(user_dir, 0777) == -1) {
+        printf("Failed to add account\n");
+        return "DIRECTORY_CREATION_FAILED";
+    }
+    printf("Account added successfully\n");
+    return "CONNECTION_ADDED";
 }
 
 const char *add_connection(Session *session, char *connection_arg) {
@@ -224,11 +232,7 @@ const char *add_connection(Session *session, char *connection_arg) {
         }
 
         if (add_account(account_string)) {
-            printf("Account added successfully\n");
-            return "CONNECTION_ADDED";
-        } else {
-            printf("Failed to add account\n");
-            return "ADD_CONNECTION_FAILED";
+            return add_account(account_string);
         }
     } else {
         // Account does not exist, handle error...
