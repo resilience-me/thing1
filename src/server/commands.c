@@ -63,11 +63,11 @@ const char *delete_user(Session *session) {
         return "AUTHENTICATION_REQUIRED";
     }
 
-    char user_dir[512];
+    char user_dir[1024];
     snprintf(user_dir, sizeof(user_dir), "%s/accounts/%s", datadir, session->username);
 
     // Delete the user directory and all its contents securely
-    char command[1024];
+    char command[2048];
     snprintf(command, sizeof(command), "rm -rf %s", user_dir);
     int status = system(command);
     if (status != 0) {
