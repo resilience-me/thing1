@@ -70,7 +70,7 @@ void handle_delete_account(SSL *ssl) {
     fgets(username, sizeof(username), stdin);
     username[strcspn(username, "\n")] = '\0';  // Remove newline
 
-    const char *delete_cmd = "DELETE ";
+    const char *delete_cmd = "DELETE_ACCOUNT";
     char cmd[512];
     snprintf(cmd, sizeof(cmd), "%s%s", delete_cmd, username);
     SSL_write(ssl, cmd, strlen(cmd));
