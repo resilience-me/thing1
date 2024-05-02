@@ -89,7 +89,7 @@ void handle_delete_account(SSL *ssl) {
 
 void interact_with_server(SSL *ssl) {
     char cmd[256];
-    printf("Enter command (LOGIN, REGISTER, LOGOUT, EXIT): ");
+    printf("Enter command (LOGIN, REGISTER, LOGOUT, DELETE, EXIT): ");
     while (fgets(cmd, sizeof(cmd), stdin) && strcmp(cmd, "EXIT\n") != 0) {
         cmd[strcspn(cmd, "\n")] = '\0';
         if (strcmp(cmd, "LOGIN") == 0) {
@@ -103,6 +103,6 @@ void interact_with_server(SSL *ssl) {
         } else {
             printf("Unknown command. Please try again.\n");
         }
-        printf("Enter command (LOGIN, REGISTER, LOGOUT, EXIT): ");
+        printf("Enter command (LOGIN, REGISTER, LOGOUT, DELETE, EXIT): ");
     }
 }
