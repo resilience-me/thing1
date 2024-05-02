@@ -10,6 +10,6 @@ void send_query(SSL *ssl, const char *query);
 void receive_response(SSL *ssl, char *response, size_t max_length);
 
 // Function to establish an SSL connection to a remote server
-SSL* establish_connection(const char *server_address, int port);
+SSL* establish_connection(const char *server_address, char *portStr);
 
 #endif /* SERVER_COMMANDS_H */
