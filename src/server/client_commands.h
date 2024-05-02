@@ -14,10 +14,21 @@
 #include <arpa/inet.h>
 #include <fcntl.h>
 
+// Session struct definition
+typedef struct {
+    char username[256];   // Username for the session
+    int authenticated;    // 0 = Not authenticated, 1 = Authenticated
+} Session;
+
 // Function to handle user registration
 const char *register_user(const char *username, const char *password);
 
 // Function to add a connection to the server
 const char *add_connection(Session *session, char *connection_arg);
+
+// Function prototypes for other functions used in client_commands.c
+int isValidUsername(const char *username);
+const char *delete_user(Session *session);
+const char *login_user(const char *username, const char *password);
 
 #endif /* CLIENT_COMMANDS_H */
