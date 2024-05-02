@@ -29,6 +29,22 @@ void receive_response(SSL *ssl, char *response, size_t max_length) {
     }
 }
 
+const char *send_account_exists_query(SSL *ssl, const char *username) {
+    // Construct the query with the username
+    char query[256];
+    snprintf(query, sizeof(query), "ACCOUNT_EXISTS %s", username);
+
+    // Send the query to the server
+    send_query(ssl, query);
+
+    // Receive the response from the server
+    char response[256];
+    receive_response(ssl, response, sizeof(response));
+    
+    // Return the server response
+    return strdup(response); // Remember to free the memory allocated by strdup
+}
+
 // Function to establish a connection to a remote server
 SSL* establish_connection(const char *server_address, char *portStr) {
     int sockfd;
