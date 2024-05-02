@@ -25,8 +25,7 @@ int main(int argc, char **argv) {
     init_openssl();
     
     fprintf(stderr, "Creating SSL context...\n");
-    SSL_CTX *ctx = create_ssl_context(TLS_server_method());
-    SSL_CTX_set_ecdh_auto(ctx, 1);
+    SSL_CTX *ctx = create_ssl_server_context();
     configure_context_server(ctx);
     
     fprintf(stderr, "Creating socket...\n");
