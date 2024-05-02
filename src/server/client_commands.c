@@ -36,6 +36,13 @@ const char *register_user(const char *username, const char *password) {
         return "DIRECTORY_CREATION_FAILED";
     }
 
+    // Create peers directory within the user directory
+    char peers_dir[1024];
+    snprintf(peers_dir, sizeof(peers_dir), "%s/peers", user_dir);
+    if (mkdir(peers_dir, 0777) == -1) {
+        return "PEERS_DIRECTORY_CREATION_FAILED";
+    }
+    
     // Create and store password in password file
     char password_path[1024];
     snprintf(password_path, sizeof(password_path), "%s/password", user_dir);
