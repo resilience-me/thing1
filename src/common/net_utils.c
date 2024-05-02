@@ -1,4 +1,7 @@
 #include "net_utils.h"
+#include <stdio.h>      // For perror
+#include <stdlib.h>     // For exit
+#include <string.h>     // For memset, snprintf
 
 // Function to resolve the hostname and port
 int resolve_hostname(const char *hostname, const char *port_str, struct addrinfo **res) {
