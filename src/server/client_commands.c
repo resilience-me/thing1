@@ -126,14 +126,18 @@ const char *add_connection(Session *session, char *connection_arg) {
     if (!session->authenticated) {
         return "AUTHENTICATION_REQUIRED";
     }
-
+    const char *username_delimiter = "@";
+    const char *port_delimiter = ":";
+    char *at_position = strchr(connection_arg, username_delimiter);
+    if (at_position == NULL) {
+        return "INVALID_CONNECTION_FORMAT";
+    }
     // Parse the connection argument
     char username[256];
     char server_address[256];
     int port = PORT; // Set port to default value
     
-    const char *delimiter = "@:";
-    char *server_username = strtok(connection_arg, delimiter);
+    char *server_username = strtok(connection_arg, username_delimiter);
 
     if (server_username == NULL || server_username[0] == '\0') {
         // No username specified, set an empty username
@@ -144,22 +148,18 @@ const char *add_connection(Session *session, char *connection_arg) {
 
     // Proceed to parse server address and port
     char *server_and_port = strtok(NULL, delimiter);
-    
-    // If server_and_port is NULL, it means no '@' was found, implying a local connection
-    if (server_and_port == NULL) {
+    char *server = strtok(server_and_port, port_delimiter);
+
+    // If server is NULL or empty, use a local connection
+    if (server == NULL || server[0] == '\0') {
         strncpy(server_address, "localhost", sizeof(server_address) - 1);
     } else {
-        // Handle remote connection
-        char *server = strtok(server_and_port, ":");
-        if (server == NULL) {
-            return "INVALID_CONNECTION_FORMAT";
-        }
         strncpy(server_address, server, sizeof(server_address) - 1);
-    
-        char *port_str = strtok(NULL, ":");
-        if (port_str != NULL) {
-            port = atoi(port_str); // Convert port string to integer
-        }
+    }
+
+    char *port_str = strtok(NULL, port_delimiter);
+    if (port_str != NULL) {
+        port = atoi(port_str); // Convert port string to integer
     }
     
     // Now 'username' contains the username, 'server_address' contains the server address,
