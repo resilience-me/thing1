@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "common/protocol_defs.h"
 #include "common/ssl_utils.h"  // Include path to shared SSL utilities
 #include "common/net_utils.h"  // Include path to shared network utilities
 
