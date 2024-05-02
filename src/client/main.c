@@ -46,7 +46,7 @@ int main(int argc, char **argv) {
     }
 
     // Perform SSL handshake
-    SSL *ssl = ssl_handshake(ctx, sock, SSL_connect);
+    SSL *ssl = ssl_client_handshake(ctx, sock);
     if (!ssl) {
         fprintf(stderr, "SSL handshake failed\n");
         close(sock);
