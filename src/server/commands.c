@@ -224,7 +224,13 @@ const char *add_connection(Session *session, char *connection_arg) {
 }
 
 void handle_client_connection(SSL *ssl) {
+
+    // Send acknowledgment to the client
+    const char *ack_message = "Client connection established";
+    SSL_write(ssl, ack_message, strlen(ack_message));
+
     Session session = {0};  // Initializes username and authenticated status
+    
     const int read_size = 256;
     char buffer[read_size];
     int bytes;
