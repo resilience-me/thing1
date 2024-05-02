@@ -21,16 +21,19 @@ int main(int argc, char **argv) {
     initialize_database_directories();
     
     // Initialize OpenSSL and create socket
-    int sock;
-    SSL_CTX *ctx;
+    fprintf(stderr, "Initializing OpenSSL...\n");
     init_openssl();
-    ctx = create_ssl_context(TLS_server_method());
+    
+    fprintf(stderr, "Creating SSL context...\n");
+    SSL_CTX *ctx = create_ssl_context(TLS_server_method());
     configure_context_server(ctx);
-
-    sock = create_socket(PORT);
+    
+    fprintf(stderr, "Creating socket...\n");
+    int sock = create_socket(PORT);
 
     // Accept incoming connections and handle them
     while (1) {
+        fprintf(stderr, "Waiting for incoming connection...\n");
         struct sockaddr_in addr;
         uint len = sizeof(addr);
         pthread_t tid;
@@ -41,6 +44,9 @@ int main(int argc, char **argv) {
             exit(EXIT_FAILURE);
         }
 
+        fprintf(stderr, "Accepted connection from %s:%d\n", inet_ntoa(addr.sin_addr), ntohs(addr.sin_port));
+
+        fprintf(stderr, "Creating thread to handle connection...\n");
         if (pthread_create(&tid, NULL, handle_connection, create_thread_args(ctx, sock)) != 0) {
             perror("Unable to create thread");
             close(client);
