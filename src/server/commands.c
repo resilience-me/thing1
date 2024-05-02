@@ -63,12 +63,8 @@ const char *delete_user(Session *session) {
         return "AUTHENTICATION_REQUIRED";
     }
 
-    if (!isValidUsername(username)) {
-        return "INVALID_USERNAME";
-    }
-
     char user_dir[512];
-    snprintf(user_dir, sizeof(user_dir), "%s/accounts/%s", datadir, username);
+    snprintf(user_dir, sizeof(user_dir), "%s/accounts/%s", datadir, session->username);
 
     // Check if user directory exists
     if (access(user_dir, F_OK) == -1) {
@@ -82,6 +78,10 @@ const char *delete_user(Session *session) {
     if (status != 0) {
         return "FAILED_TO_DELETE_USER";
     }
+
+    // Successfully deleted the user, now unauthenticate the session
+    memset(session->username, 0, sizeof(session->username)); // Clear the username
+    session->authenticated = 0; // Unauthenticate the session
 
     return "USER_DELETED_SUCCESSFULLY";
 }
