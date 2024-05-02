@@ -10,11 +10,14 @@ void send_response(SSL *ssl, const char *response) {
 }
 
 void handle_server_connection(SSL *ssl) {
-    // Receive the command from the client
-    int max_length = 256;
-    char buffer[max_length];
-    SSL_read(ssl, buffer, max_length);
-
+    // Receive the command from the other server
+    const int read_size = 256;
+    char buffer[read_size];
+    int bytes;
+    bytes = SSL_read(ssl, buffer, sizeof(buffer));
+    if (bytes <= 0) break;  // No more data or error occurred
+    buffer[bytes] = '\0';  // Ensure null termination
+    
     char *token = strtok(buffer, " ");
 
     if(token == NULL) send_response(ssl, "INVALID_COMMAND");
