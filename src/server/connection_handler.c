@@ -9,6 +9,7 @@
 #include <arpa/inet.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <openssl/err.h>
 
 void *handle_connection(void *arg) {
     SSL *ssl = (SSL *)arg;
