@@ -58,6 +58,34 @@ const char *register_user(const char *username, const char *password) {
     return "REGISTER_SUCCESS"; // Registration successful
 }
 
+const char *delete_user(Session *session) {
+    if (!session->authenticated) {
+        return "AUTHENTICATION_REQUIRED";
+    }
+
+    if (!isValidUsername(username)) {
+        return "INVALID_USERNAME";
+    }
+
+    char user_dir[512];
+    snprintf(user_dir, sizeof(user_dir), "%s/accounts/%s", datadir, username);
+
+    // Check if user directory exists
+    if (access(user_dir, F_OK) == -1) {
+        return "USERNAME_NOT_FOUND";
+    }
+
+    // Delete the user directory and all its contents securely
+    char command[512];
+    snprintf(command, sizeof(command), "rm -rf %s", user_dir);
+    int status = system(command);
+    if (status != 0) {
+        return "FAILED_TO_DELETE_USER";
+    }
+
+    return "USER_DELETED_SUCCESSFULLY";
+}
+
 const char *login_user(const char *username, const char *password) {
     // Check if username is valid
     if (!isValidUsername(username)) {
