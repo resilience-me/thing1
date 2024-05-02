@@ -151,10 +151,11 @@ const char *add_connection(Session *session, char *connection_arg) {
     // Proceed to parse server address and port
     char *server_and_port = strtok(NULL, server_delimiter);
     char *server = NULL;
+    char *port_delimiter_pos = NULL;
     
     if (server_and_port != NULL) {
         // Find the position of port delimiter ':'
-        char *port_delimiter_pos = strchr(server_and_port, ':');
+         port_delimiter_pos = strchr(server_and_port, ':');
     
         if (port_delimiter_pos != NULL) {
             // Extract the server and port
@@ -174,7 +175,7 @@ const char *add_connection(Session *session, char *connection_arg) {
     }
 
     // Now 'username' contains the username, 'server_address' contains the server address,
-    // and 'port' contains the port number (default if not specified)
+    // and 'port_string' contains the port number (default if not specified)
 
     // Establish an SSL connection to the remote server
     SSL *remoteSSL = establish_connection(server_address, port_string);
@@ -192,7 +193,10 @@ const char *add_connection(Session *session, char *connection_arg) {
 
     // Check the response and take appropriate action
     if (strcmp(response, "ACCOUNT_EXISTS") == 0) {
-        if (add_account(username)) {
+        if (server == NULL || server[0] == '\0') {}
+        if (port_delimiter_pos != NULL && strlen(port_delimiter_pos + 1) > 0) {}
+
+        if (add_account()) {
             printf("Account added successfully\n");
             return "CONNECTION_ADDED";
         } else {
