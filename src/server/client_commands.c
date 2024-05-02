@@ -173,7 +173,7 @@ const char *add_connection(Session *session, char *connection_arg) {
 
     // Receive response from the remote server
     char response[256];
-    receive_response(remote_socket, response);
+    receive_response(remote_socket, response, sizeof(response));
 
     // Close the connection
     close(remote_socket);
