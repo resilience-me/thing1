@@ -1,3 +1,4 @@
+#include "config.h" 
 #include "commands.h"  // Assuming this includes necessary protocol or communication definitions
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,8 +7,6 @@
 #include "common/protocol_defs.h"
 #include "common/ssl_utils.h"  // Include path to shared SSL utilities
 #include "common/net_utils.h"  // Include path to shared network utilities
-
-#define DEFAULT_PORT 2012
 
 int main(int argc, char **argv) {
     const char *url = (argc == 2) ? argv[1] : "localhost";
