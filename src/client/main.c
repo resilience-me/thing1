@@ -1,5 +1,6 @@
 #include "network.h"
 #include "commands.h"
+#include "net_utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
