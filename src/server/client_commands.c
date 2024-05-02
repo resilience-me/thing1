@@ -170,6 +170,11 @@ const char *add_connection(Session *session, char *connection_arg) {
     } else {
         strncpy(username, server_username, sizeof(username) - 1);
     }
+    // Check if username is valid
+    if (!isValidUsername(username)) {
+        return "INVALID_USERNAME";
+    }
+    
     // Proceed to parse server address and port
     char *server_and_port = strtok(NULL, server_delimiter);
     char *server = NULL;
