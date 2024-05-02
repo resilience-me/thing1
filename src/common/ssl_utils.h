@@ -14,6 +14,6 @@ SSL_CTX *create_ssl_context(const SSL_METHOD *method);
 void configure_context(SSL_CTX *ctx);
 
 // Generic SSL handshake function
-SSL* ssl_handshake(SSL_CTX *ctx, int sock);
+SSL* ssl_handshake(SSL_CTX *ctx, int sock, int (*handshake_func)(SSL *));
 
 #endif /* SSL_UTILS_H */
