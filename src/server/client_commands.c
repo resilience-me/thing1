@@ -127,7 +127,6 @@ const char *add_connection(Session *session, char *connection_arg) {
         return "AUTHENTICATION_REQUIRED";
     }
     const char *server_delimiter = "@";
-    char *port_delimiter = ":";
 
     // Parse the connection argument
     char username[256];
@@ -151,7 +150,7 @@ const char *add_connection(Session *session, char *connection_arg) {
     
     if (server_and_port != NULL) {
         // Find the position of port delimiter ':'
-        char *port_delimiter_pos = strchr(server_and_port, port_delimiter);
+        char *port_delimiter_pos = strchr(server_and_port, ':');
     
         if (port_delimiter_pos != NULL) {
             // Extract the server and port
