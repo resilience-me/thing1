@@ -1,4 +1,4 @@
-#include "commands.h"
+#include "client_commands.h"
 #include "database.h"
 #include "config.h"
 #include <ctype.h>
