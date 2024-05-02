@@ -17,6 +17,6 @@ void expand_path(const char *path);
 int make_dir(const char *dir);
 
 // Function to recursively create directories
-int initialize_database_directories(char *path);
+int initialize_database_directories();
 
 #endif // DATABASE_H
