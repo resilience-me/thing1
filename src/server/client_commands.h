@@ -17,8 +17,6 @@
 // Function to handle user registration
 const char *register_user(const char *username, const char *password);
 
-void handle_client_connection(SSL *ssl);
-
 // Function to add a connection to the server
 const char *add_connection(Session *session, char *connection_arg);
 
