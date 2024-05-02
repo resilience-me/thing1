@@ -27,10 +27,23 @@ SSL_CTX *create_ssl_context(const SSL_METHOD *method) {
     return ctx;
 }
 
+
+// Custom callback function for SSL handshake debug information
+void ssl_handshake_info_callback(const SSL *ssl, int where, int ret) {
+    if (where & SSL_CB_HANDSHAKE_START) {
+        fprintf(stderr, "SSL handshake started\n");
+    } else if (where & SSL_CB_HANDSHAKE_DONE) {
+        fprintf(stderr, "SSL handshake completed successfully\n");
+    }
+}
+
 // Generic SSL handshake function
 SSL* ssl_handshake(SSL_CTX *ctx, int sock, int (*handshake_func)(SSL *)) {
     SSL *ssl = SSL_new(ctx);
     SSL_set_fd(ssl, sock);
+
+    // Set up debug callback for SSL handshake
+    SSL_CTX_set_info_callback(ctx, ssl_handshake_info_callback);
 
     if ((*handshake_func)(ssl) != 1) {
         ERR_print_errors_fp(stderr);
