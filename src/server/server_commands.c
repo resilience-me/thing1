@@ -29,6 +29,31 @@ void receive_response(SSL *ssl, char *response, size_t max_length) {
     }
 }
 
+const char *account_exists(char *username) {
+    // Check if username is NULL or empty, then use default user
+    if (username == NULL || username[0] == '\0') {
+        username = DEFAULT_USER;
+    }
+
+    // Check if username is valid
+    if (!isValidUsername(username)) {
+        return "INVALID_USERNAME";
+    }
+    
+    // Build the path to the user directory
+    char user_dir[512];
+    snprintf(user_dir, sizeof(user_dir), "%s/accounts/%s", datadir, username);
+
+    // Check if user directory exists
+    if (access(user_dir, F_OK) == -1) {
+        return "USERNAME_NOT_FOUND";
+    }
+
+    // Return NULL or success indicator
+    return "ACCOUNT_EXISTS";
+}
+
+
 const char *send_account_exists_query(SSL *ssl, const char *username) {
     // Construct the query with the username
     char query[256];
