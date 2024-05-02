@@ -126,7 +126,7 @@ const char *login_user(const char *username, const char *password) {
 
 #include <string.h>
 
-const char *add_connection(Session *session, const char *connection_arg) {
+const char *add_connection(Session *session, char *connection_arg) {
     // Check if the user is authenticated
     if (!session->authenticated) {
         return "AUTHENTICATION_REQUIRED";
