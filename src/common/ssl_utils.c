@@ -17,7 +17,7 @@ void cleanup_openssl() {
 }
 
 // Create SSL context for both client and server
-SSL_CTX *create_ssl_context(const char *method_type) {
+SSL_CTX *create_ssl_context(const SSL_METHOD *method_type) {
     const SSL_METHOD *method;
 
     if (strcmp(method_type, "client") == 0) {
