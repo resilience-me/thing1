@@ -30,7 +30,7 @@ void receive_response(SSL *ssl, char *response, size_t max_length) {
 }
 
 // Function to establish a connection to a remote server
-SSL* establish_connection(const char *server_address, int port) {
+SSL* establish_connection(const char *server_address, char *portStr) {
     int sockfd;
     SSL_CTX *ctx;
     SSL *ssl;
@@ -55,7 +55,7 @@ SSL* establish_connection(const char *server_address, int port) {
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_UNSPEC; // Use IPv4 or IPv6, whichever is available
     hints.ai_socktype = SOCK_STREAM; // TCP socket
-    if (getaddrinfo(server_address, port, &hints, &res) != 0) {
+    if (getaddrinfo(server_address, portStr, &hints, &res) != 0) {
         perror("getaddrinfo");
         close(sockfd);
         SSL_CTX_free(ctx);
