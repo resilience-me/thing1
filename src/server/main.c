@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
             exit(EXIT_FAILURE);
         }
 
-        fprintf(stderr, "Accepted connection from %s:%d\n", inet_ntoa(*(struct in_addr *)&addr.sin_addr), ntohs(addr.sin_port));
+        fprintf(stderr, "Accepted connection ");
 
         fprintf(stderr, "Creating thread to handle connection...\n");
         if (pthread_create(&tid, NULL, handle_connection, create_thread_args(ctx, sock)) != 0) {
