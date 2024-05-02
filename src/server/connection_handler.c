@@ -11,12 +11,16 @@
 #include <netinet/in.h>
 
 void *handle_connection(void *arg) {
-    SSL *ssl = (SSL *)arg;
-    
+    ThreadArgs *thread_args = (ThreadArgs *)arg;
+
     // Perform SSL handshake
-    if (SSL_accept(ssl) <= 0) {
-        ERR_print_errors_fp(stderr);
-        goto cleanup;
+    SSL *ssl = ssl_handshake(thread_args->ctx, thread_args->sock, SSL_accept);
+    if (!ssl) {
+        fprintf(stderr, "SSL handshake failed\n");
+        // Handle error appropriately, such as closing socket and freeing SSL context
+        close(sock);
+        SSL_CTX_free(ctx);
+        pthread_exit(NULL);
     }
     
     struct ProtocolHeader header;
