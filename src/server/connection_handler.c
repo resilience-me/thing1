@@ -1,6 +1,7 @@
 #include "connection_handler.h"
 #include "client_connection_handler.h"
 #include "server_connection_handler.h"
+#include "thread_utils.h"
 
 #include <stdio.h> // Add other necessary headers as needed
 #include <stdlib.h>
@@ -12,30 +13,35 @@
 
 void *handle_connection(void *arg) {
     ThreadArgs *thread_args = (ThreadArgs *)arg;
+    SSL *ssl = NULL;
 
     // Perform SSL handshake
-    SSL *ssl = ssl_handshake(thread_args->ctx, thread_args->sock, SSL_accept);
+    ssl = ssl_handshake(thread_args->ctx, thread_args->sock, SSL_accept);
     if (!ssl) {
         fprintf(stderr, "SSL handshake failed\n");
-        // Handle error appropriately, such as closing socket and freeing SSL context
-        close(sock);
-        SSL_CTX_free(ctx);
-        pthread_exit(NULL);
+        goto cleanup;
     }
     
+    // Handle client or server connection based on the received protocol header
     struct ProtocolHeader header;
-    SSL_read(ssl, &header, sizeof(header));
-
-    // Determine connection type based on the identifier
-    if (header.connectionType == CLIENT_CONNECTION) {
-        handle_client_connection(ssl);
-    } else if (header.connectionType == SERVER_CONNECTION) {
-        handle_server_connection(ssl);
+    if (SSL_read(ssl, &header, sizeof(header)) != sizeof(header)) {
+        fprintf(stderr, "Error reading protocol header\n");
+        // Handle error appropriately
     } else {
-        // Invalid connection type
+        if (header.connectionType == CLIENT_CONNECTION) {
+            handle_client_connection(ssl);
+        } else if (header.connectionType == SERVER_CONNECTION) {
+            handle_server_connection(ssl);
+        } else {
+            // Invalid connection type
+        }
     }
 
-cleanup:
+    // Clean up SSL resources
     SSL_free(ssl);
+cleanup:
+    close(thread_args->sock);
+    SSL_CTX_free(thread_args->ctx);
+    free(thread_args);
     pthread_exit(NULL);
 }
