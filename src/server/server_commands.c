@@ -7,6 +7,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <openssl/ssl.h>
+#include <netdb.h> // Add this line for addrinfo
 
 // Function to send a query to the remote server
 void send_query(SSL *ssl, const char *query) {
