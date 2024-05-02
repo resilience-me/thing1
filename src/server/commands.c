@@ -67,7 +67,7 @@ const char *delete_user(Session *session) {
     snprintf(user_dir, sizeof(user_dir), "%s/accounts/%s", datadir, session->username);
 
     // Delete the user directory and all its contents securely
-    char command[512];
+    char command[1024];
     snprintf(command, sizeof(command), "rm -rf %s", user_dir);
     int status = system(command);
     if (status != 0) {
