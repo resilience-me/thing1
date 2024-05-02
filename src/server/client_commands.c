@@ -141,7 +141,7 @@ const char *add_connection(Session *session, char *connection_arg) {
         strncpy(server_address, "localhost", sizeof(server_address) - 1);
     } else {
         strncpy(username, server_username, sizeof(username) - 1);
-        const char *server_and_port = strtok(NULL, delimiter);
+        char *server_and_port = strtok(NULL, delimiter);
         if (server_and_port == NULL) {
             return "INVALID_CONNECTION_FORMAT";
         }
