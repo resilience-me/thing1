@@ -49,26 +49,35 @@ SSL* establish_connection(const char *server_address, int port) {
         return NULL;
     }
 
-    // Set server address details
-    memset(&serv_addr, '0', sizeof(serv_addr));
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(port); // Use the specified port
-
-    // Convert IPv4 and IPv6 addresses from text to binary form
-    if (inet_pton(AF_INET, server_address, &serv_addr.sin_addr) <= 0) {
-        perror("Invalid address/ Address not supported");
+    // Resolve domain name to IP address
+    struct addrinfo hints, *res;
+    memset(&hints, 0, sizeof hints);
+    hints.ai_family = AF_UNSPEC; // Use IPv4 or IPv6, whichever is available
+    hints.ai_socktype = SOCK_STREAM; // TCP socket
+    if (getaddrinfo(server_address, NULL, &hints, &res) != 0) {
+        perror("getaddrinfo");
         close(sockfd);
         SSL_CTX_free(ctx);
         return NULL;
     }
 
-    // Connect to the server
-    if (connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
+    // Attempt to connect to each resolved IP address until successful
+    struct addrinfo *p;
+    for (p = res; p != NULL; p = p->ai_next) {
+        if (connect(sockfd, p->ai_addr, p->ai_addrlen) != -1) {
+            break; // Connection successful
+        }
+    }
+    if (p == NULL) {
         perror("Connection failed");
+        freeaddrinfo(res);
         close(sockfd);
         SSL_CTX_free(ctx);
         return NULL;
     }
+
+    // Free addrinfo structure
+    freeaddrinfo(res);
 
     // Set up SSL connection
     ssl = SSL_new(ctx);
@@ -102,4 +111,3 @@ SSL* establish_connection(const char *server_address, int port) {
 
     return ssl; // Return the SSL connection object
 }
-
