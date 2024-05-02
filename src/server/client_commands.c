@@ -144,10 +144,12 @@ const char *add_connection(Session *session, char *connection_arg) {
     } else {
         strncpy(username, server_username, sizeof(username) - 1);
     }
-
+    perror("1");
     // Proceed to parse server address and port
     char *server_and_port = strtok(NULL, server_delimiter);
     char *server = NULL;
+    perror("2");
+
     if(server_and_port != NULL) {
         server = strtok(server_and_port, port_delimiter);
     }
@@ -179,6 +181,7 @@ const char *add_connection(Session *session, char *connection_arg) {
     // Close the SSL connection
     SSL_shutdown(remoteSSL);
     SSL_free(remoteSSL);
+    perror("3");
 
     // Check the response and take appropriate action
     if (strcmp(response, "ACCOUNT_EXISTS") == 0) {
