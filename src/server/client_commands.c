@@ -183,7 +183,8 @@ const char *add_connection(Session *session, char *connection_arg) {
         return "CONNECTION_ADDED";
     } else {
         // Account does not exist, handle error...
-        return "ACCOUNT_NOT_FOUND";
+        return response;
+        //return "ACCOUNT_NOT_FOUND";
     }
     
     // At this point, 'username' contains the username and 'server_address' contains the server address
