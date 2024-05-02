@@ -160,23 +160,24 @@ const char *add_connection(Session *session, char *connection_arg) {
     // Now 'username' contains the username, 'server_address' contains the server address,
     // and 'port' contains the port number (default if not specified)
 
-    // Establish a connection to the remote server
-    int remote_socket = establish_connection(server_address, port);
+    // Establish an SSL connection to the remote server
+    SSL *remoteSSL = establish_connection(server_address, port);
 
     // Check if connection was successful
-    if (remote_socket < 0) {
+    if (remoteSSL == NULL) {
         return "CONNECTION_FAILED";
     }
 
     // Send command/query to check if the account exists
-    send_query(remote_socket, username);
+    send_query(remoteSSL, username);
 
     // Receive response from the remote server
     char response[256];
-    receive_response(remote_socket, response, sizeof(response));
+    receive_response(remoteSSL, response, sizeof(response));
 
-    // Close the connection
-    close(remote_socket);
+    // Close the SSL connection
+    SSL_shutdown(ssl);
+    SSL_free(ssl);
 
     // Check the response and take appropriate action
     if (strcmp(response, "ACCOUNT_EXISTS") == 0) {
@@ -191,3 +192,4 @@ const char *add_connection(Session *session, char *connection_arg) {
     // Now you can proceed to establish the connection with the remote server and send the command
     return "PLACEHOLDER_RETURN_STRING";
 }
+
