@@ -181,9 +181,11 @@ void *handle_connection(void *arg) {
             if (strcmp(token, "LOGOUT") == 0) {
                 session.authenticated = 0;
                 SSL_write(ssl, "LOGOUT_SUCCESS", strlen("LOGOUT_SUCCESS"));
+            } else if (strcmp(token, "DELETE") == 0) {
+                const char *delete_result = delete_user(&session);
+                SSL_write(ssl, delete_result, strlen(delete_result));
             } else {
-                // Handle other commands for authenticated users
-                SSL_write(ssl, "INVALID_COMMAND", strlen("INVALID_COMMAND"));
+                SSL_write(ssl, "INVALID_COMMAND", strlen("INVALID_COMMAND"));  // Could be further elaborated to handle specific commands
             }
         }
     }
