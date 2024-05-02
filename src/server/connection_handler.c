@@ -7,11 +7,6 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 
-struct ProtocolHeader {
-    uint8_t connectionType; // Identifier field indicating connection type
-    // Other fields...
-};
-
 void *handle_connection(void *arg) {
     SSL *ssl = (SSL *)arg;
     
