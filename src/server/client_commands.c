@@ -242,10 +242,7 @@ const char *add_connection(Session *session, char *connection_arg) {
             strcat(account_string, ":");
             strcat(account_string, port_string);
         }
-
-        if (add_account(account_string, session)) {
-            return add_account(account_string);
-        }
+        return add_account(account_string, session);
     } else {
         // Account does not exist, handle error...
         return "ACCOUNT_NOT_FOUND";
