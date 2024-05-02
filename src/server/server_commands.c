@@ -57,6 +57,3 @@ int establish_connection(const char *server_address, int port) {
 
     return sockfd; // Return the socket file descriptor
 }
-
-void handle_server_connection(SSL *ssl) {
-}
