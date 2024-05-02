@@ -193,9 +193,5 @@ const char *add_connection(Session *session, char *connection_arg) {
         // Account does not exist, handle error...
         return "ACCOUNT_NOT_FOUND";
     }
-    
-    // At this point, 'username' contains the username and 'server_address' contains the server address
-    // Now you can proceed to establish the connection with the remote server and send the command
-    return "PLACEHOLDER_RETURN_STRING";
 }
 
