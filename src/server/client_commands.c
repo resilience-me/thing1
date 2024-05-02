@@ -1,13 +1,9 @@
 #include "client_commands.h"
+#include "client_connection_handler.h"
 #include "server_commands.h"
 #include "database.h"
 #include "config.h"
 #include <ctype.h>
-
-typedef struct {
-    char username[256];   // Username for the session
-    int authenticated;    // 0 = Not authenticated, 1 = Authenticated
-} Session;
 
 // Function to check if a username contains only valid characters
 int isValidUsername(const char *username) {
