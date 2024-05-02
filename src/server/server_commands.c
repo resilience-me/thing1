@@ -1,5 +1,6 @@
 #include "connection_handler.h"
 #include "client_commands.h"
+#include "config.h"
 
 #include <sys/socket.h>
 #include <netinet/in.h>
