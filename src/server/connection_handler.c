@@ -1,3 +1,12 @@
+// Constants for connection types
+#define CLIENT_CONNECTION 0x01
+#define SERVER_CONNECTION 0x02
+
+struct ProtocolHeader {
+    uint8_t connectionType; // Identifier field indicating connection type
+    // Other fields...
+};
+
 void *handle_connection(void *arg) {
     SSL *ssl = (SSL *)arg;
     
