@@ -1,3 +1,5 @@
+#include "net_utils.h"
+
 // Function to resolve the hostname and port
 int resolve_hostname(const char *hostname, const char *port_str, struct addrinfo **res) {
     struct addrinfo hints;
