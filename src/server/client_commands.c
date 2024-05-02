@@ -193,19 +193,23 @@ const char *add_connection(Session *session, char *connection_arg) {
 
     // Check the response and take appropriate action
     if (strcmp(response, "ACCOUNT_EXISTS") == 0) {
-
         // Concatenate the account string based on server and port information
         char account_string[256];
         account_string[0] = '\0'; // Ensure account_string starts as an empty string
         
-        // Copy username to account_string
-        strcpy(account_string, username);
-
-        // Check if server is provided and concatenate it
-        if (server != NULL && server[0] != '\0') {
+        if(strlen(username) > 0)) {
+            // Copy username to account_string
+            strcpy(account_string, username);
+        } else {
+            if(strcmp(server_address, "localhost") == 0) {
+                strcpy(account_string, DEFAULT_USER);
+            }
+        }
+        if (strcmp(server_address, "localhost") != 0) {
             strcat(account_string, "@");
             strcat(account_string, server);
         }
+
         // Check if port is provided and concatenate it
         if (port_delimiter_pos != NULL && strlen(port_delimiter_pos + 1) > 0) {
             strcat(account_string, ":");
