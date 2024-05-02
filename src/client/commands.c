@@ -90,7 +90,7 @@ void handle_delete_account(SSL *ssl) {
 void handle_add_connection(SSL *ssl) {
     char username[256];
 
-    printf("Enter username@server_address:port ");
+    printf("Enter username@server_address: ");
     fgets(username, sizeof(username), stdin);
     username[strcspn(username, "\n")] = '\0';
 
