@@ -1,6 +1,7 @@
 #ifndef CLIENT_COMMANDS_H
 #define CLIENT_COMMANDS_H
 
+#include "client_connection_handler.h"
 #include <stdio.h>
 #include <string.h>
 #include <openssl/ssl.h>
