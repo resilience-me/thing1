@@ -15,12 +15,6 @@ void handle_server_connection(SSL *ssl) {
     char buffer[max_length];
     SSL_read(ssl, buffer, max_length);
 
-    // Trim newline characters
-    size_t len = strlen(buffer);
-    while (len > 0 && (buffer[len - 1] == '\n' || buffer[len - 1] == '\r')) {
-        buffer[len - 1] = '\0';
-        len--;
-    }
     char *token = strtok(buffer, " ");
 
     if(token == NULL) send_response(ssl, "INVALID_COMMAND");
