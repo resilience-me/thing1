@@ -40,8 +40,6 @@ void *handle_connection(void *arg) {
 
     // Clean up SSL resources
     SSL_free(ssl);
-cleanup:
-
     printf("Thread %lu: Connection handling complete\n", pthread_self());  // Feedback message
     pthread_exit(NULL);
 }
