@@ -1,6 +1,11 @@
-// Constants for connection types
-#define CLIENT_CONNECTION 0x01
-#define SERVER_CONNECTION 0x02
+#include "connection_handler.h"
+#include <stdio.h> // Add other necessary headers as needed
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
 
 struct ProtocolHeader {
     uint8_t connectionType; // Identifier field indicating connection type
