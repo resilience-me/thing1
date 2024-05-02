@@ -1,6 +1,8 @@
 #ifndef SERVER_COMMANDS_H
 #define SERVER_COMMANDS_H
 
+#include <stddef.h> // Include this line
+
 // Function to send a query to the remote server
 void send_query(int sockfd, const char *query);
 
