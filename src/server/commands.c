@@ -53,6 +53,49 @@ const char *register_user(const char *username, const char *password) {
     return "REGISTER_SUCCESS"; // Registration successful
 }
 
+const char *login_user(const char *username, const char *password) {
+    // Check if username is valid
+    if (!isValidUsername(username)) {
+        return "INVALID_USERNAME";
+    }
+
+    // Build the path to the user directory
+    char user_dir[512];
+    snprintf(user_dir, sizeof(user_dir), "%s/accounts/%s", datadir, username);
+
+    // Check if user directory exists
+    if (access(user_dir, F_OK) == -1) {
+        return "USERNAME_NOT_FOUND";
+    }
+
+    // Build the path to the password file
+    char password_path[1024];
+    snprintf(password_path, sizeof(password_path), "%s/password", user_dir);
+
+    // Open and read the stored password
+    int fd = open(password_path, O_RDONLY);
+    if (fd == -1) {
+        return "PASSWORD_FILE_NOT_FOUND";
+    }
+
+    char stored_password[256];
+    int read_bytes = read(fd, stored_password, sizeof(stored_password) - 1);
+    if (read_bytes == -1) {
+        close(fd);
+        return "PASSWORD_READ_FAILED";
+    }
+
+    stored_password[read_bytes] = '\0';  // Null terminate the password read from file
+    close(fd);
+
+    // Compare the provided password with the stored password
+    if (strcmp(password, stored_password) != 0) {
+        return "PASSWORD_INCORRECT";
+    }
+
+    return "LOGIN_SUCCESS";  // User successfully authenticated
+}
+
 void *handle_connection(void *arg) {
     SSL *ssl = (SSL *)arg;
     const int read_size = 256;
@@ -80,7 +123,16 @@ void *handle_connection(void *arg) {
             printf("Received token: %s\n", token);
 
             if (strcmp(token, "LOGIN") == 0) {
-                SSL_write(ssl, "LOGIN_SUCCESS", strlen("LOGIN_SUCCESS"));
+                // Extract username and password from the command
+                char *username = strtok(NULL, " ");
+                char *password = strtok(NULL, " ");
+                if (username == NULL || password == NULL) {
+                    SSL_write(ssl, "INVALID_LOGIN_COMMAND", strlen("INVALID_LOGIN_COMMAND"));
+                    continue;
+                }
+            
+                const char *result = login_user(username, password);
+                SSL_write(ssl, result, strlen(result));
             } else if (strcmp(token, "REGISTER") == 0) {
                 // Extract username and password from the command
                 char *username = strtok(NULL, " ");
