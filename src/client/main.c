@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
         cleanup_openssl();
         return EXIT_FAILURE;
     }
-    configure_context(ctx);
+    configure_context_client(ctx);
     
     // Parse URL to get hostname and port
     char *hostname = parse_url(url, &port);
