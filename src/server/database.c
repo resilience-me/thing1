@@ -69,13 +69,20 @@ int make_dirs(const char *orig_path) {
     return 0;
 }
 
-// Function to ensure database directories exist; creates them if they don't
 int initialize_database_directories() {
     expand_path(DATABASE_DIR);
     if (strlen(datadir) == 0) {
         printf("Failed to expand path\n");
         return 1;
     }
+
+    // Check if the database directory already exists
+    struct stat st;
+    if (stat(datadir, &st) == 0) {
+        return 0;  // Directory exists, no need to create
+    }
+
+    // Directory does not exist, try to create it
     if (make_dirs(datadir) == -1) {
         return 1;
     }
