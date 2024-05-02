@@ -66,11 +66,6 @@ const char *delete_user(Session *session) {
     char user_dir[512];
     snprintf(user_dir, sizeof(user_dir), "%s/accounts/%s", datadir, session->username);
 
-    // Check if user directory exists
-    if (access(user_dir, F_OK) == -1) {
-        return "USERNAME_NOT_FOUND";
-    }
-
     // Delete the user directory and all its contents securely
     char command[512];
     snprintf(command, sizeof(command), "rm -rf %s", user_dir);
