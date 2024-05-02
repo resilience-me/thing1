@@ -13,9 +13,7 @@ void handle_server_connection(SSL *ssl) {
     // Receive the command from the other server
     const int read_size = 256;
     char buffer[read_size];
-    int bytes;
-    bytes = SSL_read(ssl, buffer, sizeof(buffer));
-    if (bytes <= 0) break;  // No more data or error occurred
+    int bytes = SSL_read(ssl, buffer, sizeof(buffer));
     buffer[bytes] = '\0';  // Ensure null termination
     
     char *token = strtok(buffer, " ");
