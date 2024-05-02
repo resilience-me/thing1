@@ -8,12 +8,6 @@
 #include "common/net_utils.h"  // Include path to shared network utilities
 
 #define DEFAULT_PORT 2012
-#define CLIENT_CONNECTION 0x01
-
-struct ProtocolHeader {
-    uint8_t connectionType; // Identifier field indicating connection type
-    // Other fields...
-};
 
 int main(int argc, char **argv) {
     const char *url = (argc == 2) ? argv[1] : "localhost";
