@@ -1,4 +1,5 @@
 #include "commands.h"
+#include "database.h"
 #include "config.h"
 #include <ctype.h>
 
