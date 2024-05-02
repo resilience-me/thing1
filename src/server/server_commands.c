@@ -26,7 +26,6 @@ void receive_response(SSL *ssl, char *response, size_t max_length) {
     }
 }
 
-// Function to establish a connection to a remote server
 SSL* establish_connection(const char *server_address, int port) {
     int sockfd;
     struct sockaddr_in serv_addr;
@@ -89,5 +88,16 @@ SSL* establish_connection(const char *server_address, int port) {
     // Free SSL context (it's no longer needed)
     SSL_CTX_free(ctx);
     
+    // Construct and send the protocol header
+    struct ProtocolHeader header;
+    header.connectionType = SERVER_CONNECTION;
+    if (SSL_write(ssl, &header, sizeof(header)) != sizeof(header)) {
+        perror("Protocol header send failed");
+        close(sockfd);
+        SSL_free(ssl);
+        return NULL;
+    }
+
     return ssl; // Return the SSL connection object
 }
+
