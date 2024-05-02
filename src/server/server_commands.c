@@ -1,3 +1,9 @@
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <string.h>
+#include <stdio.h>
 
 // Function to send a query to the remote server
 void send_query(int sockfd, const char *query) {
@@ -121,4 +127,7 @@ const char *add_connection(Session *session, char *connection_arg) {
     // At this point, 'username' contains the username and 'server_address' contains the server address
     // Now you can proceed to establish the connection with the remote server and send the command
     return "PLACEHOLDER_RETURN_STRING";
+}
+
+void handle_server_connection(SSL *ssl) {
 }
