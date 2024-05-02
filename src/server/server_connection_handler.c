@@ -11,7 +11,8 @@ void send_response(SSL *ssl, const char *response) {
 
 void handle_server_connection(SSL *ssl) {
     // Receive the command from the client
-    char buffer[256];
+    int max_length = 256;
+    char buffer[max_length];
     SSL_read(ssl, buffer, max_length);
     char *token = strtok(buffer, " ");
 
