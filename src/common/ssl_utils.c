@@ -37,22 +37,23 @@ void ssl_handshake_info_callback(const SSL *ssl, int where, int ret) {
     }
 }
 
-SSL* ssl_handshake(SSL_CTX *ctx, int sock, int (*handshake_func)(SSL *)) {
+SSL* ssl_server_handshake(SSL_CTX *ctx, int sock) {
     SSL *ssl = SSL_new(ctx);
     SSL_set_fd(ssl, sock);
-
-    // Set up debug callback for SSL handshake
-    SSL_CTX_set_info_callback(ctx, ssl_handshake_info_callback);
-
-    fprintf(stderr, "Initiating SSL handshake...\n");  // Debug message
-
-    if ((*handshake_func)(ssl) != 1) {
+    if (SSL_accept(ssl) != 1) {
         ERR_print_errors_fp(stderr);
         SSL_free(ssl);
         exit(EXIT_FAILURE);
     }
-
-    fprintf(stderr, "SSL handshake completed successfully.\n");  // Debug message
-
+    return ssl;
+}
+SSL* ssl_client_handshake(SSL_CTX *ctx, int sock) {
+    SSL *ssl = SSL_new(ctx);
+    SSL_set_fd(ssl, sock);
+    if (SSL_connect(ssl) != 1) {
+        ERR_print_errors_fp(stderr);
+        SSL_free(ssl);
+        exit(EXIT_FAILURE);
+    }
     return ssl;
 }
