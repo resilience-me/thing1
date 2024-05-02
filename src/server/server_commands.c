@@ -40,8 +40,7 @@ const char *account_exists(char *username) {
 
     // Check if username is valid
     if (!isValidUsername(username)) {
-        return username;
-        //return "INVALID_USERNAME";
+        return "INVALID_USERNAME";
     }
     
     // Build the path to the user directory
