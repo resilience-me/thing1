@@ -21,7 +21,7 @@ const char *register_user(const char *username, const char *password) {
     }
 
     // Build the path to the user directory
-    char user_dir[256];
+    char user_dir[512];
     snprintf(user_dir, sizeof(user_dir), "%s/accounts/%s", datadir, username);
 
     // Check if user directory already exists
@@ -35,7 +35,7 @@ const char *register_user(const char *username, const char *password) {
     }
 
     // Create and store password in password file
-    char password_path[512];
+    char password_path[1024];
     snprintf(password_path, sizeof(password_path), "%s/password", user_dir);
     int fd = open(password_path, O_WRONLY | O_CREAT, 0600);
     if (fd == -1) {
