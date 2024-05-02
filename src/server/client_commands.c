@@ -129,7 +129,7 @@ const char *login_user(const char *username, const char *password) {
 }
 
 
-const char *add_account(const char *accountString) {
+const char *add_account(const char *accountString, Session *session) {
     // Build the path to the user directory
     char user_dir[1024];
     snprintf(user_dir, sizeof(user_dir), "%s/accounts/%s/peers/%s", datadir, session->username, accountString);
@@ -243,7 +243,7 @@ const char *add_connection(Session *session, char *connection_arg) {
             strcat(account_string, port_string);
         }
 
-        if (add_account(account_string)) {
+        if (add_account(account_string, session)) {
             return add_account(account_string);
         }
     } else {
