@@ -41,11 +41,11 @@ SSL_CTX *create_ssl_context(const char *method_type) {
 }
 
 // Generic SSL handshake function
-SSL* ssl_handshake(SSL_CTX *ctx, int sock) {
+SSL* ssl_handshake(SSL_CTX *ctx, int sock, int (*handshake_func)(SSL *)) {
     SSL *ssl = SSL_new(ctx);
     SSL_set_fd(ssl, sock);
 
-    if (SSL_connect(ssl) != 1) {
+    if ((*handshake_func)(ssl) != 1) {
         ERR_print_errors_fp(stderr);
         SSL_free(ssl);
         exit(EXIT_FAILURE);
