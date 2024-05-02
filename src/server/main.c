@@ -11,9 +11,8 @@ int main(int argc, char **argv) {
     // Initialize OpenSSL and create socket
     int sock;
     SSL_CTX *ctx;
-
     init_openssl();
-    ctx = create_context();
+    ctx = create_ssl_context(TLS_server_method());
     configure_context(ctx);
 
     sock = create_socket(PORT);
