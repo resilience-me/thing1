@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
     int sock;
     SSL_CTX *ctx;
     init_openssl();
-    ctx = create_ssl_context(TLS_server_method);
+    ctx = create_ssl_context(TLS_server_method());
     configure_context(ctx);
 
     sock = create_socket(PORT);
