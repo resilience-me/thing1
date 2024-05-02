@@ -1,7 +1,7 @@
 #include "connection_handler.h"
 #include "client_commands.h"
 #include "database.h"
-#include "config.h"
+#include "config_server.h"
 
 #include <sys/socket.h>
 #include <netinet/in.h>
