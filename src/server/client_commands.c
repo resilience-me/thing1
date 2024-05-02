@@ -148,7 +148,7 @@ const char *add_connection(Session *session, char *connection_arg) {
     // Proceed to parse server address and port
     char *server_and_port = strtok(NULL, server_delimiter);
     char *server = NULL;
-    if(server_and_port != NULL {
+    if(server_and_port != NULL) {
         server = strtok(server_and_port, port_delimiter);
     }
 
