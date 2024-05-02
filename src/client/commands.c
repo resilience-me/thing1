@@ -64,6 +64,29 @@ void handle_logout(SSL *ssl) {
     }
 }
 
+void handle_delete_account(SSL *ssl) {
+    printf("Confirm delete by re-entering your username: ");
+    char username[256];
+    fgets(username, sizeof(username), stdin);
+    username[strcspn(username, "\n")] = '\0';  // Remove newline
+
+    const char *delete_cmd = "DELETE ";
+    char cmd[512];
+    snprintf(cmd, sizeof(cmd), "%s%s", delete_cmd, username);
+    SSL_write(ssl, cmd, strlen(cmd));
+
+    char response[256];
+    int bytes = SSL_read(ssl, response, sizeof(response) - 1);
+    if (bytes > 0) {
+        response[bytes] = '\0';
+        printf("Server response: %s\n", response);
+    } else if (bytes == 0) {
+        printf("Connection closed by server.\n");
+    } else {
+        printf("SSL read error.\n");
+    }
+}
+
 void interact_with_server(SSL *ssl) {
     char cmd[256];
     printf("Enter command (LOGIN, REGISTER, LOGOUT, EXIT): ");
@@ -75,6 +98,8 @@ void interact_with_server(SSL *ssl) {
             handle_register(ssl);
         } else if (strcmp(cmd, "LOGOUT") == 0) {
             handle_logout(ssl);
+        } else if (strcmp(cmd, "DELETE") == 0) {
+            handle_delete_account(ssl);
         } else {
             printf("Unknown command. Please try again.\n");
         }
