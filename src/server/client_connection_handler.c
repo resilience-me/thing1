@@ -1,7 +1,7 @@
 #include "client_commands.h"
 #include "client_connection_handler.h"
 #include "database.h"
-#include "config.h"
+#include "config_server.h"
 #include <openssl/ssl.h>
 #include <ctype.h>
 #include <stdio.h>
