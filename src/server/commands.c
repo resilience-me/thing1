@@ -124,6 +124,38 @@ const char *login_user(const char *username, const char *password) {
     return "LOGIN_SUCCESS";  // User successfully authenticated
 }
 
+#include <string.h>
+
+const char *add_connection(Session *session, const char *connection_arg) {
+    // Check if the user is authenticated
+    if (!session->authenticated) {
+        return "AUTHENTICATION_REQUIRED";
+    }
+
+    // Parse the connection argument
+    char username[256];
+    char server_address[256];
+    const char *delimiter = "@";
+    const char *server_username = strtok(connection_arg, delimiter);
+
+    // If the delimiter is not found, the connection is local
+    if (server_username == NULL) {
+        strncpy(username, connection_arg, sizeof(username) - 1);
+        strncpy(server_address, "localhost", sizeof(server_address) - 1);
+    } else {
+        strncpy(username, server_username, sizeof(username) - 1);
+        const char *server = strtok(NULL, delimiter);
+        if (server == NULL) {
+            return "INVALID_CONNECTION_FORMAT";
+        }
+        strncpy(server_address, server, sizeof(server_address) - 1);
+    }
+
+    // At this point, 'username' contains the username and 'server_address' contains the server address
+    // Now you can proceed to establish the connection with the remote server and send the command
+}
+
+
 void *handle_connection(void *arg) {
     SSL *ssl = (SSL *)arg;
     Session session = {0};  // Initializes username and authenticated status
@@ -179,6 +211,15 @@ void *handle_connection(void *arg) {
             } else if (strcmp(token, "DELETE_ACCOUNT") == 0) {
                 const char *delete_result = delete_user(&session);
                 SSL_write(ssl, delete_result, strlen(delete_result));
+            } else if (strcmp(token, "ADD_CONNECTION") == 0) {
+                char *remote_username = strtok(NULL, " ");
+                if (remote_username) {
+                    // Here, establish connection with the remote server and send ADD_CONNECTION command
+                    const char *add_connection_result = establish_and_send_add_connection(&session, remote_username);
+                    SSL_write(ssl, add_connection_result, strlen(add_connection_result));
+                } else {
+                    SSL_write(ssl, "INVALID_ADD_CONNECTION_COMMAND", strlen("INVALID_ADD_CONNECTION_COMMAND"));
+                }
             } else {
                 SSL_write(ssl, "INVALID_COMMAND", strlen("INVALID_COMMAND"));  // Could be further elaborated to handle specific commands
             }
