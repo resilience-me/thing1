@@ -8,6 +8,10 @@
 #include "ssl_utils.h"
 #include "net_utils.h"
 
+void configure_context(SSL_CTX *ctx) {
+    SSL_CTX_set_default_verify_paths(ctx);
+}
+
 int main(int argc, char **argv) {
     const char *url = (argc == 2) ? argv[1] : "localhost";
     int port = DEFAULT_PORT;
@@ -20,7 +24,8 @@ int main(int argc, char **argv) {
         cleanup_openssl();
         return EXIT_FAILURE;
     }
-
+    configure_context(ctx);
+    
     // Parse URL to get hostname and port
     char *hostname = parse_url(url, &port);
     if (!hostname) {
