@@ -132,8 +132,10 @@ const char *add_connection(Session *session, char *connection_arg) {
     // Parse the connection argument
     char username[256];
     char server_address[256];
-    int port = PORT; // Set port to default value
-    
+    // Set port to default value
+    char port_string[6];
+    snprintf(port_string, sizeof(port_string), "%d", PORT);
+
     char *server_username = strtok(connection_arg, server_delimiter);
 
     if (server_username == NULL || server_username[0] == '\0') {
@@ -154,7 +156,7 @@ const char *add_connection(Session *session, char *connection_arg) {
         strncpy(server_address, server, sizeof(server_address) - 1);
         char *port_str = strtok(NULL, port_delimiter);
         if (port_str != NULL) {
-            port = atoi(port_str); // Convert port string to integer
+            strncpy(port_string, port_str, sizeof(port_string) - 1);
         }
     }
 
@@ -162,7 +164,7 @@ const char *add_connection(Session *session, char *connection_arg) {
     // and 'port' contains the port number (default if not specified)
 
     // Establish an SSL connection to the remote server
-    SSL *remoteSSL = establish_connection(server_address, port);
+    SSL *remoteSSL = establish_connection(server_address, port_string);
 
     // Check if connection was successful
     if (remoteSSL == NULL) {
