@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "common/protocol_defs.h"
-#include "common/ssl_utils.h"  // Include path to shared SSL utilities
-#include "common/net_utils.h"  // Include path to shared network utilities
+#include "protocol_defs.h"
+#include "ssl_utils.h"
+#include "net_utils.h"
 
 int main(int argc, char **argv) {
     const char *url = (argc == 2) ? argv[1] : "localhost";
