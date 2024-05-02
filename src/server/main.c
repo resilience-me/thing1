@@ -44,10 +44,17 @@ int main(int argc, char **argv) {
             exit(EXIT_FAILURE);
         }
 
+        SSL *ssl = NULL;
+    
+        // Perform SSL handshake
+        ssl = ssl_server_handshake(ctx, sock);
+        if (!ssl) {
+        }
+        
         fprintf(stderr, "Accepted connection ");
 
         fprintf(stderr, "Creating thread to handle connection...\n");
-        if (pthread_create(&tid, NULL, handle_connection, create_thread_args(ctx, sock)) != 0) {
+        if (pthread_create(&tid, NULL, handle_connection, ssl) != 0) {
             perror("Unable to create thread");
             close(client);
             continue;
