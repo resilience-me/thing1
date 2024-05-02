@@ -66,7 +66,7 @@ void handle_logout(SSL *ssl) {
 
 void interact_with_server(SSL *ssl) {
     char cmd[256];
-    printf("Enter command (LOGIN, REGISTER, EXIT): ");
+    printf("Enter command (LOGIN, REGISTER, LOGOUT, EXIT): ");
     while (fgets(cmd, sizeof(cmd), stdin) && strcmp(cmd, "EXIT\n") != 0) {
         cmd[strcspn(cmd, "\n")] = '\0';
         if (strcmp(cmd, "LOGIN") == 0) {
@@ -78,6 +78,6 @@ void interact_with_server(SSL *ssl) {
         } else {
             printf("Unknown command. Please try again.\n");
         }
-        printf("Enter command (LOGIN, REGISTER, EXIT): ");
+        printf("Enter command (LOGIN, REGISTER, LOGOUT, EXIT): ");
     }
 }
