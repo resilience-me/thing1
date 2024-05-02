@@ -1,6 +1,6 @@
 # General compilation settings
 CC = gcc
-CFLAGS = -Wall -g -Isrc/client -Icommon
+CFLAGS = -Wall -g -Isrc/client -Isrc/common
 LDFLAGS = -lssl -lcrypto
 
 # Define paths for the source, object, and binary outputs for client
