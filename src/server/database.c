@@ -1,43 +1,77 @@
 #include "database.h"
 #include "config.h"
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
 #include <stdio.h>
-#include <errno.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
-// Function to ensure database directories exist; creates them if they don't
-void initialize_database_directories() {
-    char *dirs[] = { DATABASE_DIR, DATABASE_DIR "/accounts" };
-    for (size_t i = 0; i < sizeof(dirs) / sizeof(dirs[0]); ++i) {
-        // Expand tilde in path
-        char path[256];
-        if (dirs[i][0] == '~') {
-            const char *home = getenv("HOME");
-            if (home != NULL) {
-                snprintf(path, sizeof(path), "%s%s", home, dirs[i] + 1);
+char datadir[256]; // Global variable to store the data directory path
+
+// Function to replace the first occurrence of ~ with the home directory
+void expand_path(const char *path) {
+    if (path[0] == '~') {
+        const char *home = getenv("HOME");
+        if (home) {
+            if (strlen(home) + strlen(path) - 1 < sizeof(datadir)) {
+                strcpy(datadir, home);
+                strcat(datadir, path + 1); // skip the tilde
             } else {
-                fprintf(stderr, "Failed to get HOME environment variable.\n");
-                return;
+                printf("Path length exceeds buffer size\n");
             }
         } else {
-            snprintf(path, sizeof(path), "%s", dirs[i]);
+            printf("HOME environment variable not set\n");
         }
-
-        // Check if directory already exists
-        struct stat st;
-        if (stat(path, &st) == 0 && S_ISDIR(st.st_mode)) {
-            // Directory already exists, skip creation
-            continue;
-        }
-
-        // Create directory
-        if (mkdir(path, 0777) == -1 && errno != EEXIST) {
-            fprintf(stderr, "Failed to create directory %s: %s\n", path, strerror(errno));
-            // Handle error
+    } else {
+        if (strlen(path) < sizeof(datadir)) {
+            strcpy(datadir, path);
+        } else {
+            printf("Path length exceeds buffer size\n");
         }
     }
+}
+
+// Function to create a directory if it does not exist
+int make_dir(const char *dir) {
+    struct stat st = {0};
+    if (stat(dir, &st) == -1) { // Check if directory exists
+        if (mkdir(dir, 0700) == -1) { // Permissions set to read/write/execute for owner
+            perror("Failed to create directory");
+            return -1;
+        }
+    }
+    return 0;
+}
+
+// Function to recursively create directories
+int make_dirs(char *path) {
+    char *subpath = path;
+    char *pos = strchr(subpath, '/');
+    while (pos != NULL) {
+        *pos = '\0';
+        if (make_dir(path) == -1) return -1;
+        *pos = '/';
+        subpath = pos + 1;
+        pos = strchr(subpath, '/');
+    }
+    if (*subpath) {
+        if (make_dir(path) == -1) return -1; // Create last segment
+    }
+    return 0;
+}
+
+// Function to ensure database directories exist; creates them if they don't
+int initialize_database_directories() {
+    expand_path(DATABASE_DIR);
+    if (strlen(datadir) == 0) {
+        printf("Failed to expand path\n");
+        return 1;
+    }
+    if (make_dirs(datadir) == -1) {
+        return 1;
+    }
+    printf("Directories created successfully at %s\n", datadir);
+    return 0;
 }
