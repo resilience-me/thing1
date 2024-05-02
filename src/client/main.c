@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
 
     // Initialize OpenSSL
     init_openssl();
-    SSL_CTX *ctx = create_ssl_server_context();
+    SSL_CTX *ctx = create_ssl_client_context();
     if (!ctx) {
         fprintf(stderr, "SSL context creation failed\n");
         cleanup_openssl();
