@@ -8,7 +8,7 @@
 #include "ssl_utils.h"
 #include "net_utils.h"
 
-void configure_context(SSL_CTX *ctx) {
+void configure_context_client(SSL_CTX *ctx) {
     SSL_CTX_set_default_verify_paths(ctx);
 }
 
