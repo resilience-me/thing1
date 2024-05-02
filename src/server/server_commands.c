@@ -4,19 +4,20 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdio.h>
+#include <openssl/ssl.h>
 
 // Function to send a query to the remote server
-void send_query(int sockfd, const char *query) {
+void send_query(SSL *ssl, const char *query) {
     // Send the query to the server
-    if (send(sockfd, query, strlen(query), 0) < 0) {
+    if (SSL_write(ssl, query, strlen(query)) < 0) {
         perror("Error sending query");
     }
 }
 
 // Function to receive a response from the remote server
-void receive_response(int sockfd, char *response, size_t max_length) {
+void receive_response(SSL *ssl, char *response, size_t max_length) {
     // Receive the response from the server
-    ssize_t bytes_received = recv(sockfd, response, max_length - 1, 0);
+    ssize_t bytes_received = SSL_read(ssl, response, max_length - 1);
     if (bytes_received < 0) {
         perror("Error receiving response");
     } else {
@@ -26,15 +27,25 @@ void receive_response(int sockfd, char *response, size_t max_length) {
 }
 
 // Function to establish a connection to a remote server
-int establish_connection(const char *server_address, int port) {
+SSL* establish_connection(const char *server_address, int port) {
     int sockfd;
     struct sockaddr_in serv_addr;
-    struct ProtocolHeader header;
+    SSL_CTX *ctx;
+    SSL *ssl;
+
+    // Initialize SSL
+    SSL_library_init();
+    ctx = SSL_CTX_new(SSLv23_client_method());
+    if (ctx == NULL) {
+        perror("SSL context creation error");
+        return NULL;
+    }
 
     // Create socket
     if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         perror("Socket creation error");
-        return -1;
+        SSL_CTX_free(ctx);
+        return NULL;
     }
 
     // Set server address details
@@ -46,23 +57,37 @@ int establish_connection(const char *server_address, int port) {
     if (inet_pton(AF_INET, server_address, &serv_addr.sin_addr) <= 0) {
         perror("Invalid address/ Address not supported");
         close(sockfd);
-        return -1;
+        SSL_CTX_free(ctx);
+        return NULL;
     }
 
     // Connect to the server
     if (connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
         perror("Connection failed");
         close(sockfd);
-        return -1;
+        SSL_CTX_free(ctx);
+        return NULL;
     }
-    
-    // Construct and send the protocol header
-    header.connectionType = SERVER_CONNECTION;
-    if (send(sockfd, &header, sizeof(header), 0) != sizeof(header)) {
-        perror("Protocol header send failed");
+
+    // Set up SSL connection
+    ssl = SSL_new(ctx);
+    if (ssl == NULL) {
+        perror("SSL creation error");
         close(sockfd);
-        return -1;
+        SSL_CTX_free(ctx);
+        return NULL;
     }
+    SSL_set_fd(ssl, sockfd);
+    if (SSL_connect(ssl) != 1) {
+        perror("SSL connection error");
+        close(sockfd);
+        SSL_free(ssl);
+        SSL_CTX_free(ctx);
+        return NULL;
+    }
+
+    // Free SSL context (it's no longer needed)
+    SSL_CTX_free(ctx);
     
-    return sockfd; // Return the socket file descriptor
+    return ssl; // Return the SSL connection object
 }
