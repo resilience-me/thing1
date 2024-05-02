@@ -16,7 +16,9 @@ void handle_server_connection(SSL *ssl) {
     SSL_read(ssl, buffer, max_length);
     char *token = strtok(buffer, " ");
 
-    if(token == NULL) send_response(ssl, "INVALID_COMMAND");
+    if(token == NULL) send_response(ssl, buffer);
+    //if(token == NULL) send_response(ssl, "INVALID_COMMAND");
+
     // Check if the received command is ACCOUNT_EXIST
     if (strcmp(token, "ACCOUNT_EXIST") == 0) {
         // Receive the username from the client
@@ -26,5 +28,6 @@ void handle_server_connection(SSL *ssl) {
     } else {
         // Send an error response to the client indicating an invalid command
         send_response(ssl, "INVALID_COMMAND");
+        //send_response(ssl, buffer);
     }
 }
