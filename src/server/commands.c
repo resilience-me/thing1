@@ -229,12 +229,6 @@ void handle_client_connection(SSL *ssl) {
     char buffer[read_size];
     int bytes;
 
-    // Perform SSL handshake
-    if (SSL_accept(ssl) <= 0) {
-        ERR_print_errors_fp(stderr);
-        goto cleanup;
-    }
-
     while (1) {
         bytes = SSL_read(ssl, buffer, sizeof(buffer));
         if (bytes <= 0) break;  // No more data or error occurred
@@ -297,6 +291,13 @@ void handle_server_connection(SSL *ssl) {
 
 void *handle_connection(void *arg) {
     SSL *ssl = (SSL *)arg;
+    
+    // Perform SSL handshake
+    if (SSL_accept(ssl) <= 0) {
+        ERR_print_errors_fp(stderr);
+        goto cleanup;
+    }
+    
     struct ProtocolHeader header;
     SSL_read(ssl, &header, sizeof(header));
 
