@@ -29,6 +29,7 @@ void receive_response(int sockfd, char *response, size_t max_length) {
 int establish_connection(const char *server_address, int port) {
     int sockfd;
     struct sockaddr_in serv_addr;
+    struct ProtocolHeader header;
 
     // Create socket
     if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
@@ -54,6 +55,14 @@ int establish_connection(const char *server_address, int port) {
         close(sockfd);
         return -1;
     }
-
+    
+    // Construct and send the protocol header
+    header.connectionType = SERVER_CONNECTION;
+    if (send(sockfd, &header, sizeof(header), 0) != sizeof(header)) {
+        perror("Protocol header send failed");
+        close(sockfd);
+        return -1;
+    }
+    
     return sockfd; // Return the socket file descriptor
 }
