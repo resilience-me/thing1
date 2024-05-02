@@ -235,6 +235,8 @@ const char *add_connection(Session *session, char *connection_arg) {
         if (strcmp(server_address, "localhost") != 0) {
             strcat(account_string, "@");
             strcat(account_string, server);
+        } else {
+            if(strcmp(account_string, session->username) == 0) return "CANNOT_ADD_YOURSELF";
         }
 
         // Check if port is provided and concatenate it
