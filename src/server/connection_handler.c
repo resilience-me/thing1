@@ -2,6 +2,7 @@
 #include "client_connection_handler.h"
 #include "server_connection_handler.h"
 #include "thread_utils.h"
+#include "ssl_utils.h"
 
 #include <stdio.h> // Add other necessary headers as needed
 #include <stdlib.h>
@@ -39,9 +40,9 @@ void *handle_connection(void *arg) {
 
     // Clean up SSL resources
     SSL_free(ssl);
-cleanup:
-    close(thread_args->sock);
-    SSL_CTX_free(thread_args->ctx);
-    free(thread_args);
-    pthread_exit(NULL);
+    cleanup:
+        close(thread_args->sock);
+        SSL_CTX_free(thread_args->ctx);
+        free(thread_args);
+        pthread_exit(NULL);
 }
