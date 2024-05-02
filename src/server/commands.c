@@ -134,7 +134,7 @@ const char *login_user(const char *username, const char *password) {
 }
 
 // Function to establish a connection to a remote server
-int establish_connection(const char *server_address) {
+int establish_connection(const char *server_address, int port) {
     int sockfd;
     struct sockaddr_in serv_addr;
 
@@ -147,7 +147,7 @@ int establish_connection(const char *server_address) {
     // Set server address details
     memset(&serv_addr, '0', sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(REMOTE_SERVER_PORT);
+    serv_addr.sin_port = htons(port); // Use the specified port
 
     // Convert IPv4 and IPv6 addresses from text to binary form
     if (inet_pton(AF_INET, server_address, &serv_addr.sin_addr) <= 0) {
