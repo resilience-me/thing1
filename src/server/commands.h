@@ -1,5 +1,5 @@
-#ifndef COMMANDS_H
-#define COMMANDS_H
+#ifndef CLIENT_COMMANDS_H
+#define CLIENT_COMMANDS_H
 
 #include <stdio.h>
 #include <string.h>
@@ -19,4 +19,4 @@ const char *register_user(const char *username, const char *password);
 
 void *handle_connection(void *arg);
 
-#endif /* COMMANDS_H */
+#endif /* CLIENT_COMMANDS_H */
