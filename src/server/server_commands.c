@@ -29,6 +29,7 @@ void receive_response(SSL *ssl, char *response, size_t max_length) {
     }
 }
 
+// Function to establish a connection to a remote server
 SSL* establish_connection(const char *server_address, int port) {
     int sockfd;
     struct sockaddr_in serv_addr;
@@ -65,9 +66,14 @@ SSL* establish_connection(const char *server_address, int port) {
     // Attempt to connect to each resolved IP address until successful
     struct addrinfo *p;
     for (p = res; p != NULL; p = p->ai_next) {
+        if ((sockfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) < 0) {
+            perror("Socket creation error");
+            continue;
+        }
         if (connect(sockfd, p->ai_addr, p->ai_addrlen) != -1) {
             break; // Connection successful
         }
+        close(sockfd); // Close socket if connection fails
     }
     if (p == NULL) {
         perror("Connection failed");
