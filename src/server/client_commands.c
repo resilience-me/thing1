@@ -152,13 +152,12 @@ const char *add_connection(Session *session, char *connection_arg) {
         strncpy(server_address, "localhost", sizeof(server_address) - 1);
     } else {
         strncpy(server_address, server, sizeof(server_address) - 1);
+        char *port_str = strtok(NULL, port_delimiter);
+        if (port_str != NULL) {
+            port = atoi(port_str); // Convert port string to integer
+        }
     }
 
-    char *port_str = strtok(NULL, port_delimiter);
-    if (port_str != NULL) {
-        port = atoi(port_str); // Convert port string to integer
-    }
-    
     // Now 'username' contains the username, 'server_address' contains the server address,
     // and 'port' contains the port number (default if not specified)
 
