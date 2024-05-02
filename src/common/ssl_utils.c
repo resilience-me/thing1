@@ -17,17 +17,8 @@ void cleanup_openssl() {
 }
 
 // Create SSL context for both client and server
-SSL_CTX *create_ssl_context(const SSL_METHOD *method_type) {
-    const SSL_METHOD *method;
-
-    if (strcmp(method_type, "client") == 0) {
-        method = TLS_client_method();
-    } else if (strcmp(method_type, "server") == 0) {
-        method = TLS_server_method();
-    } else {
-        fprintf(stderr, "Invalid method type specified\n");
-        return NULL;
-    }
+SSL_CTX *create_ssl_context(const SSL_METHOD *(*method_func)());
+    const SSL_METHOD *method = method_func();
 
     SSL_CTX *ctx = SSL_CTX_new(method);
     if (!ctx) {
