@@ -34,7 +34,7 @@ void handle_server_connection(SSL *ssl) {
         send_response(ssl, account_exists_result);
     } else {
         // Send an error response to the client indicating an invalid command
-        //send_response(ssl, buffer);
-        send_response(ssl, "INVALID_COMMAND");
+        send_response(ssl, token);
+        //send_response(ssl, "INVALID_COMMAND");
     }
 }
