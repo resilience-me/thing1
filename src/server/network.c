@@ -1,5 +1,5 @@
 #include "network.h"
-#include "config.h"
+#include "config_server.h"
 #include "ssl_utils.h"
 
 void configure_context_server(SSL_CTX *ctx) {
