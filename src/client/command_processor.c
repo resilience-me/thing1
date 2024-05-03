@@ -23,19 +23,9 @@ void interact_with_server(SSL *ssl) {
 
     while (fgets(cmd, sizeof(cmd), stdin) && strcmp(cmd, "EXIT\n") != 0) {
         cmd[strcspn(cmd, "\n")] = '\0';  // Strip newline
-        int found = 0;
+        
+        dispatch_command(ssl, cmd);  // Delegate command handling to the dispatch function
 
-        for (Command *command = commands; command->name != NULL; command++) {
-            if (strcmp(cmd, command->name) == 0) {
-                command->handler(ssl);
-                found = 1;
-                break;
-            }
-        }
-
-        if (!found) {
-            printf("Unknown command. Please try again.\n");
-        }
         printf("%s", command_list);  // Use the dynamically created list in the prompt
     }
 }
