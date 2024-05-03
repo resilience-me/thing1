@@ -3,6 +3,7 @@
 #include <stdio.h>  // For fprintf, stderr
 
 void init_openssl() {
+    SSL_library_init();
     SSL_load_error_strings();
     OpenSSL_add_ssl_algorithms();
 }
