@@ -1,5 +1,6 @@
 #include "network.h"
 #include "server_config.h"
+#include "protocol_defs.h"
 
 SSL_CTX *create_server_context() {
     const SSL_METHOD *method;
