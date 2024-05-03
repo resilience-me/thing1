@@ -13,6 +13,12 @@ int main(int argc, char **argv) {
     const char *url = (argc == 2) ? argv[1] : "localhost";
     int port = CLIENT_DEFAULT_PORT;
 
+    char *hostname = parse_url(url, &port);
+    if (!hostname) {
+        fprintf(stderr, "Invalid URL provided\n");
+        return EXIT_FAILURE;
+    }
+    
     init_openssl();
 
     SSL_CTX *ctx = create_ssl_client_context();
@@ -22,12 +28,6 @@ int main(int argc, char **argv) {
     }
     
     configure_client_context(ctx);
-
-    char *hostname = parse_url(url, &port);
-    if (!hostname) {
-        fprintf(stderr, "Invalid URL provided\n");
-        return EXIT_FAILURE;
-    }
 
     int sock = open_connection(hostname, port);
     SSL *ssl = ssl_client_handshake(ctx, sock);
