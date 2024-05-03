@@ -3,6 +3,8 @@
 #include <stdlib.h>    // For atoi(), strndup()
 #include <regex.h>     // For regex functions
 #include <openssl/err.h> // If you are handling OpenSSL errors elsewhere
+#define _GNU_SOURCE
+#include <string.h>
 
 void configure_context(SSL_CTX *ctx) {
     SSL_CTX_set_default_verify_paths(ctx);
