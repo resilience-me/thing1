@@ -2,6 +2,11 @@
 #include <openssl/err.h>
 #include <stdio.h>  // For fprintf, stderr
 
+void init_openssl() {
+    SSL_load_error_strings();
+    OpenSSL_add_ssl_algorithms();
+}
+
 SSL_CTX* create_ssl_client_context(void) {
     const SSL_METHOD *method = TLS_client_method(); // Use TLS_client_method() as default
     SSL_CTX *ctx = SSL_CTX_new(method);
