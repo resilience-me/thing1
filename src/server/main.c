@@ -14,12 +14,12 @@ int main(int argc, char **argv) {
     init_openssl();
 
     // Create and configure the global client SSL context
-    global_client_ctx = create_client_context();
-    configure_client_context(global_client_ctx);
+    global_client_ctx = create_ssl_client_context();
+    configure_ssl_client_context(global_client_ctx);
 
     // Create and configure the server SSL context
-    SSL_CTX *server_ctx = create_server_context();
-    configure_server_context(server_ctx);
+    SSL_CTX *server_ctx = create_ssl_server_context();
+    configure_ssl_server_context(server_ctx);
 
     // Create and bind socket
     int sock = create_socket(SERVER_DEFAULT_PORT);
