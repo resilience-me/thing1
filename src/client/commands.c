@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <string.h>
+#include <openssl/ssl.h>
 #include "commands.h"
 #include "command_handlers.h"
 
@@ -9,7 +12,7 @@ Command commands[] = {
     {"DELETE_ACCOUNT", handle_delete_account},
     {"ADD_CONNECTION", handle_add_connection},
     {"EXIT", NULL},  // Include EXIT for clarity and completeness
-    {NULL, NULL}    // End of array marker for iteration
+    {NULL, NULL}     // End of array marker for iteration
 };
 
 void dispatch_command(SSL *ssl, const char *cmd) {
@@ -17,7 +20,9 @@ void dispatch_command(SSL *ssl, const char *cmd) {
 
     for (Command *command = commands; command->name != NULL; command++) {
         if (strcmp(cmd, command->name) == 0) {
-            command->handler(ssl);
+            if (command->handler) {  // Check if handler is not NULL
+                command->handler(ssl);
+            }
             found = 1;
             break;
         }
