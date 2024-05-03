@@ -4,6 +4,7 @@
 #include <openssl/ssl.h>
 
 void init_openssl();
+void cleanup_openssl();
 
 SSL_CTX* create_ssl_client_context(void);
 
