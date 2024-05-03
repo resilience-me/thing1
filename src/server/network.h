@@ -1,15 +1,17 @@
 #ifndef NETWORK_H
 #define NETWORK_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <unistd.h>
-#include <openssl/ssl.h>
-#include <openssl/err.h>
+#include <stdio.h>       // Standard I/O
+#include <stdlib.h>      // Standard library
+#include <string.h>      // String operations
+#include <errno.h>       // Error numbers
+
+#include <sys/socket.h>  // Socket-specific functions
+#include <netinet/in.h>  // Internet-specific functions
+#include <unistd.h>      // Unix standard functions
+
+#include <openssl/ssl.h> // OpenSSL-specific SSL/TLS functions
+#include <openssl/err.h> // OpenSSL error functions
 
 extern SSL_CTX *global_client_ctx;
 
