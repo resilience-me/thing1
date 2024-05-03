@@ -14,6 +14,6 @@ const char *account_exists(char *username);
 const char *send_account_exists_query(SSL *ssl, const char *username);
 
 // Function to establish an SSL connection to a remote server
-SSL* establish_connection(const char *server_address, char *portStr);
+SSL* establish_connection(const char *server_address, int port);
 
 #endif /* SERVER_COMMANDS_H */
