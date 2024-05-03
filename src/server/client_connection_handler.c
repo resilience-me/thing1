@@ -64,13 +64,10 @@ void handle_client_connection(SSL *ssl) {
                 SSL_write(ssl, delete_result, strlen(delete_result));
             } else if (strcmp(token, "ADD_CONNECTION") == 0) {
                 char *remote_username = strtok(NULL, " ");
-                if (remote_username) {
-                    // Establish connection with remote server and send ADD_CONNECTION command
-                    const char *add_connection_result = add_connection(&session, remote_username);
-                    SSL_write(ssl, add_connection_result, strlen(add_connection_result));
-                } else {
-                    SSL_write(ssl, "INVALID_ADD_CONNECTION_COMMAND", strlen("INVALID_ADD_CONNECTION_COMMAND"));
-                }
+                char *server_address = strtok(NULL, " ");
+                char *port = strtok(NULL, " ");
+                const char *add_connection_result = add_connection(&session, remote_username, server_address, port);
+                SSL_write(ssl, add_connection_result, strlen(add_connection_result));
             } else {
                 SSL_write(ssl, "INVALID_COMMAND", strlen("INVALID_COMMAND"));  // Could be further elaborated to handle specific commands
             }
