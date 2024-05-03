@@ -23,6 +23,20 @@ Command commands[] = {
     {NULL, NULL, 0}
 };
 
+void dispatch_command(SSL *ssl, Session *session, const char *command, char **args) {
+    for (int i = 0; commands[i].command_name != NULL; i++) {
+        if (strcmp(command, commands[i].command_name) == 0) {
+            if (commands[i].needs_authentication && !session->authenticated) {
+                SSL_write(ssl, "AUTH_REQUIRED", strlen("AUTH_REQUIRED"));
+            } else {
+                commands[i].handler(ssl, session, args);
+            }
+            return;
+        }
+    }
+    SSL_write(ssl, "INVALID_COMMAND", strlen("INVALID_COMMAND"));
+}
+
 void handle_client_connection(SSL *ssl) {
     const char *ack_message = "Client connection established";
     SSL_write(ssl, ack_message, strlen(ack_message));
