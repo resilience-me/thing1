@@ -2,8 +2,7 @@
 #define CLIENT_COMMANDS_H
 
 #include <openssl/ssl.h>  // Needed for SSL type in function prototypes
-
-typedef struct session Session;  // Forward declaration if Session isn't defined elsewhere
+#include "session_defs.h"
 
 typedef const char *(*CommandHandler)(Session *session, char **args);
 
