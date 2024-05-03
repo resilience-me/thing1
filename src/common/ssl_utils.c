@@ -31,7 +31,7 @@ SSL_CTX* create_ssl_client_context(void) {
     return ctx;
 }
 
-SSL* ssl_client_handshake(SSL_CTX *ctx, int sock) {
+SSL* etablish_ssl_client_connection(SSL_CTX *ctx, int sock) {
     SSL *ssl = SSL_new(ctx);
     if (!ssl) {
         ERR_print_errors_fp(stderr);
