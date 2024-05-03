@@ -18,7 +18,13 @@ int main(int argc, char **argv) {
     int port = DEFAULT_PORT;
 
     init_openssl();
-    SSL_CTX *ctx = create_context();
+
+    SSL_CTX *ctx = create_ssl_client_context();
+    if (ctx == NULL) {
+        fprintf(stderr, "Failed to initialize SSL context\n");
+        return EXIT_FAILURE;
+    }
+    
     configure_context(ctx);
 
     char *hostname = parse_url(url, &port);
