@@ -77,7 +77,7 @@ SSL* establish_connection(const char *server_address, int port) {
         return NULL;
     }
 
-    configure_client_context(ctx);
+    configure_ssl_client_context(ctx);
 
     int sockfd = open_connection(server_address, port);
     if (sockfd == -1) {
