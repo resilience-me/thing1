@@ -9,30 +9,8 @@
 #include <netdb.h>
 #include <regex.h>
 
-SSL_CTX *create_context() {
-    const SSL_METHOD *method = TLS_client_method();
-    SSL_CTX *ctx = SSL_CTX_new(method);
-    if (!ctx) {
-        perror("Unable to create SSL context");
-        ERR_print_errors_fp(stderr);
-        exit(EXIT_FAILURE);
-    }
-    return ctx;
-}
-
 void configure_context(SSL_CTX *ctx) {
     SSL_CTX_set_default_verify_paths(ctx);
-}
-
-SSL* perform_ssl_handshake(SSL_CTX *ctx, int sock) {
-    SSL *ssl = SSL_new(ctx);
-    SSL_set_fd(ssl, sock);
-    if (SSL_connect(ssl) != 1) {
-        ERR_print_errors_fp(stderr);
-        SSL_free(ssl);
-        exit(EXIT_FAILURE);
-    }
-    return ssl;
 }
 
 char* parse_url(const char *url, int *port) {
