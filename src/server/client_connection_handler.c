@@ -23,7 +23,7 @@ Command commands[] = {
     {NULL, NULL, 0}
 };
 
-void dispatch_command(Session *session, const char *command, const char **args) {
+void dispatch_command(SSL *ssl, Session *session, const char *command, const char **args) {
     for (int i = 0; commands[i].command_name != NULL; i++) {
         if (strcmp(command, commands[i].command_name) == 0) {
             const char *result;
@@ -32,18 +32,18 @@ void dispatch_command(Session *session, const char *command, const char **args) 
             } else {
                 result = commands[i].handler(session, args); // Execute the handler
             }
-            SSL_write(session->ssl, result, strlen(result)); // Send result back to client
+            SSL_write(ssl, result, strlen(result)); // Send result back to client
             return;
         }
     }
-    SSL_write(session->ssl, "INVALID_COMMAND", strlen("INVALID_COMMAND"));
+    SSL_write(ssl, "INVALID_COMMAND", strlen("INVALID_COMMAND"));
 }
 
 void handle_client_connection(SSL *ssl) {
     const char *ack_message = "Client connection established";
     SSL_write(ssl, ack_message, strlen(ack_message));
 
-    Session session = {0, 0, ssl};
+    Session session = {0};
     const int read_size = 256;
     char buffer[read_size];
     int bytes;
@@ -64,6 +64,6 @@ void handle_client_connection(SSL *ssl) {
         }
 
         // Dispatch command with the whole arguments string
-        dispatch_command(&session, command, arguments);
+        dispatch_command(ssl, &session, command, arguments);
     }
 }
