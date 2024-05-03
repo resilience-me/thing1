@@ -250,10 +250,6 @@ const char *add_connection(Session *session, const char *args) {
     // Handle the response from the server
     if (strcmp(response, "ACCOUNT_EXISTS") == 0) {
 
-        // Set username to "default"´ if username is empty string
-        if (strcmp(username, "") == 0) {
-            username = "default";  // Set to "default"
-        }
         if (strcmp(server_address, "localhost") == 0 && strcmp(username, session->username) == 0) return "CANNOT_ADD_SELF";
         
         return add_account(username, server_address, portStr, session);
