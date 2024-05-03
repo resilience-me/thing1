@@ -2,18 +2,13 @@
 #include "commands.h"
 #include "net_utils.h"
 #include "ssl_utils.h"
+#include "protocol_defs.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
 #define DEFAULT_PORT 2012
-#define CLIENT_CONNECTION 0x01
-
-struct ProtocolHeader {
-    uint8_t connectionType; // Identifier field indicating connection type
-    // Other fields...
-};
 
 int main(int argc, char **argv) {
     const char *url = (argc == 2) ? argv[1] : "localhost";
