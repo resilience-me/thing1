@@ -9,7 +9,7 @@
 #include <ctype.h>
 
 // Function to handle user registration
-const char *register_user(const char *username, const char *password) {
+const char *register_user(Session *session, const char *args) {
     // Check if username is valid
     if (!isValidUsername(username)) {
         return "INVALID_USERNAME";
@@ -55,7 +55,7 @@ const char *register_user(const char *username, const char *password) {
     return "REGISTER_SUCCESS"; // Registration successful
 }
 
-const char *delete_user(Session *session) {
+const char *delete_user(Session *session, const char *args) {
     if (!session->authenticated) {
         return "AUTHENTICATION_REQUIRED";
     }
@@ -78,7 +78,7 @@ const char *delete_user(Session *session) {
     return "USER_DELETED_SUCCESSFULLY";
 }
 
-const char *login_user(const char *username, const char *password) {
+const char *login_user(Session *session, const char *args) {
     // Check if username is valid
     if (!isValidUsername(username)) {
         return "INVALID_USERNAME";
@@ -121,7 +121,7 @@ const char *login_user(const char *username, const char *password) {
     return "LOGIN_SUCCESS";  // User successfully authenticated
 }
 
-const char *logout_user(const char *username, const char *password) {
+const char *logout_user(Session *session, const char *args) {
     session.authenticated = 0;
 }
 
@@ -172,7 +172,7 @@ const char *add_account(const char *username, const char *server_address, const 
 }
 
 
-const char *add_connection(Session *session, const char *username, const char *server_address, const char *portStr) {
+const char *add_connection(Session *session, const char *args) {
     // Check if the user is authenticated
     if (!session->authenticated) {
         return "AUTHENTICATION_REQUIRED";
