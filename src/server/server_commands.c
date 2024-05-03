@@ -78,6 +78,9 @@ const char *send_account_exists_query(SSL *ssl, const char *username) {
 // Function to establish a connection to a remote server
 SSL* establish_connection(const char *server_address, const char *portStr) {
     SSL_library_init();
+    OpenSSL_add_all_algorithms();
+    SSL_load_error_strings();
+
     SSL_CTX *ctx = SSL_CTX_new(SSLv23_client_method());
     if (ctx == NULL) {
         perror("SSL context creation error");
@@ -90,16 +93,16 @@ SSL* establish_connection(const char *server_address, const char *portStr) {
         return NULL;
     }
 
-    SSL *ssl = SSL_new(ctx);
-    SSL_set_fd(ssl, sockfd);
-    if (SSL_connect(ssl) != 1) {
-        perror("SSL connection error");
+    SSL *ssl = perform_ssl_handshake(ctx, sockfd);
+    if (ssl == NULL) {
         close(sockfd);
-        SSL_free(ssl);
         SSL_CTX_free(ctx);
         return NULL;
     }
 
-    SSL_CTX_free(ctx);
+    // Optionally, perform post-handshake checks or configurations here
+    printf("SSL Handshake successful with %s encryption\n", SSL_get_cipher(ssl));
+
+    SSL_CTX_free(ctx); // Free context if it's not used elsewhere
     return ssl;
 }
