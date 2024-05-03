@@ -1,10 +1,7 @@
-#include "network.h"   // Assuming it's necessary for your project's specific network functions
 #include <stdio.h>     // For fprintf(), stderr
 #include <stdlib.h>    // For atoi(), strndup()
 #include <regex.h>     // For regex functions
-#include <openssl/err.h> // If you are handling OpenSSL errors elsewhere
-#define _GNU_SOURCE
-#include <string.h>
+#include <string.h>    // For string manipulation functions
 
 char* parse_url(const char *url, int *port) {
     regex_t regex;
