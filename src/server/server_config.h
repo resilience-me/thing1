@@ -1,5 +1,5 @@
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef SERVER_CONFIG_H
+#define SERVER_CONFIG_H
 
 // Network configuration
 #define SERVER_DEFAULT_PORT 2012
@@ -10,4 +10,4 @@
 
 // Other configuration settings...
 
-#endif /* CONFIG_H */
+#endif /* SERVER_CONFIG_H */
