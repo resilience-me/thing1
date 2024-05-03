@@ -1,7 +1,7 @@
 #include "network.h"
 #include "connection_handler.h"
 #include "database.h"
-#include "config.h"
+#include "server_config.h"
 #include "ssl_utils.h"
 
 int main(int argc, char **argv) {
