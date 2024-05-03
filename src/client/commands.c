@@ -11,3 +11,19 @@ Command commands[] = {
     {"EXIT", NULL},  // Include EXIT for clarity and completeness
     {NULL, NULL}    // End of array marker for iteration
 };
+
+void dispatch_command(SSL *ssl, const char *cmd) {
+    int found = 0;
+
+    for (Command *command = commands; command->name != NULL; command++) {
+        if (strcmp(cmd, command->name) == 0) {
+            command->handler(ssl);
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found) {
+        printf("Unknown command. Please try again.\n");
+    }
+}
