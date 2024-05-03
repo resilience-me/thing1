@@ -1,5 +1,5 @@
 #include "client_command_handlers.h"
-#include "client_connection_handler.h"
+#include "session_defs.h"
 #include "network.h"
 #include "server_commands.h"
 #include "database.h"
