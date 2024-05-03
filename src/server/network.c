@@ -1,5 +1,8 @@
 #include "network.h"
 #include "server_config.h"
+
+#include "net_utils.h"
+#include "ssl_utils.h"
 #include "protocol_defs.h"
 
 SSL_CTX *create_server_context() {
