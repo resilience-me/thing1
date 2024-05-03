@@ -19,7 +19,8 @@ void interact_with_server(SSL *ssl) {
     }
     strcat(command_list, "): ");  // Close the prompt string
 
-    printf("Enter command: ");
+    printf("%s", command_list);  // Use the dynamically created list in the prompt
+
     while (fgets(cmd, sizeof(cmd), stdin) && strcmp(cmd, "EXIT\n") != 0) {
         cmd[strcspn(cmd, "\n")] = '\0';  // Strip newline
         int found = 0;
@@ -35,6 +36,6 @@ void interact_with_server(SSL *ssl) {
         if (!found) {
             printf("Unknown command. Please try again.\n");
         }
-        printf("Enter command: ");
+        printf("%s", command_list);  // Use the dynamically created list in the prompt
     }
 }
