@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
     configure_ssl_client_context(ctx);
 
     int sock = open_connection(hostname, port);
-    SSL *ssl = ssl_client_handshake(ctx, sock);
+    SSL *ssl = setup_ssl_client_connection(ctx, sock);
 
     // Send the protocol header to the server
     struct ProtocolHeader header;
