@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
     ctx = create_server_context();
     configure_server_context(ctx);
 
-    sock = create_socket(PORT);
+    sock = create_socket(SERVER_DEFAULT_PORT);
 
     // Accept incoming connections and handle them
     while (1) {
