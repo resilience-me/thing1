@@ -2,10 +2,6 @@
 #include "client_commands.h"
 #include "database.h"
 #include "server_config.h"
-
-#include "net_utils.h"
-#include "ssl_utils.h"
-#include "protocol_defs.h"
 #include "format_utils.h"
 
 #include <sys/socket.h>
