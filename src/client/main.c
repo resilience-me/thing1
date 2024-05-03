@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
     
-    configure_client_context(ctx);
+    configure_ssl_client_context(ctx);
 
     int sock = open_connection(hostname, port);
     SSL *ssl = ssl_client_handshake(ctx, sock);
