@@ -154,9 +154,9 @@ const char *add_connection(Session *session, const char *username, const char *s
         return "AUTHENTICATION_REQUIRED";
     }
 
-    // Set empty string if username is NULL
-    if (username == NULL) {
-        username = "";  // Empty string
+    // Set default user if username is NULL or empty
+    if (username == NULL || username[0] == '\0' ) {
+        username = "default";  // Default user
     }
 
     // Check if provided username is invalid
