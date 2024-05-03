@@ -180,9 +180,9 @@ const char *add_connection(Session *session, const char *username, const char *s
         return "AUTHENTICATION_REQUIRED";
     }
 
-    // Set default user if username is NULL or empty
-    if (username == NULL || username[0] == '\0' ) {
-        username = "default";  // Default user
+    // Set empty string if username is NULL
+    if (username == NULL) {
+        username = "";  // Empty string
     }
 
     // Check if provided username is invalid
@@ -195,15 +195,18 @@ const char *add_connection(Session *session, const char *username, const char *s
         server_address = "localhost";  // Default to localhost if no server address is provided
     }
 
-    // Validate port
-    int port;
+    char port_buf[6]; // Assuming port number will be less than 100000
+    
+    // If portStr is NULL or empty, set it to DEFAULT_PORT
     if (portStr == NULL || portStr[0] == '\0') {
-        port = SERVER_DEFAULT_PORT;
-    } else {
-        port = atoi(portStr);  // Convert string to int
-        if (port <= 0) {       // Simple validation to catch invalid conversions
-            return "INVALID_PORT";
-        }
+        sprintf(port_buf, "%d", SERVER_DEFAULT_PORT);
+        portStr = port_buf;
+    }
+    
+    // Validate port
+    int port = atoi(portStr);  // Convert string to int
+    if (port <= 0) {       // Simple validation to catch invalid conversions
+        return "INVALID_PORT";
     }
 
     // Establish an SSL connection to the remote server
@@ -221,23 +224,15 @@ const char *add_connection(Session *session, const char *username, const char *s
 
     // Handle the response from the server
     if (strcmp(response, "ACCOUNT_EXISTS") == 0) {
-        // Prepare the account string for addition
-        char account_string[256] = {0};  // Ensure it starts empty
+
+        // Set username to "default"´ if username is empty string
+        if (username == "") {
+            username = "default";  // Set to "default"
+        }
+        if (strcmp(server_address, "localhost") == 0 && strcmp(account_string, session->username)) return "CANNOT_ADD_SELF";
+
+        char port_str[6];
         
-        if(strlen(username) > 0) {
-            // Copy username to account_string
-            strcpy(account_string, username);
-        } else {
-            if(strcmp(server_address, "localhost") == 0) {
-                strcpy(account_string, DEFAULT_USER);
-            }
-        }
-        if (strcmp(server_address, "localhost") != 0) {
-            strcat(account_string, "@");
-            strcat(account_string, server_address);
-        } else {
-            if(strcmp(account_string, session->username) == 0) return "CANNOT_ADD_SELF";
-        }
         // Check if port is provided and concatenate it
         if (portStr != NULL && portStr[0] != '\0') {
             strcat(account_string, ":");
