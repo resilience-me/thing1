@@ -1,5 +1,6 @@
 #include "client_connection_handler.h"
 #include "client_command_processor.h"
+#include "session_defs.h"
 
 #include "database.h"
 #include "server_config.h"
