@@ -6,10 +6,6 @@
 #define _GNU_SOURCE
 #include <string.h>
 
-void configure_context(SSL_CTX *ctx) {
-    SSL_CTX_set_default_verify_paths(ctx);
-}
-
 char* parse_url(const char *url, int *port) {
     regex_t regex;
     regmatch_t pmatch[4];
