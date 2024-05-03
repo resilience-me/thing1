@@ -3,11 +3,6 @@
 
 #include <openssl/ssl.h>
 
-typedef struct {
-    char username[256];       // Username for the session
-    int authenticated;        // 0 = Not authenticated, 1 = Authenticated
-} Session;
-
 // Function to handle client connections
 void handle_client_connection(SSL *ssl);
 
