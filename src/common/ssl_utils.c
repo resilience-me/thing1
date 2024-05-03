@@ -7,6 +7,10 @@ void init_openssl() {
     OpenSSL_add_ssl_algorithms();
 }
 
+void cleanup_openssl() {
+    EVP_cleanup();
+}
+
 SSL_CTX* create_ssl_client_context(void) {
     const SSL_METHOD *method = TLS_client_method(); // Use TLS_client_method() as default
     SSL_CTX *ctx = SSL_CTX_new(method);
