@@ -1,5 +1,5 @@
-#ifndef CLIENT_COMMANDS_H
-#define CLIENT_COMMANDS_H
+#ifndef CLIENT_COMMAND_HANDLERS_H
+#define CLIENT_COMMAND_HANDLERS_H
 
 #include "client_connection_handler.h"
 #include <stdio.h>
@@ -24,4 +24,4 @@ const char *add_connection(Session *session, const char *username, const char *s
 const char *delete_user(Session *session);
 const char *login_user(const char *username, const char *password);
 
-#endif /* CLIENT_COMMANDS_H */
+#endif /* CLIENT_COMMAND_HANDLERS_H */
