@@ -1,9 +1,9 @@
-#include "network.h"
-#include "server_config.h"
+#include "network.h"        // Include corresponding header first
 
-#include "net_utils.h"
-#include "ssl_utils.h"
-#include "protocol_defs.h"
+#include "server_config.h"  // Configuration settings specific to the server
+#include "net_utils.h"      // Network utility functions
+#include "ssl_utils.h"      // SSL utility functions
+#include "protocol_defs.h"  // Protocol header to distinguish betwween server and client connections
 
 SSL_CTX *create_ssl_server_context() {
     const SSL_METHOD *method;
