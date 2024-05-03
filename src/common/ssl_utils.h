@@ -11,7 +11,7 @@ void configure_ssl_client_context(SSL_CTX *ctx);
 SSL_CTX* create_ssl_client_context(void);
 
 // Function to perform SSL client handshake
-SSL* ssl_client_handshake(SSL_CTX *ctx, int sock);
+SSL* etablish_ssl_client_connection(SSL_CTX *ctx, int sock);
 
 SSL* setup_ssl_connection(SSL_CTX *ctx, int sockfd);
 
