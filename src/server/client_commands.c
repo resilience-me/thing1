@@ -3,14 +3,6 @@
 #include <string.h>    // For strcmp and strlen
 #include <openssl/ssl.h>  // For SSL_write
 
-typedef const char *(*CommandHandler)(Session *session, char **args);
-
-typedef struct {
-    char *name;
-    CommandHandler handler;
-    int needs_authentication;
-} Command;
-
 Command commands[] = {
     {"LOGIN", login_user, 0},
     {"LOGOUT", logout_user, 1},
