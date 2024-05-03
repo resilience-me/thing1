@@ -249,9 +249,10 @@ const char *add_connection(Session *session, const char *args) {
 
     // Handle the response from the server
     if (strcmp(response, "ACCOUNT_EXISTS") == 0) {
-
-        if (strcmp(server_address, "localhost") == 0 && strcmp(remote_username, session->username) == 0) return "CANNOT_ADD_SELF";
-        
+        // Prevent adding self as a connection on the same server and port
+        if (strcmp(server_address, "localhost") == 0 && strcmp(remote_username, session->username) == 0) {
+            return "CANNOT_ADD_SELF";
+        }
         return add_account(remote_username, server_address, portStr, session);
     } else {
         return "ACCOUNT_NOT_FOUND";
