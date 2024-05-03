@@ -11,6 +11,10 @@ void cleanup_openssl() {
     EVP_cleanup();
 }
 
+void configure_client_context(SSL_CTX *ctx) {
+    SSL_CTX_set_default_verify_paths(ctx);
+}
+
 SSL_CTX* create_ssl_client_context(void) {
     const SSL_METHOD *method = TLS_client_method(); // Use TLS_client_method() as default
     SSL_CTX *ctx = SSL_CTX_new(method);
