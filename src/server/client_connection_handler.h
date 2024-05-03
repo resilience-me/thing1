@@ -6,7 +6,6 @@
 typedef struct {
     char username[256];       // Username for the session
     int authenticated;        // 0 = Not authenticated, 1 = Authenticated
-    SSL *ssl;                 // SSL connection associated with the session
 } Session;
 
 // Function to handle client connections
