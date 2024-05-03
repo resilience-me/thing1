@@ -4,6 +4,7 @@
 #include "config.h"
 
 #include "net_utils.h"
+#include "ssl_utils.h"
 
 #include <sys/socket.h>
 #include <netinet/in.h>
