@@ -142,6 +142,7 @@ const char *login_user(Session *session, const char *args) {
 
 const char *logout_user(Session *session, const char *args) {
     session.authenticated = 0;
+    return "LOGOUT_SUCCESS";
 }
 
 
