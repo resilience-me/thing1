@@ -1,26 +1,10 @@
 #include "command_processor.h"
 #include "command_handlers.h"
+#include "commands.h"
 
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-
-typedef void (*CommandHandler)(SSL*);
-
-typedef struct {
-    const char* name;
-    CommandHandler handler;
-} Command;
-
-Command commands[] = {
-    {"LOGIN", handle_login},
-    {"REGISTER", handle_register},
-    {"LOGOUT", handle_logout},
-    {"DELETE_ACCOUNT", handle_delete_account},
-    {"ADD_CONNECTION", handle_add_connection},
-    {"EXIT", NULL},  // Include EXIT as a command for clarity in the menu
-    {NULL, NULL}  // Terminator
-};
 
 void interact_with_server(SSL *ssl) {
     char cmd[256];
