@@ -88,15 +88,22 @@ void handle_delete_account(SSL *ssl) {
 }
 
 void handle_add_connection(SSL *ssl) {
-    char username[256];
+    char input[256];
 
-    printf("Enter username@server_address: ");
-    fgets(username, sizeof(username), stdin);
-    username[strcspn(username, "\n")] = '\0';
+    printf("Enter connection details (format: username@server_address:port): ");
+    fgets(input, sizeof(input), stdin);
+    input[strcspn(input, "\n")] = '\0';  // Remove newline character
 
-    // Send the ADD_CONNECTION command with the username and server address to the server
+    // Parse the input into username, server address, and port
+    char *username = strtok(input, "@");
+    char *server_and_port = strtok(NULL, "");
+
+    char *server_address = server_and_port ? strtok(server_and_port, ":") : "";
+    char *port = server_and_port ? strtok(NULL, "") : "";
+
+    // Send the ADD_CONNECTION command with the parsed username, server address, and port to the server
     char command[512];
-    snprintf(command, sizeof(command), "ADD_CONNECTION %s", username);
+    snprintf(command, sizeof(command), "ADD_CONNECTION %s %s %s", username ? username : "", server_address, port);
     SSL_write(ssl, command, strlen(command));
 
     // Wait for and print the server's response
@@ -109,7 +116,6 @@ void handle_add_connection(SSL *ssl) {
         printf("Failed to receive server response.\n");
     }
 }
-
 
 void interact_with_server(SSL *ssl) {
     char cmd[256];
