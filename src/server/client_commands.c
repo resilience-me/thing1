@@ -2,7 +2,7 @@
 #include "client_connection_handler.h"
 #include "server_commands.h"
 #include "database.h"
-#include "config.h"
+#include "server_config.h"
 #include <ctype.h>
 
 // Function to check if a username contains only valid characters
