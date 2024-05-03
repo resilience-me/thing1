@@ -130,7 +130,7 @@ const char *login_user(const char *username, const char *password) {
 
 const char *add_account(const char *username, const char *server_address, const char *portStr, Session *session) {
     // Build the path to the server directory
-    char server_dir[1024];
+    char server_dir[768];
     snprintf(server_dir, sizeof(server_dir), "%s/accounts/%s/peers/%s", datadir, session->username, server_address);
     
     // Build the path to the port directory within the server directory
@@ -138,7 +138,7 @@ const char *add_account(const char *username, const char *server_address, const 
     snprintf(port_dir, sizeof(port_dir), "%s/%s", server_dir, portStr);
 
     // Build the path to the user directory within the port directory
-    char user_dir[1024];
+    char user_dir[1280];
     snprintf(user_dir, sizeof(user_dir), "%s/%s", port_dir, username);
 
     // Check if user directory already exists
