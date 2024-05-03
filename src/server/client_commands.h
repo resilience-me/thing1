@@ -21,8 +21,6 @@ const char *register_user(const char *username, const char *password);
 // Function to add a connection to the server
 const char *add_connection(Session *session, const char *username, const char *server_address, const char *portStr);
 
-// Function prototypes for other functions used in client_commands.c
-int isValidUsername(const char *username);
 const char *delete_user(Session *session);
 const char *login_user(const char *username, const char *password);
 
