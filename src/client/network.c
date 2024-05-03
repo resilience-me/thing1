@@ -9,10 +9,6 @@
 #include <netdb.h>
 #include <regex.h>
 
-void cleanup_openssl() {
-    EVP_cleanup();
-}
-
 SSL_CTX *create_context() {
     const SSL_METHOD *method = TLS_client_method();
     SSL_CTX *ctx = SSL_CTX_new(method);
