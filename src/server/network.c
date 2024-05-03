@@ -71,31 +71,25 @@ int create_socket(int port) {
 SSL* establish_connection(const char *server_address, int port) {
     init_openssl();
 
-    SSL_CTX *ctx = create_ssl_client_context();
+    SSL_CTX *ctx = global_client_ctx; // Use global client context
     if (ctx == NULL) {
-        fprintf(stderr, "Failed to create SSL context\n");
+        fprintf(stderr, "Global client SSL context not initialized\n");
         return NULL;
     }
 
-    configure_ssl_client_context(ctx);
-
     int sockfd = open_connection(server_address, port);
     if (sockfd == -1) {
-        SSL_CTX_free(ctx);
         return NULL;
     }
 
     SSL *ssl = ssl_client_handshake(ctx, sockfd);
     if (ssl == NULL) {
         close(sockfd);
-        SSL_CTX_free(ctx);
         return NULL;
     }
 
     // Optionally, perform post-handshake checks or configurations here
     printf("SSL Handshake successful with %s encryption\n", SSL_get_cipher(ssl));
-
-    SSL_CTX_free(ctx); // Free context if it's not used elsewhere
 
     // Construct and send the protocol header
     struct ProtocolHeader header;
