@@ -93,7 +93,7 @@ SSL* establish_connection(const char *server_address, const char *portStr) {
         return NULL;
     }
 
-    SSL *ssl = perform_ssl_handshake(ctx, sockfd);
+    SSL *ssl = ssl_client_handshake(ctx, sockfd);
     if (ssl == NULL) {
         close(sockfd);
         SSL_CTX_free(ctx);
