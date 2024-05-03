@@ -1,5 +1,6 @@
 #include "network.h"
-#include "command_processor.h"
+#include "string_util.h"
+#include "protocol_defs.h"
 #include "net_utils.h"
 #include "ssl_utils.h"
 #include "protocol_defs.h"
