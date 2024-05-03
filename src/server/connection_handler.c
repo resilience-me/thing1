@@ -1,6 +1,7 @@
 #include "connection_handler.h"
 #include "client_connection_handler.h"
 #include "server_connection_handler.h"
+#include "protocol_defs"
 
 #include <stdio.h> // Add other necessary headers as needed
 #include <stdlib.h>
