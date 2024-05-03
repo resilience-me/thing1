@@ -230,15 +230,8 @@ const char *add_connection(Session *session, const char *username, const char *s
             username = "default";  // Set to "default"
         }
         if (strcmp(server_address, "localhost") == 0 && strcmp(account_string, session->username)) return "CANNOT_ADD_SELF";
-
-        char port_str[6];
         
-        // Check if port is provided and concatenate it
-        if (portStr != NULL && portStr[0] != '\0') {
-            strcat(account_string, ":");
-            strcat(account_string, portStr);
-        }
-        return add_account(account_string, session);
+        return add_account(username, server_address, portStr, session);
     } else {
         return "ACCOUNT_NOT_FOUND";
     }
