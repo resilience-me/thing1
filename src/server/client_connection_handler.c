@@ -23,14 +23,16 @@ Command commands[] = {
     {NULL, NULL, 0}
 };
 
-void dispatch_command(Session *session, const char *command, char **args) {
+void dispatch_command(Session *session, const char *command, const char **args) {
     for (int i = 0; commands[i].command_name != NULL; i++) {
         if (strcmp(command, commands[i].command_name) == 0) {
+            const char *result;
             if (commands[i].needs_authentication && !session->authenticated) {
-                SSL_write(session->ssl, "AUTH_REQUIRED", strlen("AUTH_REQUIRED"));
+                result = "AUTH_REQUIRED";
             } else {
-                commands[i].handler(session, args);
+                result = commands[i].handler(session, args); // Execute the handler
             }
+            SSL_write(session->ssl, result, strlen(result)); // Send result back to client
             return;
         }
     }
