@@ -10,7 +10,7 @@
 
 typedef struct {
     char *command_name;
-    void (*handler)(SSL *ssl, Session *session, char **args);
+    void (*handler)(Session *, char **args);
     int needs_authentication;
 } Command;
 
@@ -23,18 +23,18 @@ Command commands[] = {
     {NULL, NULL, 0}
 };
 
-void dispatch_command(SSL *ssl, Session *session, const char *command, char **args) {
+void dispatch_command(Session *session, const char *command, char **args) {
     for (int i = 0; commands[i].command_name != NULL; i++) {
         if (strcmp(command, commands[i].command_name) == 0) {
             if (commands[i].needs_authentication && !session->authenticated) {
-                SSL_write(ssl, "AUTH_REQUIRED", strlen("AUTH_REQUIRED"));
+                SSL_write(session->ssl, "AUTH_REQUIRED", strlen("AUTH_REQUIRED"));
             } else {
-                commands[i].handler(ssl, session, args);
+                commands[i].handler(session, args);
             }
             return;
         }
     }
-    SSL_write(ssl, "INVALID_COMMAND", strlen("INVALID_COMMAND"));
+    SSL_write(session->ssl, "INVALID_COMMAND", strlen("INVALID_COMMAND"));
 }
 
 void handle_client_connection(SSL *ssl) {
