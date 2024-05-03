@@ -23,5 +23,6 @@ const char *add_connection(Session *session, const char *username, const char *s
 
 const char *delete_user(Session *session);
 const char *login_user(const char *username, const char *password);
+const char *logout_user(const char *username, const char *password);
 
 #endif /* CLIENT_COMMAND_HANDLERS_H */
