@@ -1,13 +1,8 @@
-#include "network.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#include <openssl/err.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <regex.h>
+#include "network.h"   // Assuming it's necessary for your project's specific network functions
+#include <stdio.h>     // For fprintf(), stderr
+#include <stdlib.h>    // For atoi(), strndup()
+#include <regex.h>     // For regex functions
+#include <openssl/err.h> // If you are handling OpenSSL errors elsewhere
 
 void configure_context(SSL_CTX *ctx) {
     SSL_CTX_set_default_verify_paths(ctx);
