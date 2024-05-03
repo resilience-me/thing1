@@ -5,5 +5,6 @@
 int isValidUsername(const char *username);
 
 // Other string-related utility functions can be declared here
+char* parse_url(const char *url, int *port);
 
 #endif // STRING_UTIL_H
