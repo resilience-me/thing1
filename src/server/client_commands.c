@@ -197,10 +197,27 @@ const char *add_connection(Session *session, const char *username, const char *s
     if (strcmp(response, "ACCOUNT_EXISTS") == 0) {
         // Prepare the account string for addition
         char account_string[256] = {0};  // Ensure it starts empty
-        snprintf(account_string, sizeof(account_string), "%s@%s:%s", username, server_address, port_string);
-
-        // Additional business logic here, such as checking if the account can be added
-        return add_account(account_string, session);  // Assume add_account is a function defined elsewhere
+        
+        if(strlen(username) > 0) {
+            // Copy username to account_string
+            strcpy(account_string, username);
+        } else {
+            if(strcmp(server_address, "localhost") == 0) {
+                strcpy(account_string, DEFAULT_USER);
+            }
+        }
+        if (strcmp(server_address, "localhost") != 0) {
+            strcat(account_string, "@");
+            strcat(account_string, server_address);
+        } else {
+            if(strcmp(account_string, session->username) == 0) return "CANNOT_ADD_SELF";
+        }
+        // Check if port is provided and concatenate it
+        if (portStr != NULL && portStr[0] != '\0') {
+            strcat(account_string, ":");
+            strcat(account_string, portStr);
+        }
+        return add_account(account_string, session);
     } else {
         return "ACCOUNT_NOT_FOUND";
     }
