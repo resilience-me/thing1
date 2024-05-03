@@ -26,9 +26,8 @@ SERVER_OBJECTS = $(patsubst $(SERVER_SRC_DIR)/%.c,$(SERVER_OBJ_DIR)/%.o,$(SERVER
 # Default target
 all: create_dirs $(CLIENT_EXEC) $(SERVER_EXEC)
 
-# Create directories
 create_dirs:
-	mkdir -p $(COMMON_OBJ_DIR) $(CLIENT_OBJ_DIR) $(CLIENT_BIN_DIR) $(SERVER_OBJ_DIR) $(SERVER_BIN_DIR)
+	mkdir -p $(COMMON_OBJ_DIR) $(CLIENT_OBJ_DIR) $(BIN_DIR) $(SERVER_OBJ_DIR) $(SERVER_BIN_DIR)
 
 # Linking the client executable from the object files
 $(CLIENT_EXEC): $(COMMON_OBJECTS) $(CLIENT_OBJECTS)
