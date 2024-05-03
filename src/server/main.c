@@ -2,6 +2,7 @@
 #include "connection_handler.h"
 #include "database.h"
 #include "config.h"
+#include "ssl_utils.h"
 
 int main(int argc, char **argv) {
     // Create necessary directories if they do not exist
