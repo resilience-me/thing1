@@ -3,7 +3,7 @@
 #include "server_commands.h"
 #include "database.h"
 #include "server_config.h"
-#include "string_util.h"
+#include "format_utils.h"
 
 #include <ctype.h>
 
