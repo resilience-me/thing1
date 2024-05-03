@@ -2,6 +2,21 @@
 #include <openssl/err.h>
 #include <stdio.h>  // For fprintf, stderr
 
+SSL_CTX* create_ssl_client_context(void) {
+    const SSL_METHOD *method = TLS_client_method(); // Use TLS_client_method() as default
+    SSL_CTX *ctx = SSL_CTX_new(method);
+    if (!ctx) {
+        perror("Unable to create SSL client context");
+        ERR_print_errors_fp(stderr);
+        return NULL; // Return NULL to indicate failure
+    }
+
+    // Add any common configuration settings here, e.g., disable deprecated protocols
+    // SSL_CTX_set_options(ctx, SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_TLSv1);
+
+    return ctx;
+}
+
 SSL* ssl_client_handshake(SSL_CTX *ctx, int sock) {
     SSL *ssl = SSL_new(ctx);
     if (!ssl) {
