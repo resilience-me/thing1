@@ -11,7 +11,7 @@
 
 int main(int argc, char **argv) {
     const char *url = (argc == 2) ? argv[1] : "localhost";
-    int port = DEFAULT_PORT;
+    int port = CLIENT_DEFAULT_PORT;
 
     init_openssl();
 
