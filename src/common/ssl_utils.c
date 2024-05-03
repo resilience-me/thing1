@@ -47,3 +47,32 @@ SSL* ssl_client_handshake(SSL_CTX *ctx, int sock) {
 
     return ssl;  // Return the SSL object on success
 }
+
+// Function to establish an SSL connection
+SSL* establish_ssl_client_connection(const char *hostname, int port) {
+    init_openssl();
+
+    SSL_CTX *ctx = create_ssl_client_context();
+    if (ctx == NULL) {
+        fprintf(stderr, "Failed to create SSL context\n");
+        return NULL;
+    }
+
+    configure_client_context(ctx);
+
+    int sockfd = open_connection(hostname, port);
+    if (sockfd == -1) {
+        SSL_CTX_free(ctx);
+        return NULL;
+    }
+
+    SSL *ssl = ssl_client_handshake(ctx, sockfd);
+    if (ssl == NULL) {
+        close(sockfd);
+        SSL_CTX_free(ctx);
+        return NULL;
+    }
+
+    return ssl;
+}
+
