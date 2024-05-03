@@ -11,6 +11,8 @@
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 
+extern SSL_CTX *global_client_ctx;
+
 SSL_CTX *create_ssl_server_context();
 void configure_ssl_server_context(SSL_CTX *ctx);
 int create_socket(int port);
