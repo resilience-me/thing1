@@ -84,9 +84,17 @@ const char *delete_user(Session *session, const char *args) {
 }
 
 const char *login_user(Session *session, const char *args) {
-    // Check if username is valid
-    if (!isValidUsername(username)) {
-        return "INVALID_USERNAME";
+    char username[256] = {0}; // Ensure username is initially empty
+    char password[256] = {0}; // Allow password to be empty
+
+    if (args == NULL) {
+        return "INVALID_ARGUMENTS";
+    }
+    sscanf(args, "%255s %255s", username, password);
+
+    // Check that the username is not empty and that it is valid 
+    if (username[0] == '\0' || !isValidUsername(username)) {
+        return "INVALID_USERNAME";  // Username is empty or invalid
     }
 
     // Build the path to the user directory
