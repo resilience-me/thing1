@@ -128,25 +128,51 @@ const char *login_user(const char *username, const char *password) {
     return "LOGIN_SUCCESS";  // User successfully authenticated
 }
 
+const char *add_account(const char *username, const char *server_address, const char *portStr, Session *session) {
+    // Build the path to the server directory
+    char server_dir[1024];
+    snprintf(server_dir, sizeof(server_dir), "%s/accounts/%s/peers/%s", datadir, session->username, server_address);
+    
+    // Build the path to the port directory within the server directory
+    char port_dir[1024];
+    snprintf(port_dir, sizeof(port_dir), "%s/%s", server_dir, portStr);
 
-const char *add_account(const char *accountString, Session *session) {
-    // Build the path to the user directory
+    // Build the path to the user directory within the port directory
     char user_dir[1024];
-    snprintf(user_dir, sizeof(user_dir), "%s/accounts/%s/peers/%s", datadir, session->username, accountString);
+    snprintf(user_dir, sizeof(user_dir), "%s/%s", port_dir, username);
 
     // Check if user directory already exists
     if (access(user_dir, F_OK) != -1) {
-        printf("Account already connectedt\n");
+        printf("Account already connected\n");
         return "ALREADY_CONNECTED";
     }
+
+    // Create server directory if it doesn't exist
+    if (access(server_dir, F_OK) == -1) {
+        if (mkdir(server_dir, 0777) == -1) {
+            printf("Failed to add account\n");
+            return "DIRECTORY_CREATION_FAILED";
+        }
+    }
+
+    // Create port directory if it doesn't exist
+    if (access(port_dir, F_OK) == -1) {
+        if (mkdir(port_dir, 0777) == -1) {
+            printf("Failed to add account\n");
+            return "DIRECTORY_CREATION_FAILED";
+        }
+    }
+
     // Create user directory
     if (mkdir(user_dir, 0777) == -1) {
         printf("Failed to add account\n");
         return "DIRECTORY_CREATION_FAILED";
     }
+
     printf("Account added successfully\n");
     return "CONNECTION_ADDED";
 }
+
 
 const char *add_connection(Session *session, const char *username, const char *server_address, const char *portStr) {
     // Check if the user is authenticated
