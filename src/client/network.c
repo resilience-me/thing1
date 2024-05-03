@@ -9,11 +9,6 @@
 #include <netdb.h>
 #include <regex.h>
 
-void init_openssl() {
-    SSL_load_error_strings();
-    OpenSSL_add_ssl_algorithms();
-}
-
 void cleanup_openssl() {
     EVP_cleanup();
 }
