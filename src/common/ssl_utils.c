@@ -47,3 +47,15 @@ SSL* ssl_client_handshake(SSL_CTX *ctx, int sock) {
 
     return ssl;  // Return the SSL object on success
 }
+
+// Helper function for setting up SSL context and performing handshake
+SSL* setup_ssl_connection(SSL_CTX *ctx, int sockfd) {
+    SSL *ssl = ssl_client_handshake(ctx, sockfd);
+    if (ssl == NULL) {
+        close(sockfd);
+        SSL_CTX_free(ctx);
+        return NULL;
+    }
+    return ssl;
+}
+
