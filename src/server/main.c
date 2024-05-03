@@ -4,19 +4,25 @@
 #include "server_config.h"
 #include "ssl_utils.h"
 
+SSL_CTX *global_client_ctx = NULL; // Global client SSL context
+
 int main(int argc, char **argv) {
     // Create necessary directories if they do not exist
     initialize_database_directories();
     
-    // Initialize OpenSSL and create socket
-    int sock;
-    SSL_CTX *ctx;
-
+    // Initialize SSL contexts
     init_openssl();
-    ctx = create_server_context();
-    configure_server_context(ctx);
 
-    sock = create_socket(SERVER_DEFAULT_PORT);
+    // Create and configure the global client SSL context
+    global_client_ctx = create_client_context();
+    configure_client_context(global_client_ctx);
+
+    // Create and configure the server SSL context
+    SSL_CTX *server_ctx = create_server_context();
+    configure_server_context(server_ctx);
+
+    // Create and bind socket
+    int sock = create_socket(SERVER_DEFAULT_PORT);
 
     // Accept incoming connections and handle them
     while (1) {
@@ -31,7 +37,7 @@ int main(int argc, char **argv) {
             exit(EXIT_FAILURE);
         }
 
-        ssl = SSL_new(ctx);
+        ssl = SSL_new(server_ctx);
         SSL_set_fd(ssl, client);
 
         if (pthread_create(&tid, NULL, handle_connection, ssl) != 0) {
@@ -42,8 +48,15 @@ int main(int argc, char **argv) {
         }
     }
 
-    close(sock);
-    SSL_CTX_free(ctx);
+    // Clean up SSL contexts
+    SSL_CTX_free(global_client_ctx);
+    SSL_CTX_free(server_ctx);
+
+    // Clean up OpenSSL
     cleanup_openssl();
+
+    // Close socket
+    close(sock);
+
     return 0;
 }
