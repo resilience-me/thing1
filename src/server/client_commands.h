@@ -15,6 +15,4 @@ typedef struct {
 
 extern Command commands[];  // Making the commands array available externally
 
-void dispatch_command(SSL *ssl, Session *session, const char *command, const char **args);
-
 #endif // CLIENT_COMMANDS_H
