@@ -1,5 +1,5 @@
-#ifndef COMMANDS_H
-#define COMMANDS_H
+#ifndef COMMAND_PROCESSOR_H
+#define COMMAND_PROCESSOR_H
 
 #include <openssl/ssl.h>
 
