@@ -84,15 +84,7 @@ SSL* establish_connection(const char *server_address, const char *portStr) {
         return NULL;
     }
 
-    struct addrinfo *res;
-    if (resolve_hostname(server_address, portStr, &res) != 0) {
-        SSL_CTX_free(ctx);
-        return NULL;
-    }
-
-    int sockfd = create_and_connect_socket(res);
-    freeaddrinfo(res);
-
+    int sockfd = open_connection(server_address, atoi(portStr));
     if (sockfd == -1) {
         SSL_CTX_free(ctx);
         return NULL;
