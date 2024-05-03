@@ -13,8 +13,8 @@ int main(int argc, char **argv) {
     SSL_CTX *ctx;
 
     init_openssl();
-    ctx = create_context();
-    configure_context(ctx);
+    ctx = create_server_context();
+    configure_server_context(ctx);
 
     sock = create_socket(PORT);
 
