@@ -121,6 +121,11 @@ const char *login_user(const char *username, const char *password) {
     return "LOGIN_SUCCESS";  // User successfully authenticated
 }
 
+const char *logout_user(const char *username, const char *password) {
+    session.authenticated = 0;
+}
+
+
 const char *add_account(const char *username, const char *server_address, const char *portStr, Session *session) {
     // Build the path to the server directory
     char server_dir[768];
