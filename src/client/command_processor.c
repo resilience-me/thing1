@@ -19,20 +19,22 @@ void interact_with_server(SSL *ssl) {
     }
     strcat(command_list, "): ");  // Close the prompt string
 
-    while (1) {
-        printf("%s", command_list);  // Use the dynamically created list in the prompt
-        if (!fgets(cmd, sizeof(cmd), stdin) || strcmp(cmd, "EXIT\n") == 0) {
-            break;  // Exit loop if user types "EXIT" or there's an input error
-        }
-
-        cmd[strcspn(cmd, "\n")] = '\0';  // Remove newline character
+    printf("Enter command: ");
+    while (fgets(cmd, sizeof(cmd), stdin) && strcmp(cmd, "EXIT\n") != 0) {
+        cmd[strcspn(cmd, "\n")] = '\0';  // Strip newline
+        int found = 0;
 
         for (Command *command = commands; command->name != NULL; command++) {
-            if (strcmp(cmd, command->name) == 0 && command->handler) {
+            if (strcmp(cmd, command->name) == 0) {
                 command->handler(ssl);
-                break;  // Break since command is handled
+                found = 1;
+                break;
             }
         }
-        printf("Unknown command. Please try again.\n");
+
+        if (!found) {
+            printf("Unknown command. Please try again.\n");
+        }
+        printf("Enter command: ");
     }
 }
