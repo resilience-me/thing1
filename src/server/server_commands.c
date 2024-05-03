@@ -5,6 +5,7 @@
 
 #include "net_utils.h"
 #include "ssl_utils.h"
+#include "protocol_defs.h"
 
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -104,5 +105,15 @@ SSL* establish_connection(const char *server_address, const char *portStr) {
     printf("SSL Handshake successful with %s encryption\n", SSL_get_cipher(ssl));
 
     SSL_CTX_free(ctx); // Free context if it's not used elsewhere
+
+    // Construct and send the protocol header
+    struct ProtocolHeader header;
+    header.connectionType = SERVER_CONNECTION;
+    if (SSL_write(ssl, &header, sizeof(header)) != sizeof(header)) {
+        perror("Protocol header send failed");
+        close(sockfd);
+        SSL_free(ssl);
+        return NULL;
+    }
     return ssl;
 }
