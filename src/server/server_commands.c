@@ -78,7 +78,7 @@ const char *send_account_exists_query(SSL *ssl, const char *username) {
 }
 
 // Function to establish a connection to a remote server
-SSL* establish_connection(const char *server_address, const char *portStr) {
+SSL* establish_connection(const char *server_address, int port) {
     SSL_library_init();
     init_openssl();
 
@@ -88,7 +88,7 @@ SSL* establish_connection(const char *server_address, const char *portStr) {
         return NULL;
     }
 
-    int sockfd = open_connection(server_address, atoi(portStr));
+    int sockfd = open_connection(server_address, port);
     if (sockfd == -1) {
         SSL_CTX_free(ctx);
         return NULL;
