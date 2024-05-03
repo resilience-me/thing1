@@ -1,7 +1,7 @@
 #ifndef CLIENT_COMMAND_HANDLERS_H
 #define CLIENT_COMMAND_HANDLERS_H
 
-#include "client_connection_handler.h"
+#include "session_defs.h"
 #include <stdio.h>
 #include <string.h>
 #include <openssl/ssl.h>
