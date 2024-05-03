@@ -1,15 +1,6 @@
 #include "network.h"
 #include "config.h"
 
-void initialize_openssl() {
-    SSL_load_error_strings();
-    OpenSSL_add_ssl_algorithms();
-}
-
-void cleanup_openssl() {
-    EVP_cleanup();
-}
-
 SSL_CTX *create_context() {
     const SSL_METHOD *method;
     SSL_CTX *ctx;
