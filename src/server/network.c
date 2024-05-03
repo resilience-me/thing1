@@ -5,7 +5,7 @@
 #include "ssl_utils.h"
 #include "protocol_defs.h"
 
-SSL_CTX *create_server_context() {
+SSL_CTX *create_ssl_server_context() {
     const SSL_METHOD *method;
     SSL_CTX *ctx;
 
@@ -22,7 +22,7 @@ SSL_CTX *create_server_context() {
     return ctx;
 }
 
-void configure_server_context(SSL_CTX *ctx) {
+void configure_ssl_server_context(SSL_CTX *ctx) {
     SSL_CTX_use_certificate_file(ctx, CERTIFICATE_FILE, SSL_FILETYPE_PEM);
     SSL_CTX_use_PrivateKey_file(ctx, PRIVATE_KEY_FILE, SSL_FILETYPE_PEM);
 
