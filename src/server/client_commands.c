@@ -226,7 +226,7 @@ const char *add_connection(Session *session, const char *username, const char *s
     if (strcmp(response, "ACCOUNT_EXISTS") == 0) {
 
         // Set username to "default"´ if username is empty string
-        if (username == "") {
+        if (strcmp(username, "") == 0) {
             username = "default";  // Set to "default"
         }
         if (strcmp(server_address, "localhost") == 0 && strcmp(account_string, session->username)) return "CANNOT_ADD_SELF";
