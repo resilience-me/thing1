@@ -1,4 +1,5 @@
 #include "command_handlers.h"
+#include "string_util.h"
 #include <stdio.h>
 #include <string.h>
 
