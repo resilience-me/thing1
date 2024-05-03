@@ -5,7 +5,7 @@
 #include <regex.h>     // For regex functions
 #include <string.h>    // For string manipulation functions
 
-char* parse_url(const char *url, int *port) {
+char* parse_address_and_port(const char *url, int *port) {
     regex_t regex;
     regmatch_t pmatch[4];
     const char *pattern = "^([^:/]+)(:([0-9]+))?/?$";
