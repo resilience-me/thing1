@@ -12,7 +12,7 @@ void cleanup_openssl() {
     EVP_cleanup();
 }
 
-void configure_client_context(SSL_CTX *ctx) {
+void configure_ssl_client_context(SSL_CTX *ctx) {
     SSL_CTX_set_default_verify_paths(ctx);
 }
 
