@@ -19,18 +19,11 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
     
-    init_openssl();
-
-    SSL_CTX *ctx = create_ssl_client_context();
-    if (ctx == NULL) {
-        fprintf(stderr, "Failed to initialize SSL context\n");
+    SSL *ssl = establish_ssl_client_connection(url, port);
+    if (ssl == NULL) {
+        fprintf(stderr, "Failed to establish SSL connection\n");
         return EXIT_FAILURE;
     }
-    
-    configure_client_context(ctx);
-
-    int sock = open_connection(hostname, port);
-    SSL *ssl = ssl_client_handshake(ctx, sock);
 
     // Send the protocol header to the server
     struct ProtocolHeader header;
