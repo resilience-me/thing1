@@ -172,7 +172,7 @@ const char *add_connection(Session *session, const char *username, const char *s
     // Validate port
     int port;
     if (portStr == NULL || portStr[0] == '\0') {
-        port = DEFAULT_PORT;  // Assume DEFAULT_PORT is defined somewhere
+        port = PORT;
     } else {
         port = atoi(portStr);  // Convert string to int
         if (port <= 0) {       // Simple validation to catch invalid conversions
