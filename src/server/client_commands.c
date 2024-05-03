@@ -1,3 +1,8 @@
+#include "client_commands.h"  // Include the header file for declarations
+#include "client_command_handlers.h"
+#include <string.h>    // For strcmp and strlen
+#include <openssl/ssl.h>  // For SSL_write
+
 typedef const char *(*CommandHandler)(Session *session, char **args);
 
 typedef struct {
@@ -12,7 +17,7 @@ Command commands[] = {
     {"REGISTER", register_user, 0},
     {"DELETE_ACCOUNT", delete_user, 1},
     {"ADD_CONNECTION", add_connection, 1},
-    {NULL, NULL, 0}
+    {NULL, NULL, 0}  // Terminating entry
 };
 
 void dispatch_command(SSL *ssl, Session *session, const char *command, const char **args) {
