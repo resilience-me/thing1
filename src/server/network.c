@@ -69,7 +69,6 @@ int create_socket(int port) {
 
 // Function to establish a connection to a remote server
 SSL* establish_connection(const char *server_address, int port) {
-    SSL_library_init();
     init_openssl();
 
     SSL_CTX *ctx = create_ssl_client_context();
