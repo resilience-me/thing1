@@ -82,7 +82,7 @@ SSL* establish_connection(const char *server_address, int port) {
         return NULL;
     }
 
-    SSL *ssl = ssl_client_handshake(ctx, sockfd);
+    SSL *ssl = setup_ssl_client_connection(ctx, sockfd);
     if (ssl == NULL) {
         close(sockfd);
         return NULL;
