@@ -2,7 +2,6 @@
 #include "parse_string_util.h"
 #include "string_util.h"
 #include <stdio.h>
-#include <string.h>
 
 void handle_login_and_register(char *loginOrRegister, SSL *ssl) {
     char username[256], password[256];
