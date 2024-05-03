@@ -229,7 +229,7 @@ const char *add_connection(Session *session, const char *username, const char *s
         if (strcmp(username, "") == 0) {
             username = "default";  // Set to "default"
         }
-        if (strcmp(server_address, "localhost") == 0 && strcmp(account_string, session->username)) return "CANNOT_ADD_SELF";
+        if (strcmp(server_address, "localhost") == 0 && strcmp(username, session->username)) return "CANNOT_ADD_SELF";
         
         return add_account(username, server_address, portStr, session);
     } else {
