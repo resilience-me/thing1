@@ -1,3 +1,7 @@
+#include "command_handlers.h"
+#include <stdio.h>
+#include <string.h>
+
 void handle_login_and_register(char *loginOrRegister, SSL *ssl) {
     char username[256], password[256];
     printf("Enter username: ");
