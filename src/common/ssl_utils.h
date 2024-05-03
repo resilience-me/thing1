@@ -6,6 +6,8 @@
 void init_openssl();
 void cleanup_openssl();
 
+void configure_client_context(SSL_CTX *ctx);
+
 SSL_CTX* create_ssl_client_context(void);
 
 // Function to perform SSL client handshake
