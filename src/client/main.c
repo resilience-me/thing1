@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
     
-    configure_context(ctx);
+    configure_client_context(ctx);
 
     char *hostname = parse_url(url, &port);
     if (!hostname) {
