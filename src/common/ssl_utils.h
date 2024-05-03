@@ -3,6 +3,8 @@
 
 #include <openssl/ssl.h>
 
+void init_openssl();
+
 SSL_CTX* create_ssl_client_context(void);
 
 // Function to perform SSL client handshake
