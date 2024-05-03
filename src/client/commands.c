@@ -88,22 +88,31 @@ void handle_delete_account(SSL *ssl) {
 }
 
 void handle_add_connection(SSL *ssl) {
-    char input[256];
+    char username[256];
+    char server_address[256];
+    char port[256];
 
-    printf("Enter connection details (format: username@server_address:port): ");
-    fgets(input, sizeof(input), stdin);
-    input[strcspn(input, "\n")] = '\0';  // Remove newline character
+    // Query for username
+    printf("Enter username (leave empty if default account): ");
+    fgets(username, sizeof(username), stdin);
+    username[strcspn(username, "\n")] = '\0';  // Remove newline character
 
-    // Parse the input into username, server address, and port
-    char *username = strtok(input, "@");
-    char *server_and_port = strtok(NULL, "");
+    // Query for server address
+    printf("Enter server address (leave empty if on the same server): ");
+    fgets(server_address, sizeof(server_address), stdin);
+    server_address[strcspn(server_address, "\n")] = '\0';  // Remove newline character
 
-    char *server_address = server_and_port ? strtok(server_and_port, ":") : "";
-    char *port = server_and_port ? strtok(NULL, "") : "";
+    // Query for port
+    printf("Enter port (leave empty if default port): ");
+    fgets(port, sizeof(port), stdin);
+    port[strcspn(port, "\n")] = '\0';  // Remove newline character
 
     // Send the ADD_CONNECTION command with the parsed username, server address, and port to the server
     char command[512];
-    snprintf(command, sizeof(command), "ADD_CONNECTION %s %s %s", username ? username : "", server_address, port);
+    snprintf(command, sizeof(command), "ADD_CONNECTION %s %s %s", 
+             username[0] ? username : "", 
+             server_address[0] ? server_address : "", 
+             port[0] ? port : "");
     SSL_write(ssl, command, strlen(command));
 
     // Wait for and print the server's response
