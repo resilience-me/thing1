@@ -8,9 +8,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+typedef const char *(*CommandHandler)(Session *session, char **args);
+
 typedef struct {
-    char *command_name;
-    void (*handler)(Session *, char **args);
+    char *name;
+    CommandHandler handler;
     int needs_authentication;
 } Command;
 
@@ -24,8 +26,8 @@ Command commands[] = {
 };
 
 void dispatch_command(SSL *ssl, Session *session, const char *command, const char **args) {
-    for (int i = 0; commands[i].command_name != NULL; i++) {
-        if (strcmp(command, commands[i].command_name) == 0) {
+    for (int i = 0; commands[i].name != NULL; i++) {
+        if (strcmp(command, commands[i].name) == 0) {
             const char *result;
             if (commands[i].needs_authentication && !session->authenticated) {
                 result = "AUTH_REQUIRED";
