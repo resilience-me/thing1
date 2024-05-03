@@ -12,7 +12,7 @@
 const char *register_user(Session *session, const char *args) {
     char username[256];
     char password[256];
-    if (sscanf(args, "%255s %255s", username, password) != 2) {
+    if (args == NULL || sscanf(args, "%255s %255s", username, password) != 2) {
         return "INVALID_ARGUMENTS";
     }
     // Check if username is valid
