@@ -1,5 +1,5 @@
 #include "string_util.h"
-#include <string.h>
+#include <ctype.h>
 
 // Function to check if a username contains only valid characters
 int isValidUsername(const char *username) {
