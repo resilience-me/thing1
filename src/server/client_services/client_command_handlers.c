@@ -193,30 +193,37 @@ const char *add_account(const char *username, const char *server_address, const 
 
 
 const char *add_connection(Session *session, const char *args) {
-    // Check if the user is authenticated
+    char remote_username[256] = "";
+    char server_address[256] = "";
+    char portStr[6] = "";
+
+    // Check authentication
     if (!session->authenticated) {
         return "AUTHENTICATION_REQUIRED";
     }
 
-    // Set empty string if username is NULL
-    if (username == NULL) {
-        username = "";  // Empty string
-    }
+    // Parse arguments
+    sscanf(args, "%255s %255s %5s", remote_username, server_address, portStr);
 
+    // Set defaults for empty inputs
+    if (remote_username[0] == '\0') {
+        strcpy(remote_username, "default");  // Default username if not provided
+    }
+    
     // Check if provided username is invalid
     if (!isValidUsername(username)) {
         return "INVALID_USERNAME";
     }
 
     // Validate server address
-    if (server_address == NULL || server_address[0] == '\0') {
+    if (server_address[0] == '\0') {
         server_address = "localhost";  // Default to localhost if no server address is provided
     }
 
     char port_buf[6]; // Assuming port number will be less than 100000
     
     // If portStr is NULL or empty, set it to DEFAULT_PORT
-    if (portStr == NULL || portStr[0] == '\0') {
+    if (portStr[0] == '\0') {
         sprintf(port_buf, "%d", SERVER_DEFAULT_PORT);
         portStr = port_buf;
     }
