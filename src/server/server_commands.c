@@ -79,8 +79,7 @@ const char *send_account_exists_query(SSL *ssl, const char *username) {
 // Function to establish a connection to a remote server
 SSL* establish_connection(const char *server_address, const char *portStr) {
     SSL_library_init();
-    OpenSSL_add_all_algorithms();
-    SSL_load_error_strings();
+    init_openssl();
 
     SSL_CTX *ctx = create_ssl_client_context();
     if (ctx == NULL) {
