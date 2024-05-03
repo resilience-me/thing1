@@ -10,13 +10,18 @@
 
 // Function to handle user registration
 const char *register_user(Session *session, const char *args) {
+    char username[256];
+    char password[256];
+    if (sscanf(args, "%255s %255s", username, password) != 2) {
+        return "INVALID_ARGUMENTS";
+    }
     // Check if username is valid
     if (!isValidUsername(username)) {
         return "INVALID_USERNAME";
     }
 
     // Build the path to the user directory
-    char user_dir[512];
+    char user_dir[768];
     snprintf(user_dir, sizeof(user_dir), "%s/accounts/%s", datadir, username);
 
     // Check if user directory already exists
