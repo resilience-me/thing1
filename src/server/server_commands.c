@@ -82,9 +82,9 @@ SSL* establish_connection(const char *server_address, const char *portStr) {
     OpenSSL_add_all_algorithms();
     SSL_load_error_strings();
 
-    SSL_CTX *ctx = SSL_CTX_new(SSLv23_client_method());
+    SSL_CTX *ctx = create_ssl_client_context();
     if (ctx == NULL) {
-        perror("SSL context creation error");
+        fprintf(stderr, "Failed to create SSL context\n");
         return NULL;
     }
 
