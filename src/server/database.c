@@ -1,5 +1,5 @@
 #include "database.h"
-#include "config.h"
+#include "server_config.h"
 
 #include <stdio.h>
 #include <string.h>
