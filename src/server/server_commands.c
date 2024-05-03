@@ -1,5 +1,5 @@
 #include "connection_handler.h"
-#include "client_commands.h"
+#include "client_command_handlers.h"
 #include "database.h"
 #include "server_config.h"
 #include "format_utils.h"
