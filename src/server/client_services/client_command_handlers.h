@@ -16,13 +16,18 @@
 #include <fcntl.h>
 
 // Function to handle user registration
-const char *register_user(const char *username, const char *password);
+const char *register_user(Session *session, const char *args);
 
 // Function to add a connection to the server
-const char *add_connection(Session *session, const char *username, const char *server_address, const char *portStr);
+const char *add_connection(Session *session, const char *args);
 
-const char *delete_user(Session *session);
-const char *login_user(const char *username, const char *password);
-const char *logout_user(const char *username, const char *password);
+// Function to delete a user
+const char *delete_user(Session *session, const char *args);
+
+// Function to log in a user
+const char *login_user(Session *session, const char *args);
+
+// Function to log out a user
+const char *logout_user(Session *session, const char *args);
 
 #endif /* CLIENT_COMMAND_HANDLERS_H */
