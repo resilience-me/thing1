@@ -148,106 +148,62 @@ const char *add_account(const char *accountString, Session *session) {
     return "CONNECTION_ADDED";
 }
 
-const char *add_connection(Session *session, char *connection_arg) {
+const char *add_connection(Session *session, const char *username, const char *server_address, const char *portStr) {
     // Check if the user is authenticated
     if (!session->authenticated) {
         return "AUTHENTICATION_REQUIRED";
     }
-    const char *server_delimiter = "@";
 
-    // Parse the connection argument
-    char username[256];
-    char server_address[256];
-    // Set port to default value
-    char port_string[6];
-    snprintf(port_string, sizeof(port_string), "%d", PORT);
-
-    char *server_username = strtok(connection_arg, server_delimiter);
-
-    if (server_username == NULL || server_username[0] == '\0') {
-        // No username specified, set an empty username
-        username[0] = '\0';
-    } else {
-        strncpy(username, server_username, sizeof(username) - 1);
+    // Set empty string if username is NULL
+    if (username == NULL) {
+        username = "";  // Empty string
     }
-    // Check if username is valid
+
+    // Check if provided username is invalid
     if (!isValidUsername(username)) {
         return "INVALID_USERNAME";
     }
-    
-    // Proceed to parse server address and port
-    char *server_and_port = strtok(NULL, server_delimiter);
-    char *server = NULL;
-    char *port_delimiter_pos = NULL;
-    
-    if (server_and_port != NULL) {
-        // Find the position of port delimiter ':'
-         port_delimiter_pos = strchr(server_and_port, ':');
-    
-        if (port_delimiter_pos != NULL) {
-            // Extract the server and port
-            *port_delimiter_pos = '\0';  // Replace ':' with '\0' to split the string
-            server = server_and_port;
-            strncpy(port_string, port_delimiter_pos + 1, sizeof(port_string) - 1);  // Copy the port string
-        } else {
-            server = server_and_port;  // If no port delimiter is found, consider the whole string as the server
+
+    // Validate server address
+    if (server_address == NULL || server_address[0] == '\0') {
+        server_address = "localhost";  // Default to localhost if no server address is provided
+    }
+
+    // Validate port
+    int port;
+    if (portStr == NULL || portStr[0] == '\0') {
+        port = DEFAULT_PORT;  // Assume DEFAULT_PORT is defined somewhere
+    } else {
+        port = atoi(portStr);  // Convert string to int
+        if (port <= 0) {       // Simple validation to catch invalid conversions
+            return "INVALID_PORT";
         }
     }
-    
-    // If server is NULL or empty, use a local connection
-    if (server == NULL || server[0] == '\0') {
-        strncpy(server_address, "localhost", sizeof(server_address) - 1);
-    } else {
-        strncpy(server_address, server, sizeof(server_address) - 1);
-    }
-
-    // Now 'username' contains the username, 'server_address' contains the server address,
-    // and 'port_string' contains the port number (default if not specified)
 
     // Establish an SSL connection to the remote server
-    SSL *remoteSSL = establish_connection(server_address, port_string);
-
-    // Check if connection was successful
+    SSL *remoteSSL = establish_connection(server_address, port);
     if (remoteSSL == NULL) {
         return "CONNECTION_FAILED";
     }
 
+    // Send a query to check if the account exists on the remote server
     const char *response = send_account_exists_query(remoteSSL, username);
 
     // Close the SSL connection
     SSL_shutdown(remoteSSL);
     SSL_free(remoteSSL);
 
-    // Check the response and take appropriate action
+    // Handle the response from the server
     if (strcmp(response, "ACCOUNT_EXISTS") == 0) {
-        // Concatenate the account string based on server and port information
-        char account_string[256];
-        account_string[0] = '\0'; // Ensure account_string starts as an empty string
-        
-        if(strlen(username) > 0) {
-            // Copy username to account_string
-            strcpy(account_string, username);
-        } else {
-            if(strcmp(server_address, "localhost") == 0) {
-                strcpy(account_string, DEFAULT_USER);
-            }
-        }
-        if (strcmp(server_address, "localhost") != 0) {
-            strcat(account_string, "@");
-            strcat(account_string, server);
-        } else {
-            if(strcmp(account_string, session->username) == 0) return "CANNOT_ADD_SELF";
-        }
+        // Prepare the account string for addition
+        char account_string[256] = {0};  // Ensure it starts empty
+        snprintf(account_string, sizeof(account_string), "%s@%s:%s", username, server_address, port_string);
 
-        // Check if port is provided and concatenate it
-        if (port_delimiter_pos != NULL && strlen(port_delimiter_pos + 1) > 0) {
-            strcat(account_string, ":");
-            strcat(account_string, port_string);
-        }
-        return add_account(account_string, session);
+        // Additional business logic here, such as checking if the account can be added
+        return add_account(account_string, session);  // Assume add_account is a function defined elsewhere
     } else {
-        // Account does not exist, handle error...
         return "ACCOUNT_NOT_FOUND";
     }
 }
+
 
