@@ -33,5 +33,6 @@ void interact_with_server(SSL *ssl) {
                 break;  // Break since command is handled
             }
         }
+        printf("Unknown command. Please try again.\n");
     }
 }
