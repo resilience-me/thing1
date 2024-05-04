@@ -6,7 +6,7 @@
 
 typedef void (*CommandHandler)(SSL*);
 
-extern Command commands[];  // Makes the commands array available to other files
+extern Command *commands;  // Makes the commands array available to other files
 
 extern void *command_handlers[];
 
