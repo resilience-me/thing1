@@ -33,6 +33,25 @@ void receive_response(SSL *ssl, char *response, size_t max_length) {
     }
 }
 
+// // Function to receive a response from the remote server
+// void receive_response(SSL *ssl, size_t max_length) {
+//     // Allocate a fixed-size buffer for the response
+//     char response[1024];
+    
+//     // Receive the response from the server
+//     ssize_t bytes_received = SSL_read(ssl, response, max_length - 1);
+//     if (bytes_received < 0) {
+//         perror("Error receiving response");
+//     } else {
+//         // Null-terminate the response string
+//         response[bytes_received] = '\0';
+        
+//         // Print the response
+//         printf("Server response: %s\n", response);
+//     }
+// }
+
+
 const char *account_exists(char *username) {
     // Check if username is NULL or empty, then use default user
     if (username == NULL || username[0] == '\0') {
@@ -68,3 +87,23 @@ void send_account_exists_query(SSL *ssl, const char *username, char *response_bu
     // Receive the response from the server
     receive_response(ssl, response_buffer, buffer_size);
 }
+
+// const char *send_account_exists_query(SSL *ssl, const char *username) {
+//     // Construct the query with the username
+//     char query[256];
+//     snprintf(query, sizeof(query), "ACCOUNT_EXISTS %s", username);
+
+//     // Send the query to the server
+//     send_query(ssl, query);
+
+//     // Receive the response from the server
+//     char *response_buffer = malloc(buffer_size); // Allocate memory for response buffer
+//     if (response_buffer == NULL) {
+//         fprintf(stderr, "Failed to allocate memory for response buffer.\n");
+//         return NULL; // Return NULL on allocation failure
+//     }
+    
+//     receive_response(ssl, response_buffer, buffer_size);
+
+//     return response_buffer;
+// }
