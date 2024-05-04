@@ -10,6 +10,6 @@
 
 typedef const char *(*ServerAsClientCommandHandler)(Session *session, const char *args);
 
-extern Command server_as_client_commands[];  // Making the commands array available externally
+extern Command *server_as_client_commands[]; // Making the commands array available externally
 
 #endif // CLIENT_COMMANDS_H
