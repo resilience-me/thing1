@@ -9,7 +9,5 @@ typedef void (*CommandHandler)(SSL*);
 extern Command commands[];  // Makes the commands array available to other files
 
 void dispatch_command(SSL *ssl, const char *cmd);
-void initialize_commands();
-void cleanup_commands();
 
 #endif // COMMANDS_H
