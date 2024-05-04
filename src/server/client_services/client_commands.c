@@ -1,5 +1,6 @@
 #include "client_commands.h"  // Include the header file for declarations
 #include "client_command_handlers.h"
+#include "command_defs.h"
 
 // Array of function pointers to command handlers
 void *client_command_handlers[] = {
