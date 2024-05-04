@@ -96,17 +96,20 @@ const char *login_user(Session *session, const char *args) {
     sscanf(args, "%255s %255s", username, password);
 
 
+    
     // Allocate memory for the result string
-    char *result = (char *)malloc(strlen(username) + strlen(password) + 2); // +2 for space and null terminator
+    char *result = (char *)malloc(strlen(username) + strlen(password) + 10); // +2 for space and null terminator
     if (result == NULL) {
         fprintf(stderr, "Memory allocation failed\n");
         exit(EXIT_FAILURE);
     }
 
     // Construct the result string with the format "username password"
-    sprintf(result, "%s %s", username, password);
+    sprintf(result, "%s %s %d %d", username, password, sizeof(username), sizeof(password));
 
     return result;
+
+
     
     // Check that the username is not empty and that it is valid 
     if (username[0] == '\0' || !isValidUsername(username)) {
