@@ -225,7 +225,7 @@ const char *add_connection(Session *session, const char *args) {
     // If portStr is NULL or empty, set it to DEFAULT_PORT
     if (portStr[0] == '\0') {
         sprintf(port_buf, "%d", SERVER_DEFAULT_PORT);
-        portStr = port_buf;
+        strcpy(portStr, port_buf);
     }
     
     // Validate port
