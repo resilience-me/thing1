@@ -105,7 +105,7 @@ const char *login_user(Session *session, const char *args) {
     }
 
     // Construct the result string with the format "username password"
-    sprintf(result, "%s %s %d %d", username, password, strlen(username), strlen(password));
+    sprintf(result, "%s %s %zu %zu", username, password, strlen(username), strlen(password));
 
     return result;
 
