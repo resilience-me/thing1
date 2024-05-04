@@ -1,7 +1,7 @@
 #include "command_defs.h"
 
 // Function to initialize commands and return a pointer to the array
-Command* initialize_commands() {
+Command* initialize_client_commands() {
     int count = 0;
     while (command_names[count] != NULL) count++;  // Count commands
 
