@@ -17,7 +17,7 @@ const char *register_user(Session *session, const char *args) {
         return "INVALID_ARGUMENTS";
     }
     sscanf(args, "%255s %255s", username, password);
-
+    printf("%s %s %s", args, username, password);
     // Check that the username is not empty and that it is valid 
     if (username[0] == '\0' || !isValidUsername(username)) {
         return "INVALID_USERNAME";  // Username is empty or invalid
