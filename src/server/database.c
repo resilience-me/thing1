@@ -62,7 +62,7 @@ int make_dirs(const char *orig_path) {
         free(path);
         return result;
     }
-    int result = make_dir(orig_path);
+    result = make_dir(orig_path);
     free(path);
     return result;
 }
