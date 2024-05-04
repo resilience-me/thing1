@@ -3,6 +3,6 @@
 
 #include <openssl/ssl.h>
 
-void interact_with_server(SSL *ssl);
+void dispatch_command(SSL *ssl, const char *cmd);
 
 #endif
