@@ -6,6 +6,26 @@ A project to implement Ryan's idea in a true P2P way. The system is similar to e
 
 The server interacts with other servers, with TCP/IP and asymmetric encryption. The server also interacts with the client. The client interacts with users over TCP/IP + asymmetric handshake, as `client server.xyz`. This client can interface a website, via web socket. The port is 2012 by default.
 
+The repository structure is:
+
+src/
+│
+├── common/ # Common code shared between client and server
+│
+├── client/ # Source files for the client application
+│
+└── server/ # Source files for the server application
+    │
+    ├── client_services/ # Source files for client services on the server
+    │
+    └── server_services/ # Source files for server-specific services
+        │
+        ├── common/ # Common code shared between server_as_client and server_as_server
+        │
+        ├── server_as_client/ # Source files for server acting as a client
+        │
+        └── server_as_server/ # Source files for server acting as a server
+
 ### Encryption
 
 The platform allows anyone to host a server, and a server can have multiple accounts. Servers interact over asymmetric handshakes. Clients interact with servers over asymmetric handshakes. Message authentication code are also used. In theory Ripple can rely on symmetric encryption only and things like one-time pads, giving the strongest possible encryption, but for practical purposes asymmetric keys are used in this implementation (although adding support for symmetric keys is recommended eventually. )
