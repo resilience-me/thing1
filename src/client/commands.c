@@ -4,15 +4,23 @@
 #include "commands.h"
 #include "command_handlers.h"
 
-// Array defining all command handlers
+// Array of function pointers to command handlers
+void (*command_handlers[])(SSL*) = {
+    handle_login,
+    handle_register,
+    handle_logout,
+    handle_delete_account,
+    handle_add_connection,
+    NULL  // Include NULL for completeness
+};
+
+// Constructing the commands array
 Command commands[] = {
-    {"LOGIN", handle_login},
-    {"REGISTER", handle_register},
-    {"LOGOUT", handle_logout},
-    {"DELETE_ACCOUNT", handle_delete_account},
-    {"ADD_CONNECTION", handle_add_connection},
-    {"EXIT", NULL},  // Include EXIT for clarity and completeness
-    {NULL, NULL}     // End of array marker for iteration
+    // Iterate over command names and construct Command structs
+    for (int i = 0; command_names[i] != NULL; i++) {
+        {command_names[i],  (void *)command_handlers[i]},
+    }
+    {NULL, NULL}  // End marker
 };
 
 void dispatch_command(SSL *ssl, const char *cmd) {
@@ -21,7 +29,7 @@ void dispatch_command(SSL *ssl, const char *cmd) {
     for (Command *command = commands; command->name != NULL; command++) {
         if (strcmp(cmd, command->name) == 0) {
             if (command->handler) {  // Check if handler is not NULL
-                command->handler(ssl);
+                ((CommandHandler)command->handler)(ssl);
             }
             found = 1;
             break;
