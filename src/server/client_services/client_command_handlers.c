@@ -191,7 +191,7 @@ const char *handle_add_connection(Session *session, const char *args) {
     }
 
     // Validate server address
-    if (server_address[0] == '\0') {
+    if (server_address[0] == '\0' || server_address == SERVER_ADDRESS) {
         strcpy(server_address, "localhost");  // Default to localhost if no server address is provided
     }
 
