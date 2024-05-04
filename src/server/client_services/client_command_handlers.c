@@ -128,7 +128,14 @@ const char *login_user(Session *session, const char *args) {
 
     stored_password[read_bytes] = '\0';  // Null terminate the password read from file
     close(fd);
-    return stored_password;
+
+// Concatenate stored password and entered password for comparison
+char comparison_result[512]; // Assuming a max length for the comparison result
+snprintf(comparison_result, sizeof(comparison_result), "Stored: %s, Entered: %s", stored_password, password);
+
+return comparison_result;
+    
+    
     // Compare the provided password with the stored password
     if (strcmp(password, stored_password) != 0) {
         return "PASSWORD_INCORRECT";
