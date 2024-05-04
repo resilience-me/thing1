@@ -7,6 +7,9 @@
 #include <ctype.h>
 
 void interact_with_server(SSL *ssl) {
+    // Initialize command array
+    initialize_commands();
+    
     char cmd[256];
     char command_list[1024] = "Enter command (";  // Starting part of the command prompt
 
