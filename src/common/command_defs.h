@@ -11,6 +11,4 @@ typedef struct {
 
 Command* initialize_commands(const char *command_names[], void *command_handlers[]);
 
-void cleanup_commands();
-
 #endif // COMMAND_DEFS_H
