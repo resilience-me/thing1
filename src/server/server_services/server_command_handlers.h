@@ -11,6 +11,6 @@ void receive_response(SSL *ssl, char *response, size_t max_length);
 
 const char *account_exists(char *username);
 
-const char *send_account_exists_query(SSL *ssl, const char *username);
+void send_account_exists_query(SSL *ssl, const char *username, char *response_buffer, size_t buffer_size);
 
 #endif /* SERVER_COMMAND_HANDLERS_H */
