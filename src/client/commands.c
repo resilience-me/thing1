@@ -15,19 +15,30 @@ void (*command_handlers[])(SSL*) = {
     NULL  // Include NULL for completeness
 };
 
-// Constructing the commands array
-Command commands[] = {
-    // Start of the array of Command structs
-    {NULL, NULL},  // Initialize the first element to ensure proper termination
-    // Iterate over command names and construct Command structs
-    {
-        int i = 0;
-        for (; command_names[i] != NULL; i++) {
-            {command_names[i],  (void *)command_handlers[i]},
-        }
-        {NULL, NULL}  // End marker
+// Function to initialize commands
+void initialize_commands() {
+    int count = 0;
+    while (command_names[count] != NULL) count++;  // Count commands
+
+    // Allocate memory for commands array with an extra slot for the NULL terminator
+    commands = malloc((count + 1) * sizeof(Command));
+
+    for (int i = 0; i < count; i++) {
+        commands[i].name = command_names[i];
+        commands[i].handler = command_handlers[i];
     }
-};
+
+    // Set the last command to NULL to mark the end
+    commands[count].name = NULL;
+    commands[count].handler = NULL;
+}
+
+// Constructing the commands array
+Command commands[];
+
+void cleanup_commands() {
+    free(commands);  // Free the allocated memory when no longer needed
+}
 
 void dispatch_command(SSL *ssl, const char *cmd) {
     int found = 0;
