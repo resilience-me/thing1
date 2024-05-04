@@ -7,5 +7,5 @@ Command commands[] = {
     {"REGISTER", handle_register_user},
     {"DELETE_ACCOUNT", handle_delete_user},
     {"ADD_CONNECTION", handle_add_connection},
-    {NULL, NULL, 0}  // Terminating entry
+    {NULL, NULL}  // Terminating entry
 };
