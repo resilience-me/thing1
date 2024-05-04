@@ -15,6 +15,7 @@ void expand_path(const char *path);
 
 // Function to create a directory if it does not exist
 int make_dir(const char *dir);
+int make_dirs(const char *orig_path);
 
 // Function to recursively create directories
 int initialize_database_directories();
