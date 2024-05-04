@@ -1,6 +1,7 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
+#include "command_defs.h"
 #include <openssl/ssl.h>
 
 typedef void (*CommandHandler)(SSL*);
