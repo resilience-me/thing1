@@ -24,3 +24,11 @@ Command* initialize_commands(const char *command_names[], void *command_handlers
     commands[count].handler = NULL;  // Mark the end
     return commands;
 }
+void* find_command_handler(const char* command, Command* command_handlers) {
+    for (int i = 0; command_handlers[i].name != NULL; i++) {
+        if (strcmp(command, command_handlers[i].name) == 0) {
+            return command_handlers[i].handler;
+        }
+    }
+    return NULL;
+}
