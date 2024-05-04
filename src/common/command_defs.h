@@ -1,15 +1,7 @@
 #ifndef COMMAND_DEFS_H
 #define COMMAND_DEFS_H
 
-// Define array of client command names
-const char *client_command_names[] = {
-    "LOGIN",
-    "REGISTER",
-    "LOGOUT",
-    "DELETE_ACCOUNT",
-    "ADD_CONNECTION",
-    NULL // End marker
-};
+extern const char *client_command_names[];
 
 // Generic command structure applicable to both client and server
 typedef struct {
