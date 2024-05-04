@@ -1,7 +1,7 @@
 #include "network.h"
 #include "connection_handler.h"
 #include "client_commands.h"
-#include "command_defs"
+#include "command_defs.h"
 #include "database.h"
 #include "server_config.h"
 #include "ssl_utils.h"
