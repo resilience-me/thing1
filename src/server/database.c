@@ -67,7 +67,7 @@ int initialize_database_directories() {
     expand_path(DATABASE_DIR);
     if (strlen(datadir) == 0) {
         printf("Failed to expand path\n");
-        return 1;
+        return -1;
     }
 
     // Check if the database directory already exists
@@ -78,7 +78,7 @@ int initialize_database_directories() {
 
     // Directory does not exist, try to create it
     if (make_dirs(datadir) == -1) {
-        return 1;
+        return -1;
     }
     printf("Directories created successfully at %s\n", datadir);
     return 0;
