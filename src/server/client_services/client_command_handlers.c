@@ -125,7 +125,12 @@ const char *login_user(Session *session, const char *args) {
         close(fd);
         return "PASSWORD_READ_FAILED";
     }
-
+    
+    // Remove the newline character if it exists
+    if (read_bytes > 0 && stored_password[read_bytes - 1] == '\n') {
+        stored_password[read_bytes - 1] = '\0';
+    }
+    
     stored_password[read_bytes] = '\0';  // Null terminate the password read from file
     close(fd);
     
