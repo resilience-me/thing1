@@ -170,24 +170,8 @@ const char *add_account(const char *username, const char *server_address, const 
         return "ALREADY_CONNECTED";
     }
 
-    // Create server directory if it doesn't exist
-    if (access(server_dir, F_OK) == -1) {
-        if (mkdir(server_dir, 0777) == -1) {
-            printf("Failed to add account\n");
-            return "DIRECTORY_CREATION_FAILED";
-        }
-    }
-
-    // Create port directory if it doesn't exist
-    if (access(port_dir, F_OK) == -1) {
-        if (mkdir(port_dir, 0777) == -1) {
-            printf("Failed to add account\n");
-            return "DIRECTORY_CREATION_FAILED";
-        }
-    }
-
-    // Create user directory
-    if (mkdir(user_dir, 0777) == -1) {
+    // Consolidated directory creation using make_dirs
+    if (make_dirs(user_dir) == -1) {
         printf("Failed to add account\n");
         return "DIRECTORY_CREATION_FAILED";
     }
