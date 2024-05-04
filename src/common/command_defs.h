@@ -13,7 +13,7 @@ const char *client_command_names[] = {
 
 // Generic command structure applicable to both client and server
 typedef struct {
-    char *name;
+    const char *name;
     void *handler;  // Generic pointer to any function, allows for flexible handling
 } Command;
 
