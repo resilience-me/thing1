@@ -17,11 +17,14 @@ void (*command_handlers[])(SSL*) = {
 
 // Constructing the commands array
 Command commands[] = {
+    // Start of the array of Command structs
+    {NULL, NULL},  // Initialize the first element to ensure proper termination
     // Iterate over command names and construct Command structs
     {
-        for (int i = 0; command_names[i] != NULL; i++) {
+        int i = 0;
+        for (; command_names[i] != NULL; i++) {
             {command_names[i],  (void *)command_handlers[i]},
-        },
+        }
         {NULL, NULL}  // End marker
     }
 };
