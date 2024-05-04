@@ -5,3 +5,9 @@
 //     {"ACCOUNT_EXISTS", send_account_exists_query},
 //     {NULL, NULL, 0}  // Terminating entry
 // };
+
+// // Array of function pointers to command handlers
+// void *server_as_client_command_handlers[] = {
+//     (void*)send_account_exists_query,
+//     NULL  // Include NULL for completeness
+// };
