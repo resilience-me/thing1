@@ -6,7 +6,7 @@
 
 typedef const char *(*CommandHandler)(Session *session, const char *args);
 
-extern Command *commands;  // Making the commands array available externally
+extern Command *client_commands;  // Making the commands array available externally
 
 extern void *client_command_handlers[];
 
