@@ -31,4 +31,5 @@ void interact_with_server(SSL *ssl) {
 
         printf("%s", command_list);  // Use the dynamically created list in the prompt
     }
+    cleanup_commands();
 }
