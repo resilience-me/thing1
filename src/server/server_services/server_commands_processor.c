@@ -5,7 +5,7 @@
 // const char* dispatch_command(SSL *ssl, const char *command, const char *args) {
 //     for (int i = 0; server_commands[i].name != NULL; i++) {
 //         if (strcmp(command, server_commands[i].name) == 0) {
-//             return server_commands[i].handler(session, args); // Execute the handler
+//             return ((ServerCommandHandler) server_commands[i].handler) (session, args); // Execute the handler
 //         }
 //     }
 // }
