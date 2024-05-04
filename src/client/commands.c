@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <string.h>
-#include <openssl/ssl.h>
 #include "commands.h"
 #include "command_handlers.h"
 #include "command_defs.h"
