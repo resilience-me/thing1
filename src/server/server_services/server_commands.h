@@ -8,7 +8,7 @@
 #include "command_defs.h"
 #include "session_defs.h"
 
-typedef const char *(*ServerCommandHandler)(Session *session, const char *args);
+typedef const char *(*ServerAsClientCommandHandler)(Session *session, const char *args);
 
 extern Command server_commands[];  // Making the commands array available externally
 
