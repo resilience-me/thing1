@@ -17,7 +17,7 @@ typedef struct {
     void *handler;  // Generic pointer to any function, allows for flexible handling
 } Command;
 
-Command* initialize_client_commands();
+Command* initialize_commands(const char *command_names[], void *command_handlers[]);
 
 void cleanup_commands();
 
