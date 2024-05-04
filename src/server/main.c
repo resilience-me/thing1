@@ -1,5 +1,6 @@
 #include "network.h"
 #include "connection_handler.h"
+#include "client_commands.h"
 #include "database.h"
 #include "server_config.h"
 #include "ssl_utils.h"
