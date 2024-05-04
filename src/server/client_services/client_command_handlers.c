@@ -211,7 +211,7 @@ const char *add_connection(Session *session, const char *args) {
     }
     
     // Check if provided username is invalid
-    if (!isValidUsername(username)) {
+    if (!isValidUsername(remote_username)) {
         return "INVALID_USERNAME";
     }
 
