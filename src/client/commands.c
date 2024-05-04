@@ -21,7 +21,7 @@ Command commands[] = {
     {
         for (int i = 0; command_names[i] != NULL; i++) {
             {command_names[i],  (void *)command_handlers[i]},
-        }
+        },
         {NULL, NULL}  // End marker
     }
 };
