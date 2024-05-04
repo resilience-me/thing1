@@ -134,7 +134,7 @@ const char *login_user(Session *session, const char *args) {
         return "PASSWORD_INCORRECT";
     }
 
-    strncpy(session.username, username, sizeof(session.username)-1);
+    strncpy(session->username, username, sizeof(session->username)-1);
     session.authenticated = 1;
     
     return "LOGIN_SUCCESS";  // User successfully authenticated
