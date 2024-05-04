@@ -18,13 +18,13 @@ void (*command_handlers[])(SSL*) = {
 // Function to initialize commands
 void initialize_commands() {
     int count = 0;
-    while (command_names[count] != NULL) count++;  // Count commands
+    while (client_command_names[count] != NULL) count++;  // Count commands
 
     // Allocate memory for commands array with an extra slot for the NULL terminator
     commands = malloc((count + 1) * sizeof(Command));
 
     for (int i = 0; i < count; i++) {
-        commands[i].name = command_names[i];
+        commands[i].name = client_command_names[i];
         commands[i].handler = (void*)command_handlers[i];
     }
 
