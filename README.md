@@ -8,23 +8,23 @@ The server interacts with other servers, with TCP/IP and asymmetric encryption. 
 
 The repository structure is:
 
-src/
-│
-├── common/ # Common code shared between client and server
-│
-├── client/ # Source files for the client application
-│
-└── server/ # Source files for the server application
+    src/
     │
-    ├── client_services/ # Source files for client services on the server
+    ├── common/ # Common code shared between client and server
     │
-    └── server_services/ # Source files for server-specific services
+    ├── client/ # Source files for the client application
+    │
+    └── server/ # Source files for the server application
         │
-        ├── common/ # Common code shared between server_as_client and server_as_server
+        ├── client_services/ # Source files for client services on the server
         │
-        ├── server_as_client/ # Source files for server acting as a client
-        │
-        └── server_as_server/ # Source files for server acting as a server
+        └── server_services/ # Source files for server-specific services
+            │
+            ├── common/ # Common code shared between server_as_client and server_as_server
+            │
+            ├── server_as_client/ # Source files for server acting as a client
+            │
+            └── server_as_server/ # Source files for server acting as a server
 
 ### Encryption
 
