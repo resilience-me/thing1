@@ -152,22 +152,6 @@ if (strcmp(password, stored_password) != 0) {
              entered_password_length, password);
     return comparison_result;
 }
-
-// Allocate memory for comparison_result dynamically
-char *comparison_result = malloc(512); // Or choose an appropriate size
-if (comparison_result == NULL) {
-    // Handle memory allocation failure
-}
-
-// Format the string
-int snprintf_result = snprintf(comparison_result, 512, "Stored: %s, Entered: %s", stored_password, password);
-if (snprintf_result < 0 || snprintf_result >= 512) {
-    // Handle snprintf failure or potential truncation
-}
-
-// Return the result
-return comparison_result;
-    
     
     
     // Compare the provided password with the stored password
