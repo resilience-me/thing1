@@ -67,23 +67,16 @@ int make_dirs(const char *orig_path) {
     return make_dir(orig_path);
 }
 
-
 int initialize_database_directories() {
     expand_path(DATABASE_DIR);
     if (strlen(datadir) == 0) {
         printf("Failed to expand path\n");
-        return 1;
+        return -1;
     }
 
-    // Check if the database directory already exists
-    struct stat st;
-    if (stat(datadir, &st) == 0) {
-        return 0;  // Directory exists, no need to create
-    }
-
-    // Directory does not exist, try to create it
+    // Try to create directory
     if (make_dirs(datadir) == -1) {
-        return 1;
+        return -1;
     }
     printf("Directories created successfully at %s\n", datadir);
     return 0;
