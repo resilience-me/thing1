@@ -71,3 +71,11 @@ The routing is centered around caches that keep track of paths an account is inv
     } AccountNode;
 
     AccountNode *head = NULL;
+
+### Payment
+
+Once a path is found, payment is made from sender to receiver. It propagates along the path, and each account commits to the payment (locking their credit line to a value), and then a "success" signal propagates back from the receiver, and each account records the payment as having been made.
+
+### Logging
+
+Each account has a log file, that logs every thing that happened, that they can check to see their account history, in case anything went wrong.
