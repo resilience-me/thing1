@@ -16,7 +16,7 @@ void *command_handlers[] = {
 };
 
 // Constructing the commands array
-Command *commands;
+Command *commands = NULL;
 
 void dispatch_command(SSL *ssl, const char *cmd) {
     int found = 0;
