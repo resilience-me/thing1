@@ -9,7 +9,6 @@ typedef const char *(*CommandHandler)(Session *session, const char *args);
 typedef struct {
     char *name;
     CommandHandler handler;
-    int needs_authentication;
 } Command;
 
 extern Command commands[];  // Making the commands array available externally
