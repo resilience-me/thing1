@@ -4,7 +4,7 @@ A project to implement Ryan's idea in a true P2P way. The system is similar to e
 
 ### Client and server
 
-The server interacts with other servers. The server can probably rely on UDP, since all requests are small enough to fit in a single datagram, and acknowledgements are intrinsic anyway (during path-finding for example, there is transfers back and forth anyway between root and the node graph, serving to implicitly acknowledge that a transmission went through. ) The server also interacts with the client. The client interacts with users over TCP + asymmetric handshake, as `client server.xyz`. This client can interface a website, via web socket. The port is 2012 by default.
+The server interacts with other servers, with TCP/IP and asymmetric encryption. The server also interacts with the client. The client interacts with users over TCP/IP + asymmetric handshake, as `client server.xyz`. This client can interface a website, via web socket. The port is 2012 by default.
 
 ### Encryption
 
