@@ -19,3 +19,6 @@ void *client_command_handlers[] = {
     (void*)handle_add_connection,
     NULL  // Include NULL for completeness
 };
+
+// Constructing the commands array
+Command *client_commands = NULL;
