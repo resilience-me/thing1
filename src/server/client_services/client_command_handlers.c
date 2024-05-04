@@ -101,7 +101,7 @@ const char *login_user(Session *session, const char *args) {
     }
 
     // Build the path to the user directory
-    char user_dir[512];
+    char user_dir[768];
     snprintf(user_dir, sizeof(user_dir), "%s/accounts/%s", datadir, username);
 
     // Check if user directory exists
