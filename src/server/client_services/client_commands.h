@@ -4,7 +4,7 @@
 #include <openssl/ssl.h>  // Needed for SSL type in function prototypes
 #include "session_defs.h"
 
-typedef const char *(*CommandHandler)(Session *session, char **args);
+typedef const char *(*CommandHandler)(Session *session, const char *args);
 
 typedef struct {
     char *name;
