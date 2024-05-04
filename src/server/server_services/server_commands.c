@@ -57,8 +57,7 @@ const char *account_exists(char *username) {
     return "ACCOUNT_EXISTS";
 }
 
-
-const char *send_account_exists_query(SSL *ssl, const char *username) {
+void send_account_exists_query(SSL *ssl, const char *username, char *response_buffer, size_t buffer_size) {
     // Construct the query with the username
     char query[256];
     snprintf(query, sizeof(query), "ACCOUNT_EXISTS %s", username);
@@ -67,9 +66,5 @@ const char *send_account_exists_query(SSL *ssl, const char *username) {
     send_query(ssl, query);
 
     // Receive the response from the server
-    char response[256];
-    receive_response(ssl, response, sizeof(response));
-    
-    // Return the server response
-    return strdup(response); // Remember to free the memory allocated by strdup
+    receive_response(ssl, response_buffer, buffer_size);
 }
