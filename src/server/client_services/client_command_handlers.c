@@ -128,31 +128,6 @@ const char *login_user(Session *session, const char *args) {
 
     stored_password[read_bytes] = '\0';  // Null terminate the password read from file
     close(fd);
-
-
-
-
-// Get the length of the stored password
-size_t stored_password_length = strlen(stored_password);
-
-// Get the length of the entered password
-size_t entered_password_length = strlen(password);
-
-// Compare the provided password with the stored password
-if (strcmp(password, stored_password) != 0) {
-    // Format the comparison result including lengths and individual characters
-    char *comparison_result = malloc(1024); // Allocate memory
-    if (comparison_result == NULL) {
-        // Handle allocation failure
-        return "MEMORY_ALLOCATION_FAILED";
-    }
-    snprintf(comparison_result, 1024, 
-             "PASSWORD_INCORRECT: %s%s", 
-             stored_password, 
-             password);
-    return comparison_result;
-}
-    
     
     // Compare the provided password with the stored password
     if (strcmp(password, stored_password) != 0) {
