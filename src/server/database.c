@@ -62,9 +62,9 @@ int make_dirs(const char *orig_path) {
         free(path);
         return result;
     }
-
+    int result = make_dir(orig_path);
     free(path);
-    return make_dir(orig_path);
+    return result;
 }
 
 int initialize_database_directories() {
