@@ -5,7 +5,7 @@
 void dispatch_command(SSL *ssl, Session *session, const char *command, const char *args) {
     for (int i = 0; commands[i].name != NULL; i++) {
         if (strcmp(command, commands[i].name) == 0) {
-            const char *result = commands[i].handler(session, args); // Execute the handler
+            const char *result = ((ClientCommandHandler)commands[i].handler)(session, args);
             SSL_write(ssl, result, strlen(result)); // Send result back to client
             return;
         }
