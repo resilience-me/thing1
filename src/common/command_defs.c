@@ -21,7 +21,3 @@ Command* initialize_commands(const char *command_names[], void *command_handlers
     commands[count].handler = NULL;  // Mark the end
     return commands;
 }
-
-void cleanup_commands(Command *commands) {
-    free(commands);  // Free the allocated memory
-}
