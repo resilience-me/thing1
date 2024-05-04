@@ -215,8 +215,11 @@ const char *handle_add_connection(Session *session, const char *args) {
         return "CONNECTION_FAILED";
     }
 
+    // Buffer to hold the response
+    char response[256];
+
     // Send a query to check if the account exists on the remote server
-    const char *response = send_account_exists_query(remoteSSL, remote_username);
+    send_account_exists_query(remoteSSL, remote_username, response, sizeof(response));
 
     // Close the SSL connection
     SSL_shutdown(remoteSSL);
@@ -224,7 +227,7 @@ const char *handle_add_connection(Session *session, const char *args) {
 
     // Handle the response from the server
     if (strcmp(response, "ACCOUNT_EXISTS") == 0) {
-        // Prevent adding self as a connection on the same server and port
+        // Prevent adding self as a connection
         if (strcmp(server_address, "localhost") == 0 && strcmp(remote_username, session->username) == 0) {
             return "CANNOT_ADD_SELF";
         }
@@ -233,5 +236,4 @@ const char *handle_add_connection(Session *session, const char *args) {
         return "ACCOUNT_NOT_FOUND";
     }
 }
-
 
