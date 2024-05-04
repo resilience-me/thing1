@@ -1,5 +1,5 @@
-#ifndef SERVER_COMMANDS_H
-#define SERVER_COMMANDS_H
+#ifndef SERVER_COMMAND_HANDLERS_H
+#define SERVER_COMMAND_HANDLERS_H
 
 #include <openssl/ssl.h> // Include OpenSSL header
 
@@ -13,4 +13,4 @@ const char *account_exists(char *username);
 
 const char *send_account_exists_query(SSL *ssl, const char *username);
 
-#endif /* SERVER_COMMANDS_H */
+#endif /* SERVER_COMMAND_HANDLERS_H */
