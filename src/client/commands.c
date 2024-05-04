@@ -3,6 +3,7 @@
 #include <openssl/ssl.h>
 #include "commands.h"
 #include "command_handlers.h"
+#include "command_defs.h"
 
 // Array of function pointers to command handlers
 void (*command_handlers[])(SSL*) = {
