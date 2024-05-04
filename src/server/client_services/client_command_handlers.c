@@ -33,7 +33,7 @@ const char *handle_register_user(Session *session, const char *args) {
     }
 
     // Create user directory
-    if (mkdir(user_dir, 0777) == -1) {
+    if (make_dirs(user_dir) == -1) {
         return "DIRECTORY_CREATION_FAILED";
     }
     
