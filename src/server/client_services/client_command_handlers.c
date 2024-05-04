@@ -17,7 +17,23 @@ const char *register_user(Session *session, const char *args) {
         return "INVALID_ARGUMENTS";
     }
     sscanf(args, "%255s %255s", username, password);
-    return (args + " " + username + " " +password);
+
+
+    // Allocate memory for the result string
+    char *result = (char *)malloc(strlen(username) + strlen(password) + 2); // +2 for space and null terminator
+    if (result == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Construct the result string with the format "username password"
+    sprintf(result, "%s %s", username, password);
+
+    return result;
+
+
+
+    
     // Check that the username is not empty and that it is valid 
     if (username[0] == '\0' || !isValidUsername(username)) {
         return "INVALID_USERNAME";  // Username is empty or invalid
