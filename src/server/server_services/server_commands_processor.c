@@ -3,9 +3,9 @@
 // #include <openssl/ssl.h>  // For SSL_write
 
 // const char* dispatch_command(SSL *ssl, const char *command, const char *args) {
-//     for (int i = 0; server_commands[i].name != NULL; i++) {
-//         if (strcmp(command, server_commands[i].name) == 0) {
-//             return ((ServerAsClientCommandHandler) server_commands[i].handler) (session, args); // Execute the handler
+//     for (int i = 0; server_as_client_commands[i].name != NULL; i++) {
+//         if (strcmp(command, server_as_client_commands[i].name) == 0) {
+//             return ((ServerAsClientCommandHandler) server_as_client_commands[i].handler) (ssl, args); // Execute the handler
 //         }
 //     }
 // }
