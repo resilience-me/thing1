@@ -217,7 +217,7 @@ const char *add_connection(Session *session, const char *args) {
 
     // Validate server address
     if (server_address[0] == '\0') {
-        server_address = "localhost";  // Default to localhost if no server address is provided
+        strcpy(server_address, "localhost");  // Default to localhost if no server address is provided
     }
 
     char port_buf[6]; // Assuming port number will be less than 100000
