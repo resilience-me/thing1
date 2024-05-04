@@ -59,8 +59,7 @@ int make_dirs(const char *orig_path) {
         return -1;
     }
 
-    if (mkdir(orig_path, 0700) == -1 && errno != EEXIST) {
-        perror("Failed to create directory");
+    if (make_dir(orig_path) == -1) {
         free(path);
         return -1;
     }
