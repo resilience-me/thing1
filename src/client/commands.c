@@ -18,10 +18,12 @@ void (*command_handlers[])(SSL*) = {
 // Constructing the commands array
 Command commands[] = {
     // Iterate over command names and construct Command structs
-    for (int i = 0; command_names[i] != NULL; i++) {
-        {command_names[i],  (void *)command_handlers[i]},
+    {
+        for (int i = 0; command_names[i] != NULL; i++) {
+            {command_names[i],  (void *)command_handlers[i]},
+        }
+        {NULL, NULL}  // End marker
     }
-    {NULL, NULL}  // End marker
 };
 
 void dispatch_command(SSL *ssl, const char *cmd) {
