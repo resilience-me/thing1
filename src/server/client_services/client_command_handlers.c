@@ -220,6 +220,7 @@ const char *handle_add_connection(Session *session, const char *args) {
 
     // Send a query to check if the account exists on the remote server
     send_account_exists_query(remoteSSL, remote_username, response, sizeof(response));
+    // const char *result = send_account_exists_query(remoteSSL, remote_username);
 
     // Close the SSL connection
     SSL_shutdown(remoteSSL);
