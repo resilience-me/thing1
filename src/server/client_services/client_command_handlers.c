@@ -36,13 +36,6 @@ const char *handle_register_user(Session *session, const char *args) {
     if (mkdir(user_dir, 0777) == -1) {
         return "DIRECTORY_CREATION_FAILED";
     }
-
-    // Create peers directory within the user directory
-    char peers_dir[1024];
-    snprintf(peers_dir, sizeof(peers_dir), "%s/peers", user_dir);
-    if (mkdir(peers_dir, 0777) == -1) {
-        return "PEERS_DIRECTORY_CREATION_FAILED";
-    }
     
     // Create and store password in password file
     char password_path[1024];
