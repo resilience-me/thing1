@@ -19,4 +19,6 @@ typedef struct {
 
 Command* initialize_client_commands();
 
+void cleanup_commands();
+
 #endif // COMMAND_DEFS_H
