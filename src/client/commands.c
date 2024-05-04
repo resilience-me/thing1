@@ -6,30 +6,34 @@
 #include "command_defs.h"
 
 // Array of function pointers to command handlers
-void (*command_handlers[])(SSL*) = {
-    handle_login,
-    handle_register,
-    handle_logout,
-    handle_delete_account,
-    handle_add_connection,
+void *command_handlers[] = {
+    (void*)handle_login,
+    (void*)handle_register,
+    (void*)handle_logout,
+    (void*)handle_delete_account,
+    (void*)handle_add_connection,
     NULL  // Include NULL for completeness
 };
 
-// Function to initialize commands
-void initialize_commands() {
-    int count = client_command_names_count();
+// Function to initialize commands and return a pointer to the array
+Command* initialize_commands() {
+    int count = 0;
+    while (command_names[count] != NULL) count++;  // Count commands
 
-    // Allocate memory for commands array with an extra slot for the NULL terminator
-    commands = malloc((count + 1) * sizeof(Command));
-
-    for (int i = 0; i < count; i++) {
-        commands[i].name = client_command_names[i];
-        commands[i].handler = (void*)command_handlers[i];
+    Command *commands = malloc((count + 1) * sizeof(Command));
+    if (commands == NULL) {
+        fprintf(stderr, "Failed to allocate memory for commands.\n");
+        return NULL; // Early return on allocation failure
     }
 
-    // Set the last command to NULL to mark the end
+    for (int i = 0; i < count; i++) {
+        commands[i].name = command_names[i];
+        commands[i].handler = command_handlers[i];  // Assign as void* directly
+    }
+
     commands[count].name = NULL;
-    commands[count].handler = NULL;
+    commands[count].handler = NULL;  // Mark the end
+    return commands;
 }
 
 // Constructing the commands array
