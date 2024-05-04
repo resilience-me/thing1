@@ -10,6 +10,8 @@ int main(int argc, char **argv) {
     // Create necessary directories if they do not exist
     initialize_database_directories();
     
+    client_commands = initialize_commands(client_command_names, command_handlers);
+
     // Initialize SSL contexts
     init_openssl();
 
@@ -57,6 +59,6 @@ int main(int argc, char **argv) {
 
     // Close socket
     close(sock);
-
+    free(client_commands);
     return 0;
 }
