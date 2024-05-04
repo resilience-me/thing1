@@ -2,6 +2,7 @@
 #define SERVER_CONFIG_H
 
 // Network configuration
+#define SERVER_ADDRESS "jipple.net"
 #define SERVER_DEFAULT_PORT 2012
 #define CERTIFICATE_FILE "/etc/letsencrypt/live/jipple.net/fullchain.pem"
 #define PRIVATE_KEY_FILE "/etc/letsencrypt/live/jipple.net/privkey.pem"
