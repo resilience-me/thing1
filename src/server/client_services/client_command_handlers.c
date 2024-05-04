@@ -129,11 +129,23 @@ const char *login_user(Session *session, const char *args) {
     stored_password[read_bytes] = '\0';  // Null terminate the password read from file
     close(fd);
 
-// Concatenate stored password and entered password for comparison
-char comparison_result[512]; // Assuming a max length for the comparison result
-snprintf(comparison_result, sizeof(comparison_result), "Stored: %s, Entered: %s", stored_password, password);
 
+
+// Allocate memory for comparison_result dynamically
+char *comparison_result = malloc(512); // Or choose an appropriate size
+if (comparison_result == NULL) {
+    // Handle memory allocation failure
+}
+
+// Format the string
+int snprintf_result = snprintf(comparison_result, 512, "Stored: %s, Entered: %s", stored_password, password);
+if (snprintf_result < 0 || snprintf_result >= 512) {
+    // Handle snprintf failure or potential truncation
+}
+
+// Return the result
 return comparison_result;
+    
     
     
     // Compare the provided password with the stored password
