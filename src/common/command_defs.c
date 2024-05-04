@@ -20,3 +20,7 @@ Command* initialize_client_commands() {
     commands[count].handler = NULL;  // Mark the end
     return commands;
 }
+
+void cleanup_commands() {
+    free(commands);  // Free the allocated memory when no longer needed
+}
