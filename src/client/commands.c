@@ -25,7 +25,7 @@ void initialize_commands() {
 
     for (int i = 0; i < count; i++) {
         commands[i].name = command_names[i];
-        commands[i].handler = command_handlers[i];
+        commands[i].handler = (void*)command_handlers[i];
     }
 
     // Set the last command to NULL to mark the end
