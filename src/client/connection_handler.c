@@ -1,6 +1,6 @@
 #include "connection_handler.h"
-#include "command_handlers.h"
 #include "commands.h"
+#include "command_processor.h"
 #include "command_defs.h"
 
 #include <stdio.h>
