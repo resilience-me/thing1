@@ -4,12 +4,7 @@
 
 // Define array of client command names
 const char *client_command_names[] = {
-    "LOGIN",
-    "REGISTER",
-    "LOGOUT",
-    "DELETE_ACCOUNT",
-    "ADD_CONNECTION",
-    NULL // End marker
+    CLIENT_COMMAND_NAMES
 };
 
 Command* initialize_commands(const char *command_names[], void *command_handlers[]) {
