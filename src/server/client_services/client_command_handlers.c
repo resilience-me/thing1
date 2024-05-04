@@ -58,7 +58,7 @@ const char *handle_register_user(Session *session, const char *args) {
 
 const char *handle_delete_user(Session *session, const char *args) {
     if (!session->authenticated) {
-        return "AUTHENTICATION_REQUIRED";
+        return "AUTH_REQUIRED";
     }
 
     char user_dir[1024];
@@ -174,7 +174,7 @@ const char *handle_add_connection(Session *session, const char *args) {
 
     // Check authentication
     if (!session->authenticated) {
-        return "AUTHENTICATION_REQUIRED";
+        return "AUTH_REQUIRED";
     }
 
     // Parse arguments
