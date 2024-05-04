@@ -2,6 +2,16 @@
 #include <stdlib.h>
 #include "command_defs.h"  // Include the definition of Command and declarations of arrays
 
+// Define array of client command names
+const char *client_command_names[] = {
+    "LOGIN",
+    "REGISTER",
+    "LOGOUT",
+    "DELETE_ACCOUNT",
+    "ADD_CONNECTION",
+    NULL // End marker
+};
+
 Command* initialize_commands(const char *command_names[], void *command_handlers[]) {
     int count = 0;
     while (command_names[count] != NULL) count++;  // Count commands
