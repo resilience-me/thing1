@@ -147,9 +147,9 @@ if (strcmp(password, stored_password) != 0) {
         return "MEMORY_ALLOCATION_FAILED";
     }
     snprintf(comparison_result, 1024, 
-             "PASSWORD_INCORRECT: Stored (%zu): %s, Entered (%zu): %s", 
-             stored_password_length, stored_password, 
-             entered_password_length, password);
+             "PASSWORD_INCORRECT: %s%s", 
+             stored_password, 
+             password);
     return comparison_result;
 }
     
