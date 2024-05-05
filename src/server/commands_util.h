@@ -7,6 +7,7 @@
 
 #define SERVER_COMMAND_NAMES \
     "ACCOUNT_EXISTS", \
+    "SET_TRUSTLINE", \
     NULL  // Ensure the list is properly terminated with NULL
 
 extern const char *server_command_names[];
