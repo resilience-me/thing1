@@ -1,11 +1,6 @@
 #ifndef COMMANDS_FACTORY_H
 #define COMMANDS_FACTORY_H
 
-#include "client_commands.h"
-#include "server_commands.h"
-#include "server_as_client_commands.h"
-#include "server_as_server_commands.h"
-
 /**
  * Initializes all command structures necessary for the application.
  * This includes commands for client interaction, server as client, and server as server functionalities.
