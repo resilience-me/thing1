@@ -1,14 +1,9 @@
-// #include "command_defs.h"
-// // #include "server_as_server_command_handlers.h"
-// #include <stddef.h>
-
-// #include "command_defs.h"
+// #include "commands_util.h"
+// #include "server_as_server_command_handlers.h"
 // #include "server_as_client_command_handlers.h"
-// #include <stddef.h>
-
-// #include "client_commands.h"  // Include the header file for declarations
 // #include "client_command_handlers.h"
 // #include "command_defs.h"
+// #include <stddef.h>
 
 // // Arrays of function pointers to command handlers
 // void *server_as_client_command_handlers[] = {
@@ -32,3 +27,15 @@
 // Command *server_as_client_commands = NULL;
 // Command *server_as_server_commands = NULL;
 // Command *client_commands = NULL;
+
+// void initialize_all_commands() {
+//     client_commands = initialize_commands(client_command_names, client_command_handlers);
+//     server_as_client_commands = initialize_commands(server_command_names, server_as_client_command_handlers);
+//     server_as_server_commands = initialize_commands(server_command_names, server_as_client_command_handlers);
+// }
+
+// void free_all_commands() {
+//     free(client_commands);
+//     free(server_as_client_commands);
+//     free(server_as_server_commands);
+// }
