@@ -116,3 +116,6 @@ void handle_add_connection(SSL *ssl) {
         printf("Failed to receive server response.\n");
     }
 }
+
+void handle_set_trustline(SSL *ssl) {
+}
