@@ -1,4 +1,4 @@
-#include "server_command_handlers.h"
+// #include "server_as_client_command_handlers.h"
 #include "server_connection_handler.h"
 #include "database.h" // Assuming you have functions to check account existence in your database module
 #include <string.h>
