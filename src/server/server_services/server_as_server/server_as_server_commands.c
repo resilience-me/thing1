@@ -4,6 +4,7 @@
 
 // Array of function pointers to command handlers
 void *server_as_server_command_handlers[] = {
+    NULL,  // Handler not implemented yet
     NULL  // Include NULL for completeness
 };
 Command *server_as_server_commands = NULL;
