@@ -1,5 +1,6 @@
 #include "server_commands.h"  // Include the header file for declarations
 #include "command_defs.h"  // Include the generic command handling definitions
+#include "server_as_client_commands.h"
 #include <string.h>    // For strcmp and strlen
 #include <openssl/ssl.h>  // For SSL_write
 
