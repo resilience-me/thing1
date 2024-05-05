@@ -3,6 +3,7 @@
 #include "server_as_client_command_handlers.h"
 #include "client_command_handlers.h"
 #include "command_defs.h"
+#include "session_defs.h"
 #include <stddef.h>
 
 const char *server_command_names[] = { SERVER_COMMAND_NAMES };
@@ -40,4 +41,32 @@ void free_all_commands() {
     free(client_commands);
     free(server_as_client_commands);
     free(server_as_server_commands);
+}
+
+void server_as_server_dispatch_command(SSL *ssl, const char *command, const char *args) {
+    void *handler = find_command_handler(command, server_as_server_commands);
+    if (handler) {
+        const char *result = ((ServerAsServerCommandHandler)handler)(ssl, args);
+        SSL_write(ssl, result, strlen(result));  // Send result back to the other server
+    } else {
+        SSL_write(ssl, "INVALID_COMMAND", strlen("INVALID_COMMAND"));
+    }
+}
+
+const char* server_as_client_dispatch_command(SSL *ssl, const char *command, const char *args) {
+    void *handler = find_command_handler(command, server_as_client_commands);
+    if (handler) {
+        return ((ServerAsClientCommandHandler)handler)(ssl, args);  // Execute the handler, assuming it exists
+    }
+    return NULL;  // Return NULL or some appropriate error handling code
+}
+
+void client_dispatch_command(SSL *ssl, Session *session, const char *command, const char *args) {
+    void *handler = find_command_handler(command, client_commands);
+    if (handler) {
+        const char *result = ((ClientCommandHandler)handler)(session, args);
+        SSL_write(ssl, result, strlen(result)); // Send result back to client
+    } else {
+        SSL_write(ssl, "INVALID_COMMAND", strlen("INVALID_COMMAND"));
+    }
 }
