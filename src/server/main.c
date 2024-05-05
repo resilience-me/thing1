@@ -3,6 +3,7 @@
 #include "client_commands.h"
 #include "server_commands.h"
 #include "server_as_client_commands.h"
+#include "server_as_server_commands.h"
 #include "command_defs.h"
 #include "database.h"
 #include "server_config.h"
