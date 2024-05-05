@@ -3,6 +3,7 @@
 #include "server_commands.h"
 #include "server_as_client_commands.h"
 #include "server_as_server_commands.h"
+#include "command_defs.h"
 
 void initialize_all_commands() {
     client_commands = initialize_commands(client_command_names, client_command_handlers);
