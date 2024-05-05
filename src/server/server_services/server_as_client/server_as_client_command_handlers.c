@@ -76,18 +76,6 @@ const char *account_exists(char *username) {
     return "ACCOUNT_EXISTS";
 }
 
-// void send_account_exists_query(SSL *ssl, const char *username, char *response_buffer, size_t buffer_size) {
-//     // Construct the query with the username
-//     char query[256];
-//     snprintf(query, sizeof(query), "ACCOUNT_EXISTS %s", username);
-
-//     // Send the query to the server
-//     send_query(ssl, query);
-
-//     // Receive the response from the server
-//     receive_response(ssl, response_buffer, buffer_size);
-// }
-
 const char *handle_send_account_exists_query(SSL *ssl, const char *args) {
     const char *username = args;
 
