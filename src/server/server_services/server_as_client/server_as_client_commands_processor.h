@@ -1,7 +1,6 @@
 #ifndef SERVER_AS_CLIENT_COMMANDS_PROCESSOR_H
 #define SERVER_AS_CLIENT_COMMANDS_PROCESSOR_H
 
-#include "server_as_client_commands.h"  // Include the specific server as client command declarations
 #include <openssl/ssl.h>                // For SSL type
 
 /**
