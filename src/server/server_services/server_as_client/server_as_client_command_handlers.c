@@ -76,10 +76,6 @@ const char *account_exists(char *username) {
     return "ACCOUNT_EXISTS";
 }
 
-const char *handle_set_trustline(SSL *ssl, const char *args) {
-    
-}
-
 const char *handle_send_account_exists_query(SSL *ssl, const char *args) {
     const char *username = args;
 
@@ -98,4 +94,8 @@ const char *handle_send_account_exists_query(SSL *ssl, const char *args) {
     
     // Return the response
     return strdup(response_buffer); // Make sure to include <string.h> for strdup
+}
+
+const char *handle_set_trustline(SSL *ssl, const char *args) {
+    
 }
