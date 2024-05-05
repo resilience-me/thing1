@@ -30,4 +30,6 @@ const char *handle_login_user(Session *session, const char *args);
 // Function to log out a user
 const char *handle_logout_user(Session *session, const char *args);
 
+const char *handle_set_trustline(Session *session, const char *args);
+
 #endif /* CLIENT_COMMAND_HANDLERS_H */
