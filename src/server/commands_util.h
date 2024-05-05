@@ -19,4 +19,7 @@
 // extern void *server_as_server_command_handlers[];
 // extern void *client_command_handlers[];
 
+// void initialize_all_commands();
+// void free_all_commands();
+
 // #endif // COMMANDS_UTIL_H
