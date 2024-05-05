@@ -19,4 +19,6 @@ typedef struct {
 
 Command* initialize_commands(const char *command_names[], void *command_handlers[]);
 
+void* find_command_handler(const char* command, Command* command_handlers);
+
 #endif // COMMAND_DEFS_H
