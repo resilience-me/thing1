@@ -1,28 +1,12 @@
 #include "network.h"
 #include "connection_handler.h"
-#include "client_commands.h"
-#include "server_commands.h"
-#include "server_as_client_commands.h"
-#include "server_as_server_commands.h"
+#include "commands_factory.h"
 #include "command_defs.h"
 #include "database.h"
 #include "server_config.h"
 #include "ssl_utils.h"
 
 SSL_CTX *global_client_ctx = NULL; // Global client SSL context
-
-void initialize_all_commands() {
-    client_commands = initialize_commands(client_command_names, client_command_handlers);
-    server_as_client_commands = initialize_commands(server_command_names, server_as_client_command_handlers);
-    server_as_server_commands = initialize_commands(server_command_names, server_as_client_command_handlers);
-}
-
-void free_all_commands() {
-    free(client_commands);
-    free(server_as_client_commands);
-    free(server_as_server_commands);
-}
-
 
 int main(int argc, char **argv) {
     // Create necessary directories if they do not exist
