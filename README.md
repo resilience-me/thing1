@@ -20,8 +20,6 @@ The repository structure is:
         │
         └── server_services/ # Source files for server-specific services
             │
-            ├── common/ # Common code shared between server_as_client and server_as_server
-            │
             ├── server_as_client/ # Source files for server acting as a client
             │
             └── server_as_server/ # Source files for server acting as a server
