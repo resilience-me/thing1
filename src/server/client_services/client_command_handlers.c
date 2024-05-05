@@ -1,7 +1,6 @@
 #include "client_command_handlers.h"
 #include "session_defs.h"
 #include "network.h"
-// #include "server_as_client_command_handlers.h"
 #include "server_as_client_commands_processor.h"
 #include "database.h"
 #include "server_config.h"
@@ -227,12 +226,6 @@ const char *handle_add_connection(Session *session, const char *args) {
         // Handle the case where the command handler was not found or returned NULL
         printf("Failed to execute command: ACCOUNT_EXISTS\n");
     }
-    // // Buffer to hold the response
-    // char response[256];
-    
-    // // Send a query to check if the account exists on the remote server
-    // send_account_exists_query(remoteSSL, remote_username, response, sizeof(response));
-    // // const char *result = send_account_exists_query(remoteSSL, remote_username);
 
     // Close the SSL connection
     SSL_shutdown(remoteSSL);
