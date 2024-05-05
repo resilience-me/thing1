@@ -215,12 +215,23 @@ const char *handle_add_connection(Session *session, const char *args) {
         return "CONNECTION_FAILED";
     }
 
-    // Buffer to hold the response
-    char response[256];
-
     // Send a query to check if the account exists on the remote server
-    send_account_exists_query(remoteSSL, remote_username, response, sizeof(response));
-    // const char *result = send_account_exists_query(remoteSSL, remote_username);
+    const char *response = server_as_client_dispatch_command(remoteSSL, "ACCOUNT_EXISTS", remote_username);
+    
+    // Handle the response accordingly
+    if (result) {
+        // Handle the response, such as checking if the account exists
+        printf("Response from server: %s\n", result);
+    } else {
+        // Handle the case where the command handler was not found or returned NULL
+        printf("Failed to execute command: ACCOUNT_EXISTS\n");
+    }
+    // // Buffer to hold the response
+    // char response[256];
+    
+    // // Send a query to check if the account exists on the remote server
+    // send_account_exists_query(remoteSSL, remote_username, response, sizeof(response));
+    // // const char *result = send_account_exists_query(remoteSSL, remote_username);
 
     // Close the SSL connection
     SSL_shutdown(remoteSSL);
