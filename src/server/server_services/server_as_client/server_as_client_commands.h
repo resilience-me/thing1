@@ -2,7 +2,7 @@
 #define SERVER_AS_CLIENT_COMMANDS_H
 
 #include "command_defs.h"
-#include "session_defs.h"
+#include <openssl/ssl.h>                // For SSL type
 
 typedef const char *(*ServerAsClientCommandHandler)(SSL* ssl, const char *args);
 
