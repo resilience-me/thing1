@@ -11,7 +11,7 @@ const char *server_command_names[] = { SERVER_COMMAND_NAMES };
 // Arrays of function pointers to command handlers
 void *server_as_client_command_handlers[] = {
     (void*)handle_send_account_exists_query,
-    (void*)handle_set_trustline,
+    (void*)handle_set_trustline_server,
     NULL  // Include NULL for completeness
 };
 void *server_as_server_command_handlers[] = {
