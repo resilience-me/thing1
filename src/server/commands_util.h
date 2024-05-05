@@ -5,6 +5,12 @@
 #include "session_defs.h"
 #include <openssl/ssl.h>                // For SSL type
 
+#define SERVER_COMMAND_NAMES \
+    "ACCOUNT_EXISTS", \
+    NULL  // Ensure the list is properly terminated with NULL
+
+extern const char *server_command_names[];
+
 typedef const char *(*ServerAsClientCommandHandler)(SSL* ssl, const char *args);
 typedef const char *(*ServerAsServerCommandHandler)(SSL* ssl, const char *args);
 typedef const char *(*ClientCommandHandler)(Session *session, const char *args);
