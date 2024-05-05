@@ -7,6 +7,7 @@
     "LOGOUT", \
     "DELETE_ACCOUNT", \
     "ADD_CONNECTION", \
+    "SET_TRUSTLINE", \
     NULL  // Ensure the list is properly terminated with NULL
 
 extern const char *client_command_names[];
