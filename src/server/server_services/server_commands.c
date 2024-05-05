@@ -1,4 +1,5 @@
 #include "command_defs.h"
+#include <stddef.h>
 // #include "server_commands.h"  // Include the header file for declarations
 // #include "server_command_handlers.h"
 
