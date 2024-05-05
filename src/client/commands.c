@@ -9,6 +9,7 @@ void *command_handlers[] = {
     (void*)handle_logout,
     (void*)handle_delete_account,
     (void*)handle_add_connection,
+    (void*)handle_set_trustline,
     NULL  // Include NULL for completeness
 };
 
