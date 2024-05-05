@@ -76,21 +76,7 @@ const char *account_exists(char *username) {
     return "ACCOUNT_EXISTS";
 }
 
-void send_account_exists_query(SSL *ssl, const char *username, char *response_buffer, size_t buffer_size) {
-    // Construct the query with the username
-    char query[256];
-    snprintf(query, sizeof(query), "ACCOUNT_EXISTS %s", username);
-
-    // Send the query to the server
-    send_query(ssl, query);
-
-    // Receive the response from the server
-    receive_response(ssl, response_buffer, buffer_size);
-}
-
-// const char *send_account_exists_query_handler(SSL *ssl, const char *args) {
-//     const char *username = args;
-
+// void send_account_exists_query(SSL *ssl, const char *username, char *response_buffer, size_t buffer_size) {
 //     // Construct the query with the username
 //     char query[256];
 //     snprintf(query, sizeof(query), "ACCOUNT_EXISTS %s", username);
@@ -98,12 +84,26 @@ void send_account_exists_query(SSL *ssl, const char *username, char *response_bu
 //     // Send the query to the server
 //     send_query(ssl, query);
 
-//     // Define a buffer to store the response
-//     char response_buffer[1024]; // Define MAX_RESPONSE_SIZE accordingly
-
 //     // Receive the response from the server
-//     receive_response(ssl, response_buffer, sizeof(response_buffer));
-    
-//     // Return the response
-//     return strdup(response_buffer); // Make sure to include <string.h> for strdup
+//     receive_response(ssl, response_buffer, buffer_size);
 // }
+
+const char *send_account_exists_query_handler(SSL *ssl, const char *args) {
+    const char *username = args;
+
+    // Construct the query with the username
+    char query[256];
+    snprintf(query, sizeof(query), "ACCOUNT_EXISTS %s", username);
+
+    // Send the query to the server
+    send_query(ssl, query);
+
+    // Define a buffer to store the response
+    char response_buffer[1024]; // Define MAX_RESPONSE_SIZE accordingly
+
+    // Receive the response from the server
+    receive_response(ssl, response_buffer, sizeof(response_buffer));
+    
+    // Return the response
+    return strdup(response_buffer); // Make sure to include <string.h> for strdup
+}
