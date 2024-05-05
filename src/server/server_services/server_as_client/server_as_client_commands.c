@@ -1,5 +1,5 @@
 #include "command_defs.h"
-#include "server_command_handlers.h"
+#include "server_as_client_command_handlers.h"
 #include <stddef.h>
 
 // Array of function pointers to command handlers
