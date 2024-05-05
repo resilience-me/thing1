@@ -97,5 +97,5 @@ const char *handle_send_account_exists_query(SSL *ssl, const char *args) {
 }
 
 const char *handle_set_trustline(SSL *ssl, const char *args) {
-    
+    return NULL;
 }
