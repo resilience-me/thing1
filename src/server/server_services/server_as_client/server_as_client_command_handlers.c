@@ -88,7 +88,7 @@ const char *account_exists(char *username) {
 //     receive_response(ssl, response_buffer, buffer_size);
 // }
 
-const char *send_account_exists_query_handler(SSL *ssl, const char *args) {
+const char *handle_send_account_exists_query(SSL *ssl, const char *args) {
     const char *username = args;
 
     // Construct the query with the username
