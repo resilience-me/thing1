@@ -1,7 +1,6 @@
 #include "client_connection_handler.h"
-#include "client_command_processor.h"
+#include "commands_util.h"
 #include "session_defs.h"
-
 #include "database.h"
 #include "server_config.h"
 #include <openssl/ssl.h>
@@ -35,6 +34,6 @@ void handle_client_connection(SSL *ssl) {
         }
 
         // Dispatch command with the whole arguments string
-        dispatch_command(ssl, &session, command, arguments);
+        client_dispatch_command(ssl, &session, command, arguments);
     }
 }
