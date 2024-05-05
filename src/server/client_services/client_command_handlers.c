@@ -1,7 +1,7 @@
 #include "client_command_handlers.h"
 #include "session_defs.h"
 #include "network.h"
-#include "server_command_handlers.h"
+#include "server_as_client_command_handlers.h"
 #include "database.h"
 #include "server_config.h"
 #include "format_utils.h"
