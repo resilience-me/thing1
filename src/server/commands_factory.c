@@ -1,3 +1,4 @@
+#include "commands_factory.h"
 #include "client_commands.h"
 #include "server_commands.h"
 #include "server_as_client_commands.h"
