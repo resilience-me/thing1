@@ -11,13 +11,23 @@
 
 SSL_CTX *global_client_ctx = NULL; // Global client SSL context
 
-int main(int argc, char **argv) {
-    // Create necessary directories if they do not exist
-    initialize_database_directories();
-    
+void initialize_all_commands() {
     client_commands = initialize_commands(client_command_names, client_command_handlers);
     server_as_client_commands = initialize_commands(server_command_names, server_as_client_command_handlers);
     server_as_server_commands = initialize_commands(server_command_names, server_as_client_command_handlers);
+}
+
+void free_all_commands() {
+    free(client_commands);
+    free(server_as_client_commands);
+    free(server_as_server_commands);
+}
+
+
+int main(int argc, char **argv) {
+    // Create necessary directories if they do not exist
+    initialize_database_directories();
+    initialize_all_commands();
 
     // Initialize SSL contexts
     init_openssl();
@@ -66,8 +76,6 @@ int main(int argc, char **argv) {
 
     // Close socket
     close(sock);
-    free(client_commands);
-    free(server_as_client_commands);
-    free(server_as_server_commands);
+    free_all_commands();
     return 0;
 }
