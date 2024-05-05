@@ -8,7 +8,7 @@
 void dispatch_command(SSL *ssl, const char *cmd) {
     void* handler = find_command_handler(cmd, commands);
     if (handler) {
-        ((CommandHandler)handler))(ssl);  // Execute the handler assuming it matches the expected signature
+        ((CommandHandler)handler)(ssl);  // Execute the handler assuming it matches the expected signature
     } else {
         printf("Unknown command. Please try again.\n");
     }
