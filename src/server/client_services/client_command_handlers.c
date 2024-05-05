@@ -220,9 +220,9 @@ const char *handle_add_connection(Session *session, const char *args) {
     const char *response = server_as_client_dispatch_command(remoteSSL, "ACCOUNT_EXISTS", remote_username);
     
     // Handle the response accordingly
-    if (result) {
+    if (response) {
         // Handle the response, such as checking if the account exists
-        printf("Response from server: %s\n", result);
+        printf("Response from server: %s\n", response);
     } else {
         // Handle the case where the command handler was not found or returned NULL
         printf("Failed to execute command: ACCOUNT_EXISTS\n");
