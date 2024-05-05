@@ -1,7 +1,9 @@
+#include "server_commands.h"  // Include the header file for declarations
 #include "command_defs.h"
 #include <stddef.h>
-// #include "server_commands.h"  // Include the header file for declarations
 // #include "server_command_handlers.h"
+
+const char *server_command_names[] = { SERVER_COMMAND_NAMES };
 
 // Command server_commands[] = {
 //     {"ACCOUNT_EXISTS", send_account_exists_query},
