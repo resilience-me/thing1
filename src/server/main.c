@@ -16,6 +16,7 @@ int main(int argc, char **argv) {
     
     client_commands = initialize_commands(client_command_names, client_command_handlers);
     server_as_client_commands = initialize_commands(server_command_names, server_as_client_command_handlers);
+    server_as_server_commands = initialize_commands(server_command_names, server_as_client_command_handlers);
 
     // Initialize SSL contexts
     init_openssl();
@@ -66,5 +67,6 @@ int main(int argc, char **argv) {
     close(sock);
     free(client_commands);
     free(server_as_client_commands);
+    free(server_as_server_commands);
     return 0;
 }
