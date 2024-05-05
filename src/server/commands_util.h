@@ -28,4 +28,8 @@ extern void *client_command_handlers[];
 void initialize_all_commands();
 void free_all_commands();
 
+void server_as_server_dispatch_command(SSL *ssl, const char *command, const char *args);
+const char* server_as_client_dispatch_command(SSL *ssl, const char *command, const char *args);
+void client_dispatch_command(SSL *ssl, Session *session, const char *command, const char *args);
+
 #endif // COMMANDS_UTIL_H
