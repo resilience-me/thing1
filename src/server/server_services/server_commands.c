@@ -13,4 +13,3 @@
 //     (void*)send_account_exists_query,
 //     NULL  // Include NULL for completeness
 // };
-Command *server_as_client_commands = NULL;
