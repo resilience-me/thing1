@@ -170,7 +170,10 @@ void handle_set_trustline(SSL *ssl) {
         }
         printf("Invalid trustline argument. Please enter a number.\n");
     }
-    // Additional specific queries for setting a trustline
+    // Set default size if empty
+    if (size[0] == '\0') {
+        strcpy(size, "none");
+    }
 
     char command[1280];  // Buffer for the command to be sent
 
