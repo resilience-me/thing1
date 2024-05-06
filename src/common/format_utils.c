@@ -1,4 +1,6 @@
 #include "format_utils.h"
+#include "command_defs.h"
+
 #include <ctype.h>
 
 // Function to check if a username contains only valid characters
@@ -9,4 +11,9 @@ int isValidUsername(const char *username) {
         }
     }
     return 1; // Valid username
+}
+
+bool isValidArgument(const char *arg) {
+    // Check if the arg contains the delimiter
+    return (strchr(arg, ARGUMENT_DELIMITER) == NULL);
 }
