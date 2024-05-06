@@ -159,11 +159,18 @@ void handle_set_trustline(SSL *ssl) {
     query_account_details(username, server_address, port);
 
     char size[256];
-    
+
+
+    while (true) {
+        printf("Enter the size of the trustline (if empty defaults to zero): ");
+        fgets(size, sizeof(size), stdin);
+        size[strcspn(size, "\n")] = '\0';  // Remove newline character
+        if (isNumber(size)) {
+            break;  // Exit the loop if the port is valid
+        }
+        printf("Invalid trustline argument. Please enter a number.\n");
+    }
     // Additional specific queries for setting a trustline
-    printf("Enter the size of the trustline (if empty defaults to zero): ");
-    fgets(size, sizeof(size), stdin);
-    size[strcspn(size, "\n")] = '\0';  // Remove newline character
 
     char command[1280];  // Buffer for the command to be sent
 
