@@ -24,6 +24,10 @@ The repository structure is:
             │
             └── server_as_server/ # Source files for server acting as a server
 
+# Commands and comand dispatchers
+
+The platform uses a standardized system for sending commands, and responding to commands with command handlers. The client has a command dispatcher with its own command handlers, and the server has three, one for interacting with user clients, and the other two for acting as either client or server relative to other servers. The functionality for this command handling system that is shared between client and server is stored in the "common" directory, and for the server it is centrally stored in `commands_util.c`.
+
 ### Encryption
 
 The platform allows anyone to host a server, and a server can have multiple accounts. Servers interact over asymmetric handshakes. Clients interact with servers over asymmetric handshakes. Message authentication code are also used. In theory Ripple can rely on symmetric encryption only and things like one-time pads, giving the strongest possible encryption, but for practical purposes asymmetric keys are used in this implementation (although adding support for symmetric keys is recommended eventually. )
