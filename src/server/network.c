@@ -137,16 +137,20 @@ const char *get_domain_name(SSL *ssl) {
     const char *common_name = get_peer_certificate_common_name(subject_name);
     if (!common_name) {
         printf("Failed to get common name\n");
-        X509_NAME_free(subject_name);
-        return NULL;  // Handle failure to get common name
+        X509_NAME_free(subject_name); // Free subject_name before returning NULL
+        return NULL; // Handle failure to get common name
     }
 
-    printf("Common name retrieved successfully: %s\n", common_name);
+    // Make a copy of the common name before freeing subject_name
+    char *domain_name = strdup(common_name);
+    if (!domain_name) {
+        printf("Failed to allocate memory for domain name\n");
+        X509_NAME_free(subject_name);
+        return NULL; // Handle memory allocation failure
+    }
 
-    // Free the subject name structure
     X509_NAME_free(subject_name);
-
-    return common_name; // Return the common name as the domain name
+    return domain_name;
 }
 
 
