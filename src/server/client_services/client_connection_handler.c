@@ -12,8 +12,16 @@
 void *handle_client_connection(void *arg) {
     SSL *ssl = (SSL *)arg;
 
+    printf("Handling client connection...\n");
+
     const char *ack_message = "Client connection established";
-    SSL_write(ssl, ack_message, strlen(ack_message));
+    if (SSL_write(ssl, ack_message, strlen(ack_message)) <= 0) {
+        perror("Error sending acknowledgment message to client");
+        SSL_free(ssl);
+        return NULL;
+    }
+
+    printf("Acknowledgment message sent to client.\n");
 
     Session session = {0};
     const int read_size = 256;
@@ -25,6 +33,8 @@ void *handle_client_connection(void *arg) {
         if (bytes <= 0) break;
         buffer[bytes] = '\0';
 
+        printf("Received command from client: %s\n", buffer);
+
         // Find the end of the first word
         char *end_of_command = strchr(buffer, ' ');
         char *command = buffer;
@@ -35,8 +45,12 @@ void *handle_client_connection(void *arg) {
             arguments = end_of_command + 1;  // Arguments start after the space
         }
 
+        printf("Dispatching command to client command handler...\n");
         // Dispatch command with the whole arguments string
         client_dispatch_command(ssl, &session, command, arguments);
     }
+
+    printf("Closing client connection...\n");
+    SSL_free(ssl);
     return NULL;
 }
