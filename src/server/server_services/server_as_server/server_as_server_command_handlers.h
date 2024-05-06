@@ -1,5 +1,6 @@
 #ifndef SERVER_AS_SERVER_COMMAND_HANDLERS_H
 #define SERVER_AS_SERVER_COMMAND_HANDLERS_H
+#include <openssl/ssl.h>
 
 /**
  * Handle the SET_TRUSTLINE command received from the client.
