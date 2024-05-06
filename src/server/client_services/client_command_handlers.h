@@ -16,19 +16,19 @@
 #include <fcntl.h>
 
 // Function to handle user registration
-const char *client_handle_register_user(Session *session, const char *args);
+const char *client_handle_register(Session *session, const char *args);
+
+// Function to log in a user
+const char *client_handle_login(Session *session, const char *args);
+
+// Function to delete a user
+const char *client_handle_delete_account(Session *session, const char *args);
+
+// Function to log out a user
+const char *client_handle_logout(Session *session, const char *args);
 
 // Function to add a connection to the server
 const char *client_handle_add_connection(Session *session, const char *args);
-
-// Function to delete a user
-const char *client_handle_delete_user(Session *session, const char *args);
-
-// Function to log in a user
-const char *client_handle_login_user(Session *session, const char *args);
-
-// Function to log out a user
-const char *client_handle_logout_user(Session *session, const char *args);
 
 const char *client_handle_set_trustline_client(Session *session, const char *args);
 
