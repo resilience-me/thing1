@@ -255,7 +255,7 @@ const char *client_handle_set_trustline(Session *session, const char *args) {
     }
 
     // Parse arguments
-    sscanf(args, "%255s %255s %5s %255s", remote_username, server_address, portStr, size);
+    sscanf(args, "%255s %255s %5s %255s", remote_username, server_address, portStr, sizeStr);
 
     // Set defaults for empty inputs
     if (remote_username[0] == '\0') {
