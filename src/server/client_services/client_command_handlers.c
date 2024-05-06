@@ -244,5 +244,68 @@ const char *client_handle_add_connection(Session *session, const char *args) {
 }
 
 const char *client_handle_set_trustline(Session *session, const char *args) {
-    return "PLACEHOLDER RETURN STRING";
+    char remote_username[256] = "";
+    char server_address[256] = "";
+    char portStr[6] = "";
+    char size[256] = "";
+
+    // Check authentication
+    if (!session->authenticated) {
+        return "AUTH_REQUIRED";
+    }
+
+    // Parse arguments
+    sscanf(args, "%255s %255s %5s %255s", remote_username, server_address, portStr, size);
+
+    // Set defaults for empty inputs
+    if (remote_username[0] == '\0') {
+        strcpy(remote_username, "default");  // Default username if not provided
+    }
+    
+    // Check if provided username is invalid
+    if (!isValidUsername(remote_username)) {
+        return "INVALID_USERNAME";
+    }
+    int port;
+    // Check if address is localhost
+    if (server_address[0] != '\0' && strcmp(server_address, SERVER_ADDRESS) != 0) {
+        char port_buf[6]; // Assuming port number will be less than 100000
+        
+        // If portStr is NULL or empty, set it to DEFAULT_PORT
+        if (portStr[0] == '\0') {
+            sprintf(port_buf, "%d", SERVER_DEFAULT_PORT);
+            strcpy(portStr, port_buf);
+        }
+        // Validate port
+        port = atoi(portStr);  // Convert string to int
+        if (port <= 0) {       // Simple validation to catch invalid conversions
+            return "INVALID_PORT";
+        }
+    } else {
+        // if (strcmp(remote_username, session->username) == 0) {
+        //     return "CANNOT_ADD_SELF";
+        // }
+        strcpy(server_address, "localhost");  // Default to localhost if no server address is provided
+        port = SERVER_DEFAULT_PORT;
+    }
+    
+    // Establish an SSL connection to the remote server
+    SSL *remoteSSL = establish_connection(server_address, port);
+    if (remoteSSL == NULL) {
+        return "CONNECTION_FAILED";
+    }
+
+    // Send the command to the remote server
+    const char *response = server_as_client_dispatch_command(remoteSSL, "SET_TRUSTLINE", size);
+
+    // Close the SSL connection
+    SSL_shutdown(remoteSSL);
+    SSL_free(remoteSSL);
+
+    // Handle the response from the server
+    if (strcmp(response, "SUCCESS") == 0) {
+        return "add_account(remote_username, server_address, portStr, session)";
+    } else {
+        return "ACCOUNT_NOT_FOUND";
+    }
 }
