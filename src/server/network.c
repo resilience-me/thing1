@@ -137,10 +137,18 @@ const char *get_domain_name(SSL *ssl) {
     const char *common_name = get_peer_certificate_common_name(subject_name);
     if (!common_name) {
         printf("Failed to get common name\n");
+        X509_NAME_free(subject_name);
+        return NULL;  // Handle failure to get common name
     }
+
+    printf("Common name retrieved successfully: %s\n", common_name);
+
+    // Free the subject name structure
     X509_NAME_free(subject_name);
-    return common_name; // May be NULL, indicating an error
+
+    return common_name; // Return the common name as the domain name
 }
+
 
 X509_NAME *get_peer_subject_name(SSL *ssl) {
     X509 *peer_cert = SSL_get_peer_certificate(ssl);
