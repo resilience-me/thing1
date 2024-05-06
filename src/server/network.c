@@ -106,29 +106,47 @@ SSL* establish_connection(const char *server_address, int port) {
     return ssl;
 }
 
-// Function to verify the hostname against the SSL certificate
-int verify_hostname(SSL* ssl, const char* expected_hostname) {
-    X509* cert = SSL_get_peer_certificate(ssl);
-    if (!cert) {
-        // Certificate not present
-        return 0;
+// Function to get the common name (CN) from a peer's certificate
+const char *get_peer_certificate_common_name(SSL *ssl) {
+    X509 *peer_cert = SSL_get_peer_certificate(ssl);
+    if (!peer_cert) {
+        return NULL;  // No certificate available
     }
 
-    // Obtain the Common Name (CN) from the certificate
-    X509_NAME* subject = X509_get_subject_name(cert);
-    if (subject) {
-        char cn[256];
-        if (X509_NAME_get_text_by_NID(subject, NID_commonName, cn, sizeof(cn)) > 0) {
-            // Compare the CN with the expected hostname
-            if (strcasecmp(expected_hostname, cn) == 0) {
-                // Hostname matches CN
-                X509_free(cert);
-                return 1;
-            }
-        }
+    X509_NAME *subject_name = X509_get_subject_name(peer_cert);
+    if (!subject_name) {
+        X509_free(peer_cert);
+        return NULL;  // Failed to get subject name
     }
 
-    // No match found
-    X509_free(cert);
-    return 0;
+    int common_name_index = X509_NAME_get_index_by_NID(subject_name, NID_commonName, -1);
+    if (common_name_index < 0) {
+        X509_free(peer_cert);
+        return NULL;  // Common name not found
+    }
+
+    X509_NAME_ENTRY *common_name_entry = X509_NAME_get_entry(subject_name, common_name_index);
+    if (!common_name_entry) {
+        X509_free(peer_cert);
+        return NULL;  // Failed to get common name entry
+    }
+
+    ASN1_STRING *common_name_asn1 = X509_NAME_ENTRY_get_data(common_name_entry);
+    if (!common_name_asn1) {
+        X509_free(peer_cert);
+        return NULL;  // Failed to get common name ASN.1 string
+    }
+
+    const char *common_name = (const char *)ASN1_STRING_get0_data(common_name_asn1);
+    if (!common_name) {
+        X509_free(peer_cert);
+        return NULL;  // Failed to convert common name ASN.1 string to C string
+    }
+
+    // Make a copy of the common name string before freeing the certificate
+    char *common_name_copy = strdup(common_name);
+
+    // Free the certificate and return the common name string
+    X509_free(peer_cert);
+    return common_name_copy;
 }
