@@ -40,16 +40,15 @@ int open_connection(const char *hostname, int port) {
     snprintf(port_str, sizeof(port_str), "%d", port);
 
     if (resolve_hostname(hostname, port_str, &res) != 0) {
-        exit(EXIT_FAILURE);
+        return -1;  // Return -1 on failure
     }
 
     int sock = create_and_connect_socket(res);
     freeaddrinfo(res);
 
     if (sock == -1) {
-        perror("Connection failed");
-        exit(EXIT_FAILURE);
+        return -1;  // Return -1 on failure
     }
 
-    return sock;
+    return sock;  // Return socket file descriptor
 }
