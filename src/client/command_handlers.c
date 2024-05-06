@@ -11,6 +11,18 @@ bool isValidArgument(const char *arg) {
     return (strchr(arg, ARGUMENT_DELIMITER) == NULL);
 }
 
+// Helper function to validate port numbers
+int isValidPort(const char *port) {
+    if (strlen(port) == 0) return 1;  // Empty is allowed (default port)
+    for (int i = 0; port[i]; i++) {
+        if (!isdigit(port[i])) {
+            return 0;  // Non-digit character found
+        }
+    }
+    int portNum = atoi(port);
+    return (portNum > 0 && portNum <= 65535);
+}
+
 void handle_login_and_register(char *loginOrRegister, SSL *ssl) {
     char username[256], password[256];
     printf("Enter username: ");
@@ -85,18 +97,6 @@ void handle_delete_account(SSL *ssl) {
     }
 }
 
-// Helper function to validate port numbers
-int isValidPort(const char *port) {
-    if (strlen(port) == 0) return 1;  // Empty is allowed (default port)
-    for (int i = 0; port[i]; i++) {
-        if (!isdigit(port[i])) {
-            return 0;  // Non-digit character found
-        }
-    }
-    int portNum = atoi(port);
-    return (portNum > 0 && portNum <= 65535);
-}
-
 void query_account_details(char* username, char* server_address, char* port) {
 
     while (true) {
@@ -107,11 +107,6 @@ void query_account_details(char* username, char* server_address, char* port) {
             break;  // Exit the loop if the username is valid
         }
         printf("Invalid username. Please use only alphanumeric characters and underscores.\n");
-    }
-
-    // Set default username if empty
-    if (username[0] == '\0') {
-        strcpy(username, "none");
     }
 
     while (true) {
@@ -125,11 +120,6 @@ void query_account_details(char* username, char* server_address, char* port) {
         printf("Invalid server address. Please enter a valid hostname or leave it empty.\n");
     }
 
-    // Set default server address if empty
-    if (server_address[0] == '\0') {
-        strcpy(server_address, "none");
-    }
-    
     while (true) {
         printf("Enter port (leave empty if default port): ");
         fgets(port, 256, stdin);
@@ -140,12 +130,19 @@ void query_account_details(char* username, char* server_address, char* port) {
         printf("Invalid port. Please enter a number between 1 and 65535.\n");
     }
 
+    // Set default username if empty
+    if (username[0] == '\0') {
+        strcpy(username, "none");
+    }
+    // Set default server address if empty
+    if (server_address[0] == '\0') {
+        strcpy(server_address, "none");
+    }
     // Set default port if empty
     if (port[0] == '\0') {
         strcpy(port, "none");
     }
 }
-
 
 void handle_add_connection(SSL *ssl) {
     char username[256];
