@@ -9,7 +9,7 @@
 #include <ctype.h>
 
 // Function to handle user registration
-const char *handle_register_user(Session *session, const char *args) {
+const char *client_handle_register_user(Session *session, const char *args) {
     char username[256] = {0}; // Ensure username is initially empty
     char password[256] = {0}; // Allow password to be empty
 
@@ -56,7 +56,7 @@ const char *handle_register_user(Session *session, const char *args) {
     return "REGISTER_SUCCESS"; // Registration successful
 }
 
-const char *handle_delete_user(Session *session, const char *args) {
+const char *client_handle_delete_user(Session *session, const char *args) {
     if (!session->authenticated) {
         return "AUTH_REQUIRED";
     }
@@ -79,7 +79,7 @@ const char *handle_delete_user(Session *session, const char *args) {
     return "USER_DELETED_SUCCESSFULLY";
 }
 
-const char *handle_login_user(Session *session, const char *args) {
+const char *client_handle_login_user(Session *session, const char *args) {
     char username[256] = {0}; // Ensure username is initially empty
     char password[256] = {0}; // Allow password to be empty
 
@@ -138,7 +138,7 @@ const char *handle_login_user(Session *session, const char *args) {
     return "LOGIN_SUCCESS";  // User successfully authenticated
 }
 
-const char *handle_logout_user(Session *session, const char *args) {
+const char *client_handle_logout_user(Session *session, const char *args) {
     session->authenticated = 0;
     return "LOGOUT_SUCCESS";
 }
@@ -167,7 +167,7 @@ const char *add_account(const char *username, const char *server_address, const 
 }
 
 
-const char *handle_add_connection(Session *session, const char *args) {
+const char *client_handle_add_connection(Session *session, const char *args) {
     char remote_username[256] = "";
     char server_address[256] = "";
     char portStr[6] = "";
