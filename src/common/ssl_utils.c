@@ -14,6 +14,7 @@ void cleanup_openssl() {
 
 void configure_ssl_client_context(SSL_CTX *ctx) {
     SSL_CTX_set_default_verify_paths(ctx);
+    SSL_CTX_set_verify(ctx, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, NULL);
 }
 
 SSL_CTX* create_ssl_client_context(void) {
