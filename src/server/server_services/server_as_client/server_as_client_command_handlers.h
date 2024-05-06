@@ -11,7 +11,7 @@ void receive_response(SSL *ssl, char *response, size_t max_length);
 
 const char *account_exists(char *username);
 
-const char *handle_send_account_exists_query(SSL *ssl, const char *args);
+const char *server_as_client_handle_account_exists(SSL *ssl, const char *args);
 
 const char *server_as_client_handle_set_trustline(SSL *ssl, const char *args);
 
