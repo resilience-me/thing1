@@ -1,4 +1,5 @@
 #include "server_as_server_command_handlers.h"
+#include "server_config.h"
 #include <stdbool.h>
 #include <string.h>
 
