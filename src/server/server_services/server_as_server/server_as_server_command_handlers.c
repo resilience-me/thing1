@@ -1,6 +1,7 @@
 #include "server_as_server_command_handlers.h"
 #include "server_config.h"
 #include "format_utils.h"
+#include "network.h" 
 #include <stdbool.h>
 #include <string.h>
 #include <stdio.h> // For snprintf
