@@ -290,7 +290,7 @@ const char *client_handle_set_trustline(Session *session, const char *args) {
     char remote_args[768];  // Define a buffer to hold the concatenated arguments
     
     // Concatenate username, a space character, and sizeStr into args
-    snprintf(remote_args, sizeof(remote_args), "%s %s", username, sizeStr);
+    snprintf(remote_args, sizeof(remote_args), "%s %s", remote_username, sizeStr);
     
     // Send the command to the server with the concatenated arguments
     const char *response = server_as_client_connection_handler(server_address, port, "SET_TRUSTLINE", remote_args);
