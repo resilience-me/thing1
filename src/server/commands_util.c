@@ -52,7 +52,7 @@ void server_as_server_dispatch_command(SSL *ssl, const char *command, const char
         const char *result = ((ServerAsServerCommandHandler)handler)(args);
         SSL_write(ssl, result, strlen(result));  // Send result back to the other server
     } else {
-        SSL_write(ssl, "INVALID_COMMAND", strlen("INVALID_COMMAND"));
+        SSL_write(ssl, "INVALID_COMMANDDDD", strlen("INVALID_COMMANDDDD"));
     }
 }
 
