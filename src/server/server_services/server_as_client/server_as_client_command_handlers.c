@@ -97,11 +97,10 @@ const char *server_as_client_handle_account_exists(SSL *ssl, const char *args) {
 }
 
 const char *server_as_client_handle_set_trustline(SSL *ssl, const char *args) {
-    const char *username = args;
 
     // Construct the query with the username
-    char query[256];
-    snprintf(query, sizeof(query), "ACCOUNT_EXISTS %s", username);
+    char query[768];
+    snprintf(query, sizeof(query), "SET_TRUSTLINES %s", args);
 
     // Send the query to the server
     send_query(ssl, query);
