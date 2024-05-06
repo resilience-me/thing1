@@ -1,7 +1,12 @@
 #include "server_as_server_command_handlers.h"
 #include "server_config.h"
+#include "format_utils.h"
 #include <stdbool.h>
 #include <string.h>
+#include <stdio.h> // For snprintf
+#include <unistd.h> // For access and F_OK
+#include <stdio.h> // For sscanf
+#include "database.h"
 
 bool *account_exists(char *username) {
     // Check if username is "none", then use default user
