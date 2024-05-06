@@ -16,7 +16,7 @@ void *server_as_client_command_handlers[] = {
 };
 void *server_as_server_command_handlers[] = {
     NULL,  // Handler not implemented yet
-    NULL,  // Handler not implemented yet
+    server_as_server_handle_set_trustline,  // Handler not implemented yet
     NULL  // Include NULL for completeness
 };
 void *client_command_handlers[] = {
