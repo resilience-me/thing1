@@ -62,10 +62,17 @@ const char *server_as_server_handle_set_trustline(const char *args) {
     if (access(user_dir, F_OK) == -1) {
         return false;
     }
+    // Build the path to the remote user directory in the peers directory
+    char peer_dir[1280];
+    snprintf(user_dir, sizeof(user_dir), "%s/peers/%s", user_dir, local_username);
 
+    // Create user directory
+    if (make_dirs(peer_dir) == -1) {
+        return "DIRECTORY_CREATION_FAILED";
+    }
     // Construct the file path
-    char filepath[1280];
-    snprintf(filepath, sizeof(filepath), "%s/peers/%s/trustline_incoming", user_dir, remote_username);
+    char filepath[1536];
+    snprintf(filepath, sizeof(filepath), "%s/trustline_incoming", peer_dir);
 
     // Open the file in write mode
     FILE *file = fopen(filepath, "w");
