@@ -39,6 +39,8 @@ const char *server_as_server_handle_set_trustline(SSL *ssl, const char *args) {
     char local_username[256];
     char sizeStr[256];
     
+    printf("Handling SET_TRUSTLINE command...\n");
+
     // Parse arguments
     int parsed_args = sscanf(args, "%255s %255s %255s", remote_username, local_username, sizeStr);
     
@@ -48,10 +50,17 @@ const char *server_as_server_handle_set_trustline(SSL *ssl, const char *args) {
         return "INVALID_ARGUMENTS";
     }
     
+    printf("Arguments parsed successfully:\n");
+    printf("Remote Username: %s\n", remote_username);
+    printf("Local Username: %s\n", local_username);
+    printf("Size String: %s\n", sizeStr);
+
     // Check if username is "none", then use default user
     if (strcmp(local_username, "none") == 0) {
         strcpy(local_username, DEFAULT_USER);  // Default username if not provided    
     }
+
+    printf("Local username after default check: %s\n", local_username);
 
     // Check if username is valid
     if (!isValidUsername(local_username)) {
@@ -61,6 +70,8 @@ const char *server_as_server_handle_set_trustline(SSL *ssl, const char *args) {
     // Build the path to the user directory
     char user_dir[768];
     snprintf(user_dir, sizeof(user_dir), "%s/accounts/%s", datadir, local_username);
+
+    printf("User directory path: %s\n", user_dir);
 
     // Check if user directory exists
     if (access(user_dir, F_OK) == -1) {
@@ -73,18 +84,26 @@ const char *server_as_server_handle_set_trustline(SSL *ssl, const char *args) {
         printf("Error: Failed to get remote domain name\n");
         return "FAILED_DOMAIN_CHECK";
     }
+    printf("Remote domain name: %s\n", remote_domain);
+
     // Build the path to the remote user directory in the peers directory
     char peer_dir[1280];
     snprintf(peer_dir, sizeof(peer_dir), "%s/peers/%s/%s", user_dir, remote_domain, remote_username);
     
+    printf("Peer directory path: %s\n", peer_dir);
+
     // Create user directory
     if (make_dirs(peer_dir) == -1) {
         printf("Error: Directory creation failed\n");
         return "DIRECTORY_CREATION_FAILED";
     }
+    printf("Peer directory created successfully\n");
+
     // Construct the file path
     char filepath[1536];
     snprintf(filepath, sizeof(filepath), "%s/trustline_incoming", peer_dir);
+
+    printf("Filepath: %s\n", filepath);
 
     // Remove the file if sizeStr is "none" or 0, else update it
     if (strcmp(sizeStr, "none") == 0 || strcmp(sizeStr, "0") == 0) {
@@ -105,5 +124,6 @@ const char *server_as_server_handle_set_trustline(SSL *ssl, const char *args) {
     }
     
     // Return a success message
+    printf("Trustline set successfully\n");
     return "TRUSTLINE_SET_SUCCESSFULLY";
 }
