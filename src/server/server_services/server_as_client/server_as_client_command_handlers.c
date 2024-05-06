@@ -97,5 +97,21 @@ const char *server_as_client_handle_account_exists(SSL *ssl, const char *args) {
 }
 
 const char *server_as_client_handle_set_trustline(SSL *ssl, const char *args) {
-    return NULL;
+    const char *username = args;
+
+    // Construct the query with the username
+    char query[256];
+    snprintf(query, sizeof(query), "ACCOUNT_EXISTS %s", username);
+
+    // Send the query to the server
+    send_query(ssl, query);
+
+    // Define a buffer to store the response
+    char response_buffer[1024]; // Define MAX_RESPONSE_SIZE accordingly
+
+    // Receive the response from the server
+    receive_response(ssl, response_buffer, sizeof(response_buffer));
+    
+    // Return the response
+    return strdup(response_buffer); // Make sure to include <string.h> for strdup
 }
