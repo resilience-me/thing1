@@ -78,6 +78,23 @@ void handle_delete_account(SSL *ssl) {
     }
 }
 
+void query_account_details(char* username, char* server_address, char* port) {
+    // Query for username
+    printf("Enter username (leave empty if default account): ");
+    fgets(username, 256, stdin);
+    username[strcspn(username, "\n")] = '\0';  // Remove newline character
+
+    // Query for server address
+    printf("Enter server address (leave empty if on the same server): ");
+    fgets(server_address, 256, stdin);
+    server_address[strcspn(server_address, "\n")] = '\0';  // Remove newline character
+
+    // Query for port
+    printf("Enter port (leave empty if default port): ");
+    fgets(port, 256, stdin);
+    port[strcspn(port, "\n")] = '\0';  // Remove newline character
+}
+
 void handle_add_connection(SSL *ssl) {
     char username[256];
     char server_address[256];
@@ -102,23 +119,6 @@ void handle_add_connection(SSL *ssl) {
     } else {
         printf("Failed to receive server response.\n");
     }
-}
-
-void query_account_details(char* username, char* server_address, char* port) {
-    // Query for username
-    printf("Enter username (leave empty if default account): ");
-    fgets(username, 256, stdin);
-    username[strcspn(username, "\n")] = '\0';  // Remove newline character
-
-    // Query for server address
-    printf("Enter server address (leave empty if on the same server): ");
-    fgets(server_address, 256, stdin);
-    server_address[strcspn(server_address, "\n")] = '\0';  // Remove newline character
-
-    // Query for port
-    printf("Enter port (leave empty if default port): ");
-    fgets(port, 256, stdin);
-    port[strcspn(port, "\n")] = '\0';  // Remove newline character
 }
 
 void handle_set_trustline(SSL *ssl) {
