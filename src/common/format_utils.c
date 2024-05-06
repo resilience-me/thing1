@@ -22,7 +22,7 @@ int isValidUsername(const char *username) {
 
 bool isNumber(const char *str) {
     // Check each character to see if it's a digit
-    for (int i = 0; str[i] != '\0'; i++) {
+    for (int i = 0; str[i]; i++) {
         if (!isdigit(str[i])) {
             return false;  // Non-digit character found
         }
@@ -33,11 +33,8 @@ bool isNumber(const char *str) {
 // Helper function to validate port numbers
 int isValidPort(const char *port) {
     if (strlen(port) == 0) return 1;  // Empty is allowed (default port)
-    for (int i = 0; port[i]; i++) {
-        if (!isdigit(port[i])) {
-            return 0;  // Non-digit character found
-        }
-    }
+    if (!isNumber(port)) return 0;     // Check if the string is a valid number
+
     int portNum = atoi(port);
     return (portNum > 0 && portNum <= 65535);
 }
