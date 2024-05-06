@@ -30,5 +30,5 @@ void *handle_server_connection(void *arg) {
     }
     // Dispatch command with the whole arguments string
     server_as_server_dispatch_command(ssl, command, arguments);
-    return;
+    return NULL;
 }
