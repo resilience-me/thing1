@@ -25,7 +25,7 @@ void *client_command_handlers[] = {
     (void*)handle_logout_user,
     (void*)handle_delete_user,
     (void*)handle_add_connection,
-    (void*)handle_set_trustline,
+    (void*)handle_set_trustline_client,
     NULL  // Include NULL for completeness
 };
 
