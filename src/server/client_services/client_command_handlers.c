@@ -303,6 +303,6 @@ const char *client_handle_set_trustline(Session *session, const char *args) {
             return "ACCOUNT_NOT_FOUND";
         }
     } else {
-        return "FAILED_TO_SET_TRUSTLINE";
+        return response;
     }
 }
