@@ -4,6 +4,13 @@
 #include <stdio.h>
 #include <string.h>
 
+#define ARGUMENT_DELIMITER ' '
+
+bool isValidArgument(const char *arg) {
+    // Check if the arg contains the delimiter
+    return (strchr(arg, ARGUMENT_DELIMITER) == NULL);
+}
+
 void handle_login_and_register(char *loginOrRegister, SSL *ssl) {
     char username[256], password[256];
     printf("Enter username: ");
@@ -112,7 +119,7 @@ void query_account_details(char* username, char* server_address, char* port) {
         fgets(server_address, 256, stdin);
         server_address[strcspn(server_address, "\n")] = '\0';  // Remove newline character
         // Assuming any non-empty string is valid for demo purposes
-        if (strlen(server_address) == 0 || isValidHostname(server_address)) {
+        if (isValidArgument(server_address)) {
             break;  // Exit the loop if the address is valid or empty
         }
         printf("Invalid server address. Please enter a valid hostname or leave it empty.\n");
