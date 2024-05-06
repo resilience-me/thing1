@@ -44,6 +44,7 @@ const char *server_as_server_handle_set_trustline(SSL *ssl, const char *args) {
     
     // Check if all arguments were successfully parsed
     if (parsed_args != 3) {
+        printf("Error: Invalid arguments\n");
         return "INVALID_ARGUMENTS";
     }
     
@@ -54,6 +55,7 @@ const char *server_as_server_handle_set_trustline(SSL *ssl, const char *args) {
 
     // Check if username is valid
     if (!isValidUsername(local_username)) {
+        printf("Error: Invalid local username\n");
         return "FAILED_USERNAME_INVALID";
     }
     // Build the path to the user directory
@@ -62,20 +64,22 @@ const char *server_as_server_handle_set_trustline(SSL *ssl, const char *args) {
 
     // Check if user directory exists
     if (access(user_dir, F_OK) == -1) {
+        printf("Error: Failed to access user directory\n");
         return "FAILED_TO_ACCESS_USER_DIRECTORY";
     }
 
     const char* remote_domain = get_domain_name(ssl);
     if (remote_domain == NULL) {
+        printf("Error: Failed to get remote domain name\n");
         return "FAILED_DOMAIN_CHECK";
     }
-    return remote_domain;
     // Build the path to the remote user directory in the peers directory
     char peer_dir[1280];
     snprintf(peer_dir, sizeof(peer_dir), "%s/peers/%s/%s", user_dir, remote_domain, remote_username);
     
     // Create user directory
     if (make_dirs(peer_dir) == -1) {
+        printf("Error: Directory creation failed\n");
         return "DIRECTORY_CREATION_FAILED";
     }
     // Construct the file path
@@ -89,6 +93,7 @@ const char *server_as_server_handle_set_trustline(SSL *ssl, const char *args) {
         // Open the file in write mode
         FILE *file = fopen(filepath, "w");
         if (file == NULL) {
+            printf("Error: Failed to open file\n");
             return "FAILED_TO_OPEN_FILE";
         }
     
