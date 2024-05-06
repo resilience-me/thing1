@@ -13,7 +13,7 @@
 extern const char *server_command_names[];
 
 typedef const char *(*ServerAsClientCommandHandler)(SSL* ssl, const char *args);
-typedef const char *(*ServerAsServerCommandHandler)(SSL* ssl, const char *args);
+typedef const char *(*ServerAsServerCommandHandler)(const char *args);
 typedef const char *(*ClientCommandHandler)(Session *session, const char *args);
 
 // Making the commands arrays available externally
