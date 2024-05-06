@@ -10,4 +10,6 @@ extern Command *commands;  // Makes the commands array available to other files
 
 extern void *command_handlers[];
 
+void dispatch_command(SSL *ssl, const char *cmd);
+
 #endif // COMMANDS_UTIL_H
