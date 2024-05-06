@@ -126,5 +126,13 @@ void handle_set_trustline(SSL *ssl) {
     char server_address[256];
     char port[256];
 
-    query_account_details(username, server_address, port);    
+    query_account_details(username, server_address, port);
+
+    char size[256];
+    
+    // Additional specific queries for setting a trustline
+    printf("Enter the size of the trustline: ");
+    fgets(size, sizeof(size), stdin);
+    size[strcspn(size, "\n")] = '\0';  // Remove newline character
+
 }
