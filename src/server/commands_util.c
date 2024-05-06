@@ -20,10 +20,10 @@ void *server_as_server_command_handlers[] = {
     NULL  // Include NULL for completeness
 };
 void *client_command_handlers[] = {
-    (void*)client_handle_login_user,
-    (void*)client_handle_register_user,
-    (void*)client_handle_logout_user,
-    (void*)client_handle_delete_user,
+    (void*)client_handle_login,
+    (void*)client_handle_register,
+    (void*)client_handle_logout,
+    (void*)client_handle_delete_account,
     (void*)client_handle_add_connection,
     (void*)client_handle_set_trustline,
     NULL  // Include NULL for completeness
