@@ -109,22 +109,27 @@ SSL* establish_connection(const char *server_address, int port) {
 const char *get_domain_name(SSL *ssl) {
     X509_NAME *subject_name = get_peer_subject_name(ssl);
     if (!subject_name) {
+        printf("Failed to get subject name\n");
         return NULL;  // Handle failure to get subject name
     }
 
     const char *peer_ip = get_peer_ip(subject_name);
     if (!peer_ip) {
-        // Handle failure to get peer IP
+        printf("Failed to get peer IP\n");
         X509_NAME_free(subject_name);
-        return NULL;
+        return NULL;  // Handle failure to get peer IP
     }
 
     if (is_localhost(peer_ip)) {
+        printf("Peer IP is localhost\n");
         X509_NAME_free(subject_name);
         return "localhost";
     }
 
     const char *common_name = get_peer_certificate_common_name(subject_name);
+    if (!common_name) {
+        printf("Failed to get common name\n");
+    }
     X509_NAME_free(subject_name);
     return common_name; // May be NULL, indicating an error
 }
@@ -132,11 +137,13 @@ const char *get_domain_name(SSL *ssl) {
 X509_NAME *get_peer_subject_name(SSL *ssl) {
     X509 *peer_cert = SSL_get_peer_certificate(ssl);
     if (!peer_cert) {
+        printf("No certificate available\n");
         return NULL;  // No certificate available
     }
 
     X509_NAME *subject_name = X509_get_subject_name(peer_cert);
     if (!subject_name) {
+        printf("Failed to get subject name from certificate\n");
         X509_free(peer_cert);
         return NULL;  // Failed to get subject name
     }
@@ -154,11 +161,13 @@ const char *get_peer_ip(X509_NAME *subject_name) {
     // Retrieve the peer's IP address (replace this with your IP retrieval logic)
     X509_NAME_ENTRY *entry = X509_NAME_get_entry(subject_name, 0); // Assuming the first entry is the IP address
     if (!entry) {
+        printf("Failed to get IP entry\n");
         return NULL;
     }
 
     ASN1_STRING *ip_asn1 = X509_NAME_ENTRY_get_data(entry);
     if (!ip_asn1) {
+        printf("Failed to get IP ASN.1 string\n");
         return NULL;
     }
 
@@ -170,16 +179,19 @@ const char *get_peer_ip(X509_NAME *subject_name) {
 const char *get_peer_certificate_common_name(X509_NAME *subject_name) {
     int common_name_index = X509_NAME_get_index_by_NID(subject_name, NID_commonName, -1);
     if (common_name_index < 0) {
+        printf("Common name not found\n");
         return NULL;  // Common name not found
     }
 
     X509_NAME_ENTRY *common_name_entry = X509_NAME_get_entry(subject_name, common_name_index);
     if (!common_name_entry) {
+        printf("Failed to get common name entry\n");
         return NULL;  // Failed to get common name entry
     }
 
     ASN1_STRING *common_name_asn1 = X509_NAME_ENTRY_get_data(common_name_entry);
     if (!common_name_asn1) {
+        printf("Failed to get common name ASN.1 string\n");
         return NULL;  // Failed to get common name ASN.1 string
     }
 
