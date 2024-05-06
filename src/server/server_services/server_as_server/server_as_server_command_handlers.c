@@ -1,7 +1,7 @@
 #include "server_as_server_command_handlers.h"
 #include <stdbool.h>
 
-bool char *account_exists(char *username) {
+bool *account_exists(char *username) {
     // Check if username is "none", then use default user
     if (strcmp(username, "none") == 0) {
           username = DEFAULT_USER;
