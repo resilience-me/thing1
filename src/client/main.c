@@ -29,14 +29,29 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
     
+    // Open a TCP connection to the server
     int sock = open_connection(hostname, port);
-    SSL *ssl = setup_ssl_client_connection(ctx, sock);
+    if (sock < 0) {
+        fprintf(stderr, "Failed to open TCP connection\n");
+        return EXIT_FAILURE;
+    }
 
-    // Send the protocol header to the server
+    // Send the protocol header to the server over TCP
     struct ProtocolHeader header;
     header.connectionType = CLIENT_CONNECTION;
-    
-    SSL_write(ssl, &header, sizeof(header));
+    if (send(sock, &header, sizeof(header), 0) != sizeof(header)) {
+        perror("Failed to send protocol header");
+        close(sock);
+        return EXIT_FAILURE;
+    }
+
+    // Set up the SSL connection using the TCP socket
+    SSL *ssl = setup_ssl_client_connection(ctx, sock);
+    if (!ssl) {
+        fprintf(stderr, "Failed to set up SSL connection\n");
+        close(sock);
+        return EXIT_FAILURE;
+    }
 
     // Read acknowledgment message from the server
     char ack_message[256]; // Adjust the buffer size as needed
