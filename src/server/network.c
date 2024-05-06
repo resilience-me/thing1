@@ -207,6 +207,9 @@ const char *get_peer_certificate_common_name(X509_NAME *subject_name) {
         return NULL;  // Failed to get common name ASN.1 string
     }
 
+    // Print the contents of the common name ASN.1 string
+    printf("Common name ASN.1 string: %s\n", (const char *)ASN1_STRING_get0_data(common_name_asn1));
+
     // Convert the common name ASN.1 string to a C string
     return (const char *)ASN1_STRING_get0_data(common_name_asn1);
 }
