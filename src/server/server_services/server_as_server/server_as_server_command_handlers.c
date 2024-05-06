@@ -64,7 +64,7 @@ const char *server_as_server_handle_set_trustline(const char *args) {
     }
     // Build the path to the remote user directory in the peers directory
     char peer_dir[1280];
-    snprintf(user_dir, sizeof(user_dir), "%s/peers/%s", user_dir, local_username);
+    snprintf(peer_dir, sizeof(peer_dir), "%s/peers/%s", user_dir, local_username);
 
     // Create user directory
     if (make_dirs(peer_dir) == -1) {
