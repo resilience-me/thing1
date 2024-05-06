@@ -96,6 +96,6 @@ const char *handle_send_account_exists_query(SSL *ssl, const char *args) {
     return strdup(response_buffer); // Make sure to include <string.h> for strdup
 }
 
-const char *handle_set_trustline_server_as_client(SSL *ssl, const char *args) {
+const char *server_as_client_handle_set_trustline(SSL *ssl, const char *args) {
     return NULL;
 }
