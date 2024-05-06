@@ -5,6 +5,8 @@
 #include <ctype.h>
 #include <string.h>
 
+
+// Check if the argument contains the specified delimiter
 bool isValidArgument(const char *arg) {
     // Check if the arg contains the delimiter
     return (strchr(arg, ARGUMENT_DELIMITER) == NULL);
