@@ -244,15 +244,16 @@ const char *client_handle_add_connection(Session *session, const char *args) {
 }
 
 const char *client_handle_set_trustline(Session *session, const char *args) {
-    char remote_username[256];
-    char server_address[256];
-    char portStr[6];
-    char sizeStr[256];
 
     // Check authentication
     if (!session->authenticated) {
         return "AUTH_REQUIRED";
     }
+
+    char remote_username[256];
+    char server_address[256];
+    char portStr[6];
+    char sizeStr[256];
 
     // Parse arguments
     int parsed_args = sscanf(args, "%255s %255s %5s %255s", remote_username, server_address, portStr, sizeStr);
@@ -266,7 +267,7 @@ const char *client_handle_set_trustline(Session *session, const char *args) {
     if (!isValidUsername(remote_username)) {
         return "INVALID_USERNAME";
     }
-    // Set address to localhost if arg emptt
+    // Set address to localhost if arg empty
     if(strcmp(server_address, "none") == 0) {
         strcpy(server_address, "localhost");  // Default to localhost if no server address is provided
     }
