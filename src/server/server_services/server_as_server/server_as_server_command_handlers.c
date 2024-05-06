@@ -74,18 +74,23 @@ const char *server_as_server_handle_set_trustline(const char *args) {
     char filepath[1536];
     snprintf(filepath, sizeof(filepath), "%s/trustline_incoming", peer_dir);
 
-    // Open the file in write mode
-    FILE *file = fopen(filepath, "w");
-    if (file == NULL) {
-        return "FAILED_TO_OPEN_FILE";
+    // Remove the file if sizeStr is "none" or 0, else update it
+    if (strcmp(sizeStr, "none") == 0 || strcmp(sizeStr, "0") == 0) {
+        remove(filepath);
+    } else {
+        // Open the file in write mode
+        FILE *file = fopen(filepath, "w");
+        if (file == NULL) {
+            return "FAILED_TO_OPEN_FILE";
+        }
+    
+        // Write the trustline information to the file
+        fprintf(file, "%s\n", sizeStr);
+    
+        // Close the file
+        fclose(file);
     }
-
-    // Write the trustline information to the file
-    fprintf(file, "%s\n", sizeStr);
-
-    // Close the file
-    fclose(file);
-
+    
     // Return a success message
     return "TRUSTLINE_SET_SUCCESSFULLY";
 }
