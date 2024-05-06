@@ -38,4 +38,5 @@ void *handle_client_connection(void *arg) {
         // Dispatch command with the whole arguments string
         client_dispatch_command(ssl, &session, command, arguments);
     }
+    return;
 }
