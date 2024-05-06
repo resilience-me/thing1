@@ -49,7 +49,7 @@ void free_all_commands() {
 void server_as_server_dispatch_command(SSL *ssl, const char *command, const char *args) {
     void *handler = find_command_handler(command, server_as_server_commands);
     if (handler) {
-        const char *result = ((ServerAsServerCommandHandler)handler)(args);
+        const char *result = ((ServerAsServerCommandHandler)handler)(ssl, args);
         SSL_write(ssl, result, strlen(result));  // Send result back to the other server
     } else {
         SSL_write(ssl, "INVALID_COMMAND", strlen("INVALID_COMMAND"));
