@@ -47,7 +47,7 @@ const char *server_as_server_handle_set_trustline(const char *args) {
 
     // Check if username is "none", then use default user
     if (strcmp(local_username, "none") == 0) {
-          username = DEFAULT_USER;
+          local_username = DEFAULT_USER;
     }
 
     // Check if username is valid
