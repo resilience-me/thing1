@@ -243,6 +243,6 @@ const char *handle_add_connection(Session *session, const char *args) {
     }
 }
 
-const char *handle_set_trustline_client(Session *session, const char *args) {
+const char *client_handle_set_trustline(Session *session, const char *args) {
     return "PLACEHOLDER RETURN STRING";
 }
