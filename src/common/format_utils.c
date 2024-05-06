@@ -20,6 +20,7 @@ int isValidUsername(const char *username) {
     return 1; // Valid username
 }
 
+// Helper function to check if a string is a valid number
 bool isNumber(const char *str) {
     // Check each character to see if it's a digit
     for (int i = 0; str[i]; i++) {
