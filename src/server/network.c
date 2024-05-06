@@ -26,7 +26,7 @@ SSL_CTX *create_ssl_server_context() {
 }
 
 void configure_ssl_server_context(SSL_CTX *ctx) {
-    if (SSL_CTX_use_certificate_chain_file(ctx, CERTIFICATE_FILE, SSL_FILETYPE_PEM) <= 0) {
+    if (SSL_CTX_use_certificate_chain_file(ctx, CERTIFICATE_FILE) <= 0) {
         ERR_print_errors_fp(stderr);
         exit(EXIT_FAILURE);
     }
