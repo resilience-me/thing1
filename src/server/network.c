@@ -85,6 +85,15 @@ SSL* establish_connection(const char *server_address, int port) {
         return NULL;
     }
 
+    // Send protocol header
+    struct ProtocolHeader header;
+    header.connectionType = SERVER_CONNECTION;
+    if (send(sockfd, &header, sizeof(header), 0) != sizeof(header)) {
+        perror("Failed to send protocol header");
+        close(sockfd);
+        return NULL;
+    }
+
     SSL *ssl = setup_ssl_client_connection(ctx, sockfd);
     if (ssl == NULL) {
         close(sockfd);
@@ -94,15 +103,6 @@ SSL* establish_connection(const char *server_address, int port) {
     // Optionally, perform post-handshake checks or configurations here
     printf("SSL Handshake successful with %s encryption\n", SSL_get_cipher(ssl));
 
-    // Construct and send the protocol header
-    struct ProtocolHeader header;
-    header.connectionType = SERVER_CONNECTION;
-    if (SSL_write(ssl, &header, sizeof(header)) != sizeof(header)) {
-        perror("Protocol header send failed");
-        close(sockfd);
-        SSL_free(ssl);
-        return NULL;
-    }
     return ssl;
 }
 
