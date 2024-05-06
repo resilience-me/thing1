@@ -22,6 +22,6 @@ int create_socket(int port);
 // Function to establish an SSL connection to a remote server
 SSL* establish_connection(const char *server_address, int port);
 
-int verify_hostname(SSL* ssl, const char* expected_hostname);
+const char *get_peer_certificate_common_name(SSL *ssl);
 
 #endif /* NETWORK_H */
