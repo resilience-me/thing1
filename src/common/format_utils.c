@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <ctype.h>
+#include <string.h>
 
 bool isValidArgument(const char *arg) {
     // Check if the arg contains the delimiter
