@@ -34,7 +34,11 @@ void handle_new_connection(int client_sock, SSL_CTX *ctx) {
             pthread_t tid;
             if (pthread_create(&tid, NULL, handle_client_connection, ssl) != 0) {
                 perror("Unable to create thread for client connection");
+                SSL_free(ssl); // Free SSL context if thread creation fails
+                close(client_sock);
+                return;
             }
+            // No need to close the SSL connection here
         }
     } else if (header.connectionType == SERVER_CONNECTION) {
         printf("Handling server connection...\n");
@@ -46,17 +50,17 @@ void handle_new_connection(int client_sock, SSL_CTX *ctx) {
             pthread_t tid;
             if (pthread_create(&tid, NULL, handle_server_connection, ssl) != 0) {
                 perror("Unable to create thread for server connection");
+                SSL_free(ssl); // Free SSL context if thread creation fails
+                close(client_sock);
+                return;
             }
+            // No need to close the SSL connection here
         }
     } else {
         printf("Invalid connection type: %d\n", header.connectionType);
         perror("Invalid connection type");
-    }
-
-    if (!SSL_in_init(ssl)) {
-        printf("Closing SSL connection...\n");
-        SSL_free(ssl);
+        SSL_free(ssl); // Free SSL context for invalid connection type
         close(client_sock);
+        return;
     }
 }
-
