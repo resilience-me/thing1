@@ -106,7 +106,7 @@ SSL* establish_connection(const char *server_address, int port) {
     return ssl;
 }
 
-X509_NAME get_peer_subject_name(SSL *ssl) {
+X509_NAME *get_peer_subject_name(SSL *ssl) {
     X509 *peer_cert = SSL_get_peer_certificate(ssl);
     if (!peer_cert) {
         return NULL;  // No certificate available
@@ -121,54 +121,45 @@ X509_NAME get_peer_subject_name(SSL *ssl) {
 }
 
 // Function to get the peer's IP address and check if it's localhost
-int *get_peer_ip_and_check_localhost(X509_NAME *subject_name) {
-    // Retrieve the peer's IP address
+int is_localhost(const char *peer_ip) {
+    // Check if the IP address is localhost
+    return (strcmp(peer_ip, "127.0.0.1") == 0 || strcmp(peer_ip, "::1") == 0);
+}
+
+// Function to get the peer's IP address from the subject name
+const char *get_peer_ip(X509_NAME *subject_name) {
+    // Retrieve the peer's IP address (replace this with your IP retrieval logic)
     X509_NAME_ENTRY *entry = X509_NAME_get_entry(subject_name, 0); // Assuming the first entry is the IP address
+    if (!entry) {
+        return NULL;
+    }
+
     ASN1_STRING *ip_asn1 = X509_NAME_ENTRY_get_data(entry);
     if (!ip_asn1) {
-        return 0;
+        return NULL;
     }
-    // Retrieve the peer's IP address (replace this with your IP retrieval logic)
-    char *peer_ip = (const char *)ASN1_STRING_get0_data(ip_asn1);
 
-    // Check if the IP address is localhost
-    if (strcmp(peer_ip, "127.0.0.1") == 0 || strcmp(peer_ip, "::1") == 0) {
-        // Free the peer IP and return "localhost"
-        free(peer_ip);
-        return 1;
-    }
-    return 0;
+    // Retrieve the peer's IP address as a string
+    return (const char *)ASN1_STRING_get0_data(ip_asn1);
 }
-// Function to get the common name (CN) from a peer's subject name
-const char *get_peer_certificate_common_name(X509_NAME *subject_name) {    
+
+// Function to get the peer's common name (CN) from the subject name
+const char *get_peer_certificate_common_name(X509_NAME *subject_name) {
     int common_name_index = X509_NAME_get_index_by_NID(subject_name, NID_commonName, -1);
     if (common_name_index < 0) {
-        X509_free(peer_cert);
         return NULL;  // Common name not found
     }
 
     X509_NAME_ENTRY *common_name_entry = X509_NAME_get_entry(subject_name, common_name_index);
     if (!common_name_entry) {
-        X509_free(peer_cert);
         return NULL;  // Failed to get common name entry
     }
 
     ASN1_STRING *common_name_asn1 = X509_NAME_ENTRY_get_data(common_name_entry);
     if (!common_name_asn1) {
-        X509_free(peer_cert);
         return NULL;  // Failed to get common name ASN.1 string
     }
 
-    const char *common_name = (const char *)ASN1_STRING_get0_data(common_name_asn1);
-    if (!common_name) {
-        X509_free(peer_cert);
-        return NULL;  // Failed to convert common name ASN.1 string to C string
-    }
-
-    // Make a copy of the common name string before freeing the certificate
-    char *common_name_copy = strdup(common_name);
-
-    // Free the certificate and return the common name string
-    X509_free(peer_cert);
-    return common_name_copy;
+    // Convert the common name ASN.1 string to a C string
+    return (const char *)ASN1_STRING_get0_data(common_name_asn1);
 }
