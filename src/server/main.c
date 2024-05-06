@@ -53,6 +53,11 @@ int main(int argc, char **argv) {
         SSL_set_fd(ssl, client);
 
         if (header.connectionType == CLIENT_CONNECTION) {
+            // Perform SSL handshake
+            if (SSL_accept(ssl) <= 0) {
+                ERR_print_errors_fp(stderr);
+                goto cleanup;
+            }
             // Handle user connection
             if (pthread_create(&tid, NULL, handle_client_connection, ssl) != 0) {
                 perror("Unable to create thread for user connection");
@@ -61,7 +66,13 @@ int main(int argc, char **argv) {
                 continue;
             }
         } else if (header.connectionType == SERVER_CONNECTION) {
-    
+            // Set up SSL context to enforce client certificate verification
+            SSL_set_verify(ssl, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, NULL);
+            // Perform SSL handshake
+            if (SSL_accept(ssl) <= 0) {
+                ERR_print_errors_fp(stderr);
+                goto cleanup;
+            }
             // Handle server connection
             if (pthread_create(&tid, NULL, handle_server_connection, ssl) != 0) {
                 perror("Unable to create thread for server connection");
