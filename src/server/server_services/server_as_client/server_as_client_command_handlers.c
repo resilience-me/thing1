@@ -100,7 +100,7 @@ const char *server_as_client_handle_set_trustline(SSL *ssl, const char *args) {
 
     // Construct the query with the username
     char query[768];
-    snprintf(query, sizeof(query), "SET_TRUSTLINES %s", args);
+    snprintf(query, sizeof(query), "SET_TRUSTLINE %s", args);
 
     // Send the query to the server
     send_query(ssl, query);
