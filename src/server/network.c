@@ -106,6 +106,13 @@ SSL* establish_connection(const char *server_address, int port) {
     return ssl;
 }
 
+const char *get_domain_name(SSL *ssl) {
+    X509_NAME *subject_name = get_peer_subject_name(ssl);
+    const char *peer_ip = get_peer_ip(subject_name);
+    if(is_localhost(peer_ip)) return "localhost";
+    return get_peer_certificate_common_name(subject_name);
+}
+
 X509_NAME *get_peer_subject_name(SSL *ssl) {
     X509 *peer_cert = SSL_get_peer_certificate(ssl);
     if (!peer_cert) {
