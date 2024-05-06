@@ -160,7 +160,6 @@ void handle_set_trustline(SSL *ssl) {
 
     char size[256];
 
-
     while (true) {
         printf("Enter the size of the trustline (if empty defaults to zero): ");
         fgets(size, sizeof(size), stdin);
