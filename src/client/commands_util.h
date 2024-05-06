@@ -1,5 +1,5 @@
-#ifndef COMMANDS_H
-#define COMMANDS_H
+#ifndef COMMANDS_UTIL_H
+#define COMMANDS_UTIL_H
 
 #include "command_defs.h"
 #include <openssl/ssl.h>
@@ -10,4 +10,4 @@ extern Command *commands;  // Makes the commands array available to other files
 
 extern void *command_handlers[];
 
-#endif // COMMANDS_H
+#endif // COMMANDS_UTIL_H
