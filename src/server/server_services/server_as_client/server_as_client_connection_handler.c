@@ -1,5 +1,6 @@
 #include "server_as_client_connection_handler.h"
 #include "commands_util.h"
+#include "network.h"
 #include <openssl/ssl.h>
 
 const char* server_as_client_connection_handler(const char *server_address, int port, const char *command, const char *args) {
