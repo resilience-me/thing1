@@ -261,37 +261,27 @@ const char *client_handle_set_trustline(Session *session, const char *args) {
     if (parsed_args != 4) {
         return "INVALID_ARGUMENTS";
     }
-    
-    // Set defaults for empty inputs
-    if (strcmp(remote_username, "none") == 0) {
-        strcpy(remote_username, "default");  // Default username if not provided
-    }
-    
+
     // Check if provided username is invalid
     if (!isValidUsername(remote_username)) {
         return "INVALID_USERNAME";
     }
-    int port;
-    // Check if address is localhost
-    if (server_address[0] != '\0' && strcmp(server_address, SERVER_ADDRESS) != 0) {
-        char port_buf[6]; // Assuming port number will be less than 100000
-        
-        // If portStr is NULL or empty, set it to DEFAULT_PORT
-        if (portStr[0] == '\0') {
-            sprintf(port_buf, "%d", SERVER_DEFAULT_PORT);
-            strcpy(portStr, port_buf);
-        }
-        // Validate port
-        port = atoi(portStr);  // Convert string to int
-        if (port <= 0) {       // Simple validation to catch invalid conversions
-            return "INVALID_PORT";
-        }
-    } else {
-        // if (strcmp(remote_username, session->username) == 0) {
-        //     return "CANNOT_ADD_SELF";
-        // }
+    // Set address to localhost if arg emptt
+    if(strcmp(server_address, "none") == 0) {
         strcpy(server_address, "localhost");  // Default to localhost if no server address is provided
-        port = SERVER_DEFAULT_PORT;
+    }
+
+    char port_buf[6]; // Assuming port number will be less than 100000
+
+    if(strcmp(portStr, "none") == 0) {
+        sprintf(port_buf, "%d", SERVER_DEFAULT_PORT);
+        strcpy(portStr, port_buf);
+    }
+
+    // Validate port
+    int port = atoi(portStr);  // Convert string to int
+    if (port <= 0) {       // Simple validation to catch invalid conversions
+        return "INVALID_PORT";
     }
 
     // Handle size - set to "0" if empty
