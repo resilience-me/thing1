@@ -19,7 +19,6 @@ int main(int argc, char **argv) {
     // Create and configure the global client SSL context
     global_client_ctx = create_ssl_client_context();
     configure_ssl_server_context(global_client_ctx);
-    configure_ssl_client_context(global_client_ctx);
 
     // Create and configure the server SSL context
     SSL_CTX *server_ctx = create_ssl_server_context();
