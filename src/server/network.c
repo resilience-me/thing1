@@ -5,6 +5,9 @@
 #include "ssl_utils.h"      // SSL utility functions
 #include "protocol_defs.h"  // Protocol header to distinguish betwween server and client connections
 
+#include <openssl/ssl.h>
+#include <openssl/x509.h>
+
 SSL_CTX *create_ssl_server_context() {
     const SSL_METHOD *method;
     SSL_CTX *ctx;
@@ -101,4 +104,31 @@ SSL* establish_connection(const char *server_address, int port) {
         return NULL;
     }
     return ssl;
+}
+
+// Function to verify the hostname against the SSL certificate
+int verify_hostname(SSL* ssl, const char* expected_hostname) {
+    X509* cert = SSL_get_peer_certificate(ssl);
+    if (!cert) {
+        // Certificate not present
+        return 0;
+    }
+
+    // Obtain the Common Name (CN) from the certificate
+    X509_NAME* subject = X509_get_subject_name(cert);
+    if (subject) {
+        char cn[256];
+        if (X509_NAME_get_text_by_NID(subject, NID_commonName, cn, sizeof(cn)) > 0) {
+            // Compare the CN with the expected hostname
+            if (strcasecmp(expected_hostname, cn) == 0) {
+                // Hostname matches CN
+                X509_free(cert);
+                return 1;
+            }
+        }
+    }
+
+    // No match found
+    X509_free(cert);
+    return 0;
 }
