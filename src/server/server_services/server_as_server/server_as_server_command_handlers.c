@@ -65,7 +65,7 @@ const char *server_as_server_handle_set_trustline(SSL *ssl, const char *args) {
         return "FAILED_TO_ACCESS_USER_DIRECTORY";
     }
 
-    const char* remote_domain = get_peer_certificate_common_name(ssl);
+    const char* remote_domain = get_domain_name(ssl);
     if (!remote_domain) {
         return "FAILED_TO_GET_PEER_CERTIFICATE";
     }
