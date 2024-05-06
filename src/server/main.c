@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
         int client = accept(sock, (struct sockaddr*)&addr, &len);
         if (client < 0) {
             perror("Unable to accept");
-            exit(EXIT_FAILURE);
+            continue;
         }
 
         ssl = SSL_new(server_ctx);
