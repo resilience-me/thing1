@@ -108,9 +108,25 @@ SSL* establish_connection(const char *server_address, int port) {
 
 const char *get_domain_name(SSL *ssl) {
     X509_NAME *subject_name = get_peer_subject_name(ssl);
+    if (!subject_name) {
+        return NULL;  // Handle failure to get subject name
+    }
+
     const char *peer_ip = get_peer_ip(subject_name);
-    if(is_localhost(peer_ip)) return "localhost";
-    return get_peer_certificate_common_name(subject_name);
+    if (!peer_ip) {
+        // Handle failure to get peer IP
+        X509_NAME_free(subject_name);
+        return NULL;
+    }
+
+    if (is_localhost(peer_ip)) {
+        X509_NAME_free(subject_name);
+        return "localhost";
+    }
+
+    const char *common_name = get_peer_certificate_common_name(subject_name);
+    X509_NAME_free(subject_name);
+    return common_name; // May be NULL, indicating an error
 }
 
 X509_NAME *get_peer_subject_name(SSL *ssl) {
