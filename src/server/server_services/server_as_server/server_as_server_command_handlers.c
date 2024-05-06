@@ -44,10 +44,10 @@ const char *server_as_server_handle_set_trustline(const char *args) {
     if (parsed_args != 3) {
         return "INVALID_ARGUMENTS";
     }
-
+    
     // Check if username is "none", then use default user
     if (strcmp(local_username, "none") == 0) {
-          local_username = DEFAULT_USER;
+        strcpy(local_username, DEFAULT_USER);  // Default username if not provided    
     }
 
     // Check if username is valid
