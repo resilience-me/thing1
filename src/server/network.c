@@ -33,6 +33,7 @@ void configure_ssl_server_context(SSL_CTX *ctx) {
         fprintf(stderr, "Private key does not match the public certificate\n");
         exit(EXIT_FAILURE);
     }
+    SSL_CTX_set_default_verify_paths(ctx);
 }
 
 int create_socket(int port) {
