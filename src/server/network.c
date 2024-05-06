@@ -25,7 +25,7 @@ SSL_CTX *create_ssl_server_context() {
     return ctx;
 }
 
-int configure_ssl_server_context(SSL_CTX *ctx) {
+void configure_ssl_server_context(SSL_CTX *ctx) {
     if (SSL_CTX_use_certificate_file(ctx, CERTIFICATE_FILE, SSL_FILETYPE_PEM) <= 0) {
         ERR_print_errors_fp(stderr);
         exit(EXIT_FAILURE);
