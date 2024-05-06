@@ -37,7 +37,7 @@ const char *server_as_server_handle_set_trustline(const char *args) {
     char sizeStr[256];
     
     // Parse arguments
-    int parsed_args = sscanf(args, "%255s %255s %5s %255s", username, sizeStr);
+    int parsed_args = sscanf(args, "%255s %255s", username, sizeStr);
     
     // Check if all arguments were successfully parsed
     if (parsed_args != 2) {
