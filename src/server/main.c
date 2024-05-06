@@ -9,24 +9,6 @@
 SSL_CTX *global_client_ctx = NULL; // Global client SSL context
 
 int main(int argc, char **argv) {
-    // Initialization code as before
-    int sock = create_socket(SERVER_DEFAULT_PORT);
-    SSL_CTX *server_ctx = create_ssl_server_context();
-    configure_ssl_server_context(server_ctx);
-
-    while (1) {
-        struct sockaddr_in addr;
-        uint len = sizeof(addr);
-        int client = accept(sock, (struct sockaddr*)&addr, &len);
-        if (client < 0) {
-            perror("Unable to accept");
-            continue;
-        }
-
-        handle_new_connection(client, server_ctx);
-    }
-
-int main(int argc, char **argv) {
     // Create necessary directories if they do not exist
     initialize_database_directories();
     initialize_all_commands();
