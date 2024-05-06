@@ -191,11 +191,15 @@ const char *get_peer_certificate_common_name(X509_NAME *subject_name) {
         return NULL;  // Common name not found
     }
 
+    printf("Common name index: %d\n", common_name_index);
+
     X509_NAME_ENTRY *common_name_entry = X509_NAME_get_entry(subject_name, common_name_index);
     if (!common_name_entry) {
         printf("Failed to get common name entry\n");
         return NULL;  // Failed to get common name entry
     }
+
+    printf("Common name entry retrieved successfully\n");
 
     ASN1_STRING *common_name_asn1 = X509_NAME_ENTRY_get_data(common_name_entry);
     if (!common_name_asn1) {
