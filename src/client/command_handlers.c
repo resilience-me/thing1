@@ -135,4 +135,21 @@ void handle_set_trustline(SSL *ssl) {
     fgets(size, sizeof(size), stdin);
     size[strcspn(size, "\n")] = '\0';  // Remove newline character
 
+    char command[1280];  // Buffer for the command to be sent
+
+    // Construct the command
+    snprintf(command, sizeof(command), "SET_TRUSTLINE %s %s %s %s", username, server_address, port, size);
+    
+    // Send the command to the server
+    SSL_write(ssl, command, strlen(command));
+
+    // Handle response
+    char response[1024];
+    int bytes = SSL_read(ssl, response, sizeof(response) - 1);
+    if (bytes > 0) {
+        response[bytes] = '\0';  // Null-terminate the response
+        printf("Response from server: %s\n", response);
+    } else {
+        printf("No response from server or error occurred.\n");
+    }
 }
