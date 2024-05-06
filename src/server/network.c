@@ -106,62 +106,76 @@ SSL* establish_connection(const char *server_address, int port) {
     return ssl;
 }
 
-// Function to get the peer's IP address and check if it's localhost
-int *get_peer_ip_and_check_localhost(X509_NAME *subject_name) {
-    // Retrieve the peer's IP address
-    X509_NAME_ENTRY *entry = X509_NAME_get_entry(subject_name, 0); // Assuming the first entry is the IP address
-    ASN1_STRING *ip_asn1 = X509_NAME_ENTRY_get_data(entry);
-    if (!ip_asn1) {
-        return 0;
-    }
-    // Retrieve the peer's IP address (replace this with your IP retrieval logic)
-    char *peer_ip = (const char *)ASN1_STRING_get0_data(ip_asn1);
-
-    // Check if the IP address is localhost
-    if (strcmp(peer_ip, "127.0.0.1") == 0 || strcmp(peer_ip, "::1") == 0) {
-        // Free the peer IP and return "localhost"
-        free(peer_ip);
-        return 1;
-    }
-    return 0;
-}
-
-// Function to get the common name (CN) from a peer's certificate
-const char *get_peer_certificate_common_name(SSL *ssl) {
+// Function to get the peer's hostname
+const char *get_peer_hostname(SSL *ssl) {
+    // Get the peer's IP address
     X509 *peer_cert = SSL_get_peer_certificate(ssl);
     if (!peer_cert) {
-        return NULL;  // No certificate available
+        // No peer certificate available
+        return NULL;
     }
 
     X509_NAME *subject_name = X509_get_subject_name(peer_cert);
     if (!subject_name) {
         X509_free(peer_cert);
-        return NULL;  // Failed to get subject name
+        return NULL;
     }
-    if(get_peer_ip_and_check_localhost())) return "localhost";
-    
+
+    // Retrieve the peer's IP address
+    X509_NAME_ENTRY *entry = X509_NAME_get_entry(subject_name, 0); // Assuming the first entry is the IP address
+    ASN1_STRING *ip_asn1 = X509_NAME_ENTRY_get_data(entry);
+    if (!ip_asn1) {
+        X509_free(peer_cert);
+        return NULL;
+    }
+
+    // Convert the IP address ASN.1 string to a C string
+    const char *ip_str = (const char *)ASN1_STRING_get0_data(ip_asn1);
+
+    // Check if the IP address is localhost
+    struct in_addr ipv4_addr;
+    if (inet_pton(AF_INET, ip_str, &ipv4_addr) == 1) {
+        // IPv4 address
+        if (strcmp(ip_str, "127.0.0.1") == 0) {
+            // Connection is over localhost (IPv4)
+            X509_free(peer_cert);
+            return "localhost";
+        }
+    }
+
+    struct in6_addr ipv6_addr;
+    if (inet_pton(AF_INET6, ip_str, &ipv6_addr) == 1) {
+        // IPv6 address
+        if (strcmp(ip_str, "::1") == 0) {
+            // Connection is over localhost (IPv6)
+            X509_free(peer_cert);
+            return "localhost";
+        }
+    }
+
+    // Otherwise, retrieve the common name (CN) from the peer certificate
     int common_name_index = X509_NAME_get_index_by_NID(subject_name, NID_commonName, -1);
     if (common_name_index < 0) {
         X509_free(peer_cert);
-        return NULL;  // Common name not found
+        return NULL;
     }
 
     X509_NAME_ENTRY *common_name_entry = X509_NAME_get_entry(subject_name, common_name_index);
     if (!common_name_entry) {
         X509_free(peer_cert);
-        return NULL;  // Failed to get common name entry
+        return NULL;
     }
 
     ASN1_STRING *common_name_asn1 = X509_NAME_ENTRY_get_data(common_name_entry);
     if (!common_name_asn1) {
         X509_free(peer_cert);
-        return NULL;  // Failed to get common name ASN.1 string
+        return NULL;
     }
 
     const char *common_name = (const char *)ASN1_STRING_get0_data(common_name_asn1);
     if (!common_name) {
         X509_free(peer_cert);
-        return NULL;  // Failed to convert common name ASN.1 string to C string
+        return NULL;
     }
 
     // Make a copy of the common name string before freeing the certificate
