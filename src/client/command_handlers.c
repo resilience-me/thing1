@@ -131,7 +131,7 @@ void handle_set_trustline(SSL *ssl) {
     char size[256];
     
     // Additional specific queries for setting a trustline
-    printf("Enter the size of the trustline: ");
+    printf("Enter the size of the trustline (if empty defaults to zero): ");
     fgets(size, sizeof(size), stdin);
     size[strcspn(size, "\n")] = '\0';  // Remove newline character
 
