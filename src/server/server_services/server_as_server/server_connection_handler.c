@@ -11,6 +11,8 @@ void send_response(SSL *ssl, const char *response) {
 }
 
 void handle_server_connection(SSL *ssl) {
+    SSL_set_verify(ssl, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, NULL);
+
     // Receive the command from the other server
     const int read_size = 256;
     char buffer[read_size];
