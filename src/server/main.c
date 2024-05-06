@@ -40,44 +40,16 @@ int main(int argc, char **argv) {
             exit(EXIT_FAILURE);
         }
 
-        struct ProtocolHeader header;
-
-        // Read the connection type message from the client
-
-        if (recv(client, &header, sizeof(header), 0) <= 0) {
-            perror("Error receiving connection type");
-            close(client);
-            continue;
-        }
-    
         ssl = SSL_new(server_ctx);
         SSL_set_fd(ssl, client);
-    
-        if (header.connectionType == CLIENT_CONNECTION) {
-            // Handle user connection
-            if (pthread_create(&tid, NULL, handle_client_connection, ssl) != 0) {
-                perror("Unable to create thread for user connection");
-                SSL_free(ssl);
-                close(client);
-                continue;
-            }
-        } else if (header.connectionType == SERVER_CONNECTION) {
-    
-            // Handle server connection
-            if (pthread_create(&tid, NULL, handle_server_connection, ssl) != 0) {
-                perror("Unable to create thread for server connection");
-                SSL_free(ssl);
-                close(client);
-                continue;
-            }
-        } else {
-            // Invalid connection type
-            perror("Invalid connection type");
+
+        if (pthread_create(&tid, NULL, handle_connection, ssl) != 0) {
+            perror("Unable to create thread");
+            SSL_free(ssl);
             close(client);
             continue;
         }
     }
-
 
     // Clean up SSL contexts
     SSL_CTX_free(global_client_ctx);
