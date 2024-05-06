@@ -286,19 +286,15 @@ const char *client_handle_set_trustline(Session *session, const char *args) {
     }
     
     int port = atoi(portStr);  // Convert string to int
+
+    char remote_args[768];  // Define a buffer to hold the concatenated arguments
     
-    // Establish an SSL connection to the remote server
-    SSL *remoteSSL = establish_connection(server_address, port);
-    if (remoteSSL == NULL) {
-        return "CONNECTION_FAILED";
-    }
+    // Concatenate username, a space character, and sizeStr into args
+    snprintf(remote_args, sizeof(remote_args), "%s %s", username, sizeStr);
+    
+    // Send the command to the server with the concatenated arguments
+    const char *response = server_as_client_connection_handler(server_address, port, "SET_TRUSTLINE", remote_args);
 
-    // Send the command to the remote server
-    const char *response = server_as_client_dispatch_command(remoteSSL, "SET_TRUSTLINE", sizeStr);
-
-    // Close the SSL connection
-    SSL_shutdown(remoteSSL);
-    SSL_free(remoteSSL);
     if(response) {
         // Handle the response from the server
         if (strcmp(response, "SUCCESS") == 0) {
