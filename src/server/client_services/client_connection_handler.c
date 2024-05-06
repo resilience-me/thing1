@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void *handle_client_connection(void *arg) {
+void handle_client_connection(void *arg) {
     SSL *ssl = (SSL *)arg;
 
     const char *ack_message = "Client connection established";
