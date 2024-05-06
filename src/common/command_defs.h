@@ -1,6 +1,8 @@
 #ifndef COMMAND_DEFS_H
 #define COMMAND_DEFS_H
 
+#define ARGUMENT_DELIMITER ' '
+
 #define CLIENT_COMMAND_NAMES \
     "LOGIN", \
     "REGISTER", \
