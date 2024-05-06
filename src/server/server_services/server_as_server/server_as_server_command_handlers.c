@@ -32,7 +32,7 @@ bool account_exists(char *username) {
     return true;
 }
 
-const char *server_as_server_handle_set_trustline(const char *args) {
+const char *server_as_server_handle_set_trustline(SSL *ssl, const char *args) {
     char remote_username[256];
     char local_username[256];
     char sizeStr[256];
@@ -52,7 +52,7 @@ const char *server_as_server_handle_set_trustline(const char *args) {
 
     // Check if username is valid
     if (!isValidUsername(local_username)) {
-        return false;
+        return "FAILED";
     }
     // Build the path to the user directory
     char user_dir[768];
@@ -60,12 +60,20 @@ const char *server_as_server_handle_set_trustline(const char *args) {
 
     // Check if user directory exists
     if (access(user_dir, F_OK) == -1) {
-        return false;
+        return "FAILED";
+    }
+
+    const char* remote_domain = get_peer_certificate_common_name(ssl);
+    if (!remote_domain) {
+        return "FAILED";
     }
     // Build the path to the remote user directory in the peers directory
     char peer_dir[1280];
-    snprintf(peer_dir, sizeof(peer_dir), "%s/peers/%s", user_dir, local_username);
-
+    snprintf(peer_dir, sizeof(peer_dir), "%s/peers/%s/%s", user_dir, remote_domain, remote_username);
+    
+    // Don't forget to free the memory when done
+    free((void*)remote_domain);
+    
     // Create user directory
     if (make_dirs(peer_dir) == -1) {
         return "DIRECTORY_CREATION_FAILED";
