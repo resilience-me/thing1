@@ -43,7 +43,7 @@ const char *server_as_server_handle_set_trustline(const char *args) {
     if (parsed_args != 2) {
         return "INVALID_ARGUMENTS";
     }
-    if(!account_exists(username)) return "FAILED_TO_SET_TRUSTLINE;
+    if(!account_exists(username)) return "FAILED_TO_SET_TRUSTLINE";
     
     
       
