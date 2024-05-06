@@ -9,7 +9,7 @@
 #include <ctype.h>
 
 // Function to handle user registration
-const char *client_handle_register_user(Session *session, const char *args) {
+const char *client_handle_register(Session *session, const char *args) {
     char username[256] = {0}; // Ensure username is initially empty
     char password[256] = {0}; // Allow password to be empty
 
@@ -56,7 +56,7 @@ const char *client_handle_register_user(Session *session, const char *args) {
     return "REGISTER_SUCCESS"; // Registration successful
 }
 
-const char *client_handle_delete_user(Session *session, const char *args) {
+const char *client_handle_delete_account(Session *session, const char *args) {
     if (!session->authenticated) {
         return "AUTH_REQUIRED";
     }
@@ -79,7 +79,7 @@ const char *client_handle_delete_user(Session *session, const char *args) {
     return "USER_DELETED_SUCCESSFULLY";
 }
 
-const char *client_handle_login_user(Session *session, const char *args) {
+const char *client_handle_login(Session *session, const char *args) {
     char username[256] = {0}; // Ensure username is initially empty
     char password[256] = {0}; // Allow password to be empty
 
@@ -138,7 +138,7 @@ const char *client_handle_login_user(Session *session, const char *args) {
     return "LOGIN_SUCCESS";  // User successfully authenticated
 }
 
-const char *client_handle_logout_user(Session *session, const char *args) {
+const char *client_handle_logout(Session *session, const char *args) {
     session->authenticated = 0;
     return "LOGOUT_SUCCESS";
 }
