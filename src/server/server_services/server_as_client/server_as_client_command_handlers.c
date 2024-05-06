@@ -76,7 +76,7 @@ const char *account_exists(char *username) {
     return "ACCOUNT_EXISTS";
 }
 
-const char *handle_send_account_exists_query(SSL *ssl, const char *args) {
+const char *server_as_client_handle_account_exists(SSL *ssl, const char *args) {
     const char *username = args;
 
     // Construct the query with the username
