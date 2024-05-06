@@ -10,7 +10,8 @@ void send_response(SSL *ssl, const char *response) {
     SSL_write(ssl, response, strlen(response));
 }
 
-void handle_server_connection(SSL *ssl) {
+void *handle_server_connection(void *arg) {
+    SSL *ssl = (SSL *)arg;
 
     // Receive the command from the other server
     const int read_size = 256;
