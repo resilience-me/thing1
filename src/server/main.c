@@ -19,6 +19,7 @@ int main(int argc, char **argv) {
     // Create and configure the global client SSL context
     global_client_ctx = create_ssl_client_context();
     configure_ssl_server_context(global_client_ctx);
+    SSL_CTX_set_verify(global_client_ctx, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, NULL);
 
     // Create and configure the server SSL context
     SSL_CTX *server_ctx = create_ssl_server_context();
