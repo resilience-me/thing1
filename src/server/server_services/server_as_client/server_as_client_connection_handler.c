@@ -1,3 +1,7 @@
+#include "server_as_client.h"
+#include "commands_util.h"
+#include <openssl/ssl.h>
+
 const char* server_as_client_connection_handler(const char *server_address, int port, const char *command, const char *args) {
     // Establish an SSL connection to the remote server
     SSL *remoteSSL = establish_connection(server_address, port);
@@ -10,4 +14,5 @@ const char* server_as_client_connection_handler(const char *server_address, int 
     // Close the SSL connection
     SSL_shutdown(remoteSSL);
     SSL_free(remoteSSL);
+    return response;
 }
