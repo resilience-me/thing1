@@ -279,15 +279,11 @@ const char *client_handle_set_trustline(Session *session, const char *args) {
     }
 
     // Validate port
-    int port = atoi(portStr);  // Convert string to int
-    if (port <= 0) {       // Simple validation to catch invalid conversions
+    if (!isValidPort(portStr)) {
         return "INVALID_PORT";
     }
-
-    // Handle size - set to "0" if empty
-    if (sizeStr[0] == '\0') {
-        strcpy(sizeStr, "0");  // Default size to "0" if no size was provided
-    }    
+    
+    int port = atoi(portStr);  // Convert string to int
     
     // Establish an SSL connection to the remote server
     SSL *remoteSSL = establish_connection(server_address, port);
