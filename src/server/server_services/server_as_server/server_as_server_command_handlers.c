@@ -67,7 +67,7 @@ const char *server_as_server_handle_set_trustline(SSL *ssl, const char *args) {
 
     const char* remote_domain = get_domain_name(ssl);
     if (remote_domain == NULL) {
-        // Handle the case where the domain name retrieval failed
+        return "FAILED_DOMAIN_CHECK";
     }
     // Build the path to the remote user directory in the peers directory
     char peer_dir[1280];
