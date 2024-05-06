@@ -244,10 +244,10 @@ const char *client_handle_add_connection(Session *session, const char *args) {
 }
 
 const char *client_handle_set_trustline(Session *session, const char *args) {
-    char remote_username[256] = "";
-    char server_address[256] = "";
-    char portStr[6] = "";
-    char sizeStr[256] = "";
+    char remote_username[256];
+    char server_address[256];
+    char portStr[6];
+    char sizeStr[256];
 
     // Check authentication
     if (!session->authenticated) {
@@ -255,10 +255,15 @@ const char *client_handle_set_trustline(Session *session, const char *args) {
     }
 
     // Parse arguments
-    sscanf(args, "%255s %255s %5s %255s", remote_username, server_address, portStr, sizeStr);
-
+    int parsed_args = sscanf(args, "%255s %255s %5s %255s", remote_username, server_address, portStr, sizeStr);
+    
+    // Check if all arguments were successfully parsed
+    if (parsed_args != 4) {
+        return "INVALID_ARGUMENTS";
+    }
+    
     // Set defaults for empty inputs
-    if (remote_username[0] == '\0') {
+    if (strcmp(remote_username, "none") == 0) {
         strcpy(remote_username, "default");  // Default username if not provided
     }
     
