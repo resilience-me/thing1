@@ -1,6 +1,7 @@
 #include "format_utils.h"
 #include "command_defs.h"
 
+#include <stdlib.h>
 #include <ctype.h>
 
 bool isValidArgument(const char *arg) {
