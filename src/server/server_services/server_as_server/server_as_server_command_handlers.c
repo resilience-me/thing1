@@ -69,6 +69,7 @@ const char *server_as_server_handle_set_trustline(SSL *ssl, const char *args) {
     if (remote_domain == NULL) {
         return "FAILED_DOMAIN_CHECK";
     }
+    return remote_domain;
     // Build the path to the remote user directory in the peers directory
     char peer_dir[1280];
     snprintf(peer_dir, sizeof(peer_dir), "%s/peers/%s/%s", user_dir, remote_domain, remote_username);
