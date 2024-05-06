@@ -4,18 +4,6 @@
 #include <stdio.h>
 #include <string.h>
 
-// Helper function to validate port numbers
-int isValidPort(const char *port) {
-    if (strlen(port) == 0) return 1;  // Empty is allowed (default port)
-    for (int i = 0; port[i]; i++) {
-        if (!isdigit(port[i])) {
-            return 0;  // Non-digit character found
-        }
-    }
-    int portNum = atoi(port);
-    return (portNum > 0 && portNum <= 65535);
-}
-
 void handle_login_and_register(char *loginOrRegister, SSL *ssl) {
     char username[256], password[256];
     printf("Enter username: ");
