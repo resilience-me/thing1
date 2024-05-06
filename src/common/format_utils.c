@@ -20,6 +20,16 @@ int isValidUsername(const char *username) {
     return 1; // Valid username
 }
 
+bool isNumber(const char *str) {
+    // Check each character to see if it's a digit
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (!isdigit(str[i])) {
+            return false;  // Non-digit character found
+        }
+    }
+    return true;  // All characters are digits
+}
+
 // Helper function to validate port numbers
 int isValidPort(const char *port) {
     if (strlen(port) == 0) return 1;  // Empty is allowed (default port)
