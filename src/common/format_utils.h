@@ -8,6 +8,8 @@ bool isValidArgument(const char *arg);
 // Checks if the given username contains only valid characters
 int isValidUsername(const char *username);
 
+bool isNumber(const char *str);
+
 int isValidPort(const char *port);
 
 #endif // FORMAT_UTILS_H
