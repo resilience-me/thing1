@@ -12,41 +12,42 @@
 #include <netinet/in.h>
 #include <openssl/err.h>
 
-void *handle_connection(void *arg) {
-    SSL *ssl = (SSL *)arg;
-
+void handle_new_connection(int client_sock, SSL_CTX *ctx) {
     struct ProtocolHeader header;
-
-    // Read the connection type message from the client
-
-    if (recv(SSL_get_fd(ssl), &header, sizeof(header), 0) <= 0) {
+    if (recv(client_sock, &header, sizeof(header), 0) <= 0) {
         perror("Error receiving connection type");
-        goto cleanup;
+        close(client_sock);
+        return;
     }
 
-    // Determine connection type based on the identifier
+    SSL *ssl = SSL_new(ctx);
+    SSL_set_fd(ssl, client_sock);
+
     if (header.connectionType == CLIENT_CONNECTION) {
-        // Perform SSL handshake
         if (SSL_accept(ssl) <= 0) {
             ERR_print_errors_fp(stderr);
-            goto cleanup;
+        } else {
+            pthread_t tid;
+            if (pthread_create(&tid, NULL, handle_client_connection, ssl) != 0) {
+                perror("Unable to create thread for client connection");
+            }
         }
-        handle_client_connection(ssl);
     } else if (header.connectionType == SERVER_CONNECTION) {
-        // Set up SSL context to enforce client certificate verification
         SSL_set_verify(ssl, SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT, NULL);
-        // Perform SSL handshake
         if (SSL_accept(ssl) <= 0) {
             ERR_print_errors_fp(stderr);
-            goto cleanup;
+        } else {
+            pthread_t tid;
+            if (pthread_create(&tid, NULL, handle_server_connection, ssl) != 0) {
+                perror("Unable to create thread for server connection");
+            }
         }
-        handle_server_connection(ssl);
     } else {
-        // Invalid connection type
+        perror("Invalid connection type");
     }
 
-cleanup:
-    close(SSL_get_fd(ssl));
-    SSL_free(ssl);
-    pthread_exit(NULL);
+    if (!SSL_in_init(ssl)) {
+        SSL_free(ssl);
+        close(client_sock);
+    }
 }
