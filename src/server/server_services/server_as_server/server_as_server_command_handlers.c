@@ -62,12 +62,12 @@ const char *server_as_server_handle_set_trustline(SSL *ssl, const char *args) {
 
     // Check if user directory exists
     if (access(user_dir, F_OK) == -1) {
-        return "FAILED";
+        return "FAILED_TO_ACCESS_USER_DIRECTORY";
     }
 
     const char* remote_domain = get_peer_certificate_common_name(ssl);
     if (!remote_domain) {
-        return "FAILED";
+        return "FAILED_TO_GET_PEER_CERTIFICATE";
     }
     // Build the path to the remote user directory in the peers directory
     char peer_dir[1280];
