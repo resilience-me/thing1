@@ -247,7 +247,7 @@ const char *client_handle_set_trustline(Session *session, const char *args) {
     char remote_username[256] = "";
     char server_address[256] = "";
     char portStr[6] = "";
-    char size[256] = "";
+    char sizeStr[256] = "";
 
     // Check authentication
     if (!session->authenticated) {
@@ -288,6 +288,11 @@ const char *client_handle_set_trustline(Session *session, const char *args) {
         strcpy(server_address, "localhost");  // Default to localhost if no server address is provided
         port = SERVER_DEFAULT_PORT;
     }
+
+    // Handle size - set to "0" if empty
+    if (sizeStr[0] == '\0') {
+        strcpy(sizeStr, "0");  // Default size to "0" if no size was provided
+    }    
     
     // Establish an SSL connection to the remote server
     SSL *remoteSSL = establish_connection(server_address, port);
@@ -296,7 +301,7 @@ const char *client_handle_set_trustline(Session *session, const char *args) {
     }
 
     // Send the command to the remote server
-    const char *response = server_as_client_dispatch_command(remoteSSL, "SET_TRUSTLINE", size);
+    const char *response = server_as_client_dispatch_command(remoteSSL, "SET_TRUSTLINE", sizeStr);
 
     // Close the SSL connection
     SSL_shutdown(remoteSSL);
