@@ -296,12 +296,13 @@ const char *client_handle_set_trustline(Session *session, const char *args) {
     const char *response = server_as_client_connection_handler(server_address, port, "SET_TRUSTLINE", remote_args);
 
     if(response) {
-        return response;
         // Handle the response from the server
-        if (strcmp(response, "SUCCESS") == 0) {
+        if (strcmp(response, "TRUSTLINE_SET_SUCCESSFULLY") == 0) {
+            
+            return "TRUSTLINE_SET_SUCCESSFULLY";
             return "add_account(remote_username, server_address, portStr, session)";
         } else {
-            return "ACCOUNT_NOT_FOUND";
+            return "FAILED_TO_SET_TRUSTLINE";
         }
     } else {
         return response;
