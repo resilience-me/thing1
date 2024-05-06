@@ -66,13 +66,12 @@ const char *server_as_server_handle_set_trustline(SSL *ssl, const char *args) {
     }
 
     const char* remote_domain = get_domain_name(ssl);
-
+    if (remote_domain == NULL) {
+        // Handle the case where the domain name retrieval failed
+    }
     // Build the path to the remote user directory in the peers directory
     char peer_dir[1280];
     snprintf(peer_dir, sizeof(peer_dir), "%s/peers/%s/%s", user_dir, remote_domain, remote_username);
-    
-    // Don't forget to free the memory when done
-    free((void*)remote_domain);
     
     // Create user directory
     if (make_dirs(peer_dir) == -1) {
