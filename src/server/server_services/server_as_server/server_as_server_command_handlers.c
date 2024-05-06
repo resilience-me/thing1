@@ -8,6 +8,7 @@
 #include <stdio.h> // For sscanf
 #include "database.h"
 #include <stdlib.h>
+#include <openssl/ssl.h>
 
 bool account_exists(char *username) {
     // Check if username is "none", then use default user
