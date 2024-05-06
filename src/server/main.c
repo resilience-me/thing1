@@ -32,7 +32,6 @@ int main(int argc, char **argv) {
     while (1) {
         struct sockaddr_in addr;
         uint len = sizeof(addr);
-        SSL *ssl;
         pthread_t tid;
 
         int client = accept(sock, (struct sockaddr*)&addr, &len);
@@ -41,12 +40,38 @@ int main(int argc, char **argv) {
             continue;
         }
 
-        ssl = SSL_new(server_ctx);
+        struct ProtocolHeader header;
+    
+        // Read the connection type message from the client
+    
+        if (recv(SSL_get_fd(ssl), &header, sizeof(header), 0) <= 0) {
+            perror("Error receiving connection type");
+            goto cleanup;
+        }
+
+        SSL *ssl = SSL_new(server_ctx);
         SSL_set_fd(ssl, client);
 
-        if (pthread_create(&tid, NULL, handle_connection, ssl) != 0) {
-            perror("Unable to create thread");
-            SSL_free(ssl);
+        if (header.connectionType == CLIENT_CONNECTION) {
+            // Handle user connection
+            if (pthread_create(&tid, NULL, handle_client_connection, ssl) != 0) {
+                perror("Unable to create thread for user connection");
+                SSL_free(ssl);
+                close(client);
+                continue;
+            }
+        } else if (header.connectionType == SERVER_CONNECTION) {
+    
+            // Handle server connection
+            if (pthread_create(&tid, NULL, handle_server_connection, ssl) != 0) {
+                perror("Unable to create thread for server connection");
+                SSL_free(ssl);
+                close(client);
+                continue;
+            }
+        } else {
+            // Invalid connection type
+            perror("Invalid connection type");
             close(client);
             continue;
         }
