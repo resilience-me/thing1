@@ -54,7 +54,7 @@ const char *server_as_server_handle_set_trustline(SSL *ssl, const char *args) {
 
     // Check if username is valid
     if (!isValidUsername(local_username)) {
-        return "FAILED";
+        return "FAILED_USERNAME_INVALID";
     }
     // Build the path to the user directory
     char user_dir[768];
