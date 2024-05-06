@@ -4,13 +4,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define ARGUMENT_DELIMITER ' '
-
-bool isValidArgument(const char *arg) {
-    // Check if the arg contains the delimiter
-    return (strchr(arg, ARGUMENT_DELIMITER) == NULL);
-}
-
 // Helper function to validate port numbers
 int isValidPort(const char *port) {
     if (strlen(port) == 0) return 1;  // Empty is allowed (default port)
