@@ -301,11 +301,14 @@ const char *client_handle_set_trustline(Session *session, const char *args) {
     // Close the SSL connection
     SSL_shutdown(remoteSSL);
     SSL_free(remoteSSL);
-
-    // Handle the response from the server
-    if (strcmp(response, "SUCCESS") == 0) {
-        return "add_account(remote_username, server_address, portStr, session)";
+    if(response) {
+        // Handle the response from the server
+        if (strcmp(response, "SUCCESS") == 0) {
+            return "add_account(remote_username, server_address, portStr, session)";
+        } else {
+            return "ACCOUNT_NOT_FOUND";
+        }
     } else {
-        return "ACCOUNT_NOT_FOUND";
+        return "FAILED_TO_SET_TRUSTLINE";
     }
 }
