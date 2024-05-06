@@ -24,7 +24,7 @@ The repository structure is:
             │
             └── server_as_server/ # Source files for server acting as a server
 
-# Commands, command handlers and comand handler dispatchers
+### Commands, command handlers and comand handler dispatchers
 
 The platform uses a standardized system for sending commands, and responding to commands with command handlers. The client has a command dispatcher with its own command handlers, and the server has three, one for interacting with user clients, and the other two for acting as either client or server relative to other servers. The functionality for this command handling system that is shared between client and server is stored in the "common" directory, and the client and server specific functionality is in `commands_util.c` in either directory. Another way to think of it, TCP/IP or the "transport and network layer" in the OSI model, provides the communication layer (together with the asymmetric encryption), and then an information processing or "application" is needed on top, and the most standardized way of using such an application is by sending commands and reacting to commands, and a standard for this functionality is provided by `command_defs.c` and `command_defs.h` as well as `commands_util.c` and `commands_util.h`. The two protocols (between clients and server vs. server and server) are defined in `protocol_defs.h` in the "common" directory.
 
