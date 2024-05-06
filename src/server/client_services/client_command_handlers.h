@@ -30,6 +30,6 @@ const char *client_handle_logout(Session *session, const char *args);
 // Function to add a connection to the server
 const char *client_handle_add_connection(Session *session, const char *args);
 
-const char *client_handle_set_trustline_client(Session *session, const char *args);
+const char *client_handle_set_trustline(Session *session, const char *args);
 
 #endif /* CLIENT_COMMAND_HANDLERS_H */
